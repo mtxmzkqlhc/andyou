@@ -13,9 +13,9 @@ return array(
                 'ctrl' => 'Member',
                 'target' => '_self',
             ),
-            '品牌等级' => array(
-                'url' => '?c=User_GrowScore',
-                'ctrl' => 'User_GrowScore',
+            '会员分类' => array(
+                'url' => '?c=MemberCate&a=Default',
+                'ctrl' => 'MemberCate',
                 'target' => '_self',
             ),
         ),

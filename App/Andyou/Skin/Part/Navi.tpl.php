@@ -3,7 +3,7 @@
             
         <div class="navbar-inner">
             <div class="container-fluid">
-               <a href="/"><font style="color: rgb(255, 255, 255); font: 20px/40px 'Microsoft YaHei',arial;"><font style="color:#f54"></font>恒星系统 控制中心</font></a>
+               <a href="/"><font style="color: rgb(255, 255, 255); font: 20px/40px 'Microsoft YaHei',arial;"><font style="color:#f54"></font>安之秀</font></a>
                <ul class="nav pull-right" style="color:#ffffff;padding:10px 20px 0 0;"><li><i class="halflings-icon white user"></i> Hi,<?=$admin?></li></ul>
             </div>
         </div>

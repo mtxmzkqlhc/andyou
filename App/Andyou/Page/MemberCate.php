@@ -1,14 +1,14 @@
 <?php
 /**
- * 会员管理管理
+ * 会员分类管理管理
  *
  */
-class  Andyou_Page_Member extends Andyou_Page_Abstract {
+class  Andyou_Page_MemberCate  extends Andyou_Page_Abstract {
     /**
      * 验证
      */
     public function validate(ZOL_Request $input, ZOL_Response $output){
-		$output->pageType = 'Member';		
+		$output->pageType = 'MemberCate';
         if (!parent::baseValidate($input, $output)) { return false; }
 		return true;
 	}
@@ -21,8 +21,6 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 		$whereSql = "";
 		$page = (int)$input->get('page')<1?1:(int)$input->get('page');
 		$output->sername = $wArr['name'] = $input->get('name');
-        $output->serphone = $wArr['phone'] = $input->get('phone');
-        $output->sercateId = $wArr['cateId'] = $input->get('cateId');
         
 	    if(!empty ($wArr)){
 		    foreach($wArr as $k=>$v){
@@ -33,13 +31,13 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
                 }    
 		    }
 		}
-		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&name={$wArr['name']}&phone={$wArr['phone']}&cateId={$wArr['cateId']}";
+		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&name={$wArr['name']}";
 		$pageSize = 30;
 		$orderSql = "order by id desc";
 		
 		$data = Helper_Dao::getList(array(
 			'dbName'        => "Db_Andyou",  #数据库名
-			'tblName'       => "member",       #表名
+			'tblName'       => "membercate",       #表名
 			'cols'          => "*",            #列名
 			'pageSize'      => $pageSize,      #每页数量
 			'page'          => $page,          #当前页
@@ -57,10 +55,8 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 		    $output->data    = $data['data'];
 			$output->pageUrl= $pageUrl;
 		}
-        
-        $output->memberCate = Helper_Member::getMemberCatePairs();
 		
-		$output->setTemplate('Member');
+		$output->setTemplate('MemberCate');
 	}
 	
     /**
@@ -69,20 +65,12 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 	public function doAddItem(ZOL_Request $input, ZOL_Response $output){
 	                        
 		$Arr['name'] = $input->post('name');
-        $Arr['phone'] = $input->post('phone');
-        $Arr['cateId'] = $input->post('cateId');
-        $Arr['byear'] = $input->post('byear');
-        $Arr['bmonth'] = $input->post('bmonth');
-        $Arr['bday'] = $input->post('bday');
-        $Arr['addTm'] = SYSTEM_TIME;
-        $Arr['score'] = $input->post('score');
-        $Arr['balance'] = $input->post('balance');
         
 		$pageUrl = $input->request('pageUrl');
 		$data = Helper_Dao::insertItem(array(
 		        'addItem'       =>  $Arr, #数据列
 		        'dbName'        =>  'Db_Andyou',    #数据库名
-		        'tblName'       =>  'member',    #表名
+		        'tblName'       =>  'membercate',    #表名
 		));
 		/*backUrl*/
         $urlStr = $pageUrl ? $pageUrl : "?c={$output->ctlName}&t={$output->rnd}";
@@ -97,19 +85,12 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 	    $Arr = array();
 	    
 	    $input->request('name')?$Arr['name'] = $input->request('name'):'';
-        $input->request('phone')?$Arr['phone'] = $input->request('phone'):'';
-        $input->request('cateId')?$Arr['cateId'] = $input->request('cateId'):'';
-        $input->request('byear')?$Arr['byear'] = $input->request('byear'):'';
-        $input->request('bmonth')?$Arr['bmonth'] = $input->request('bmonth'):'';
-        $input->request('bday')?$Arr['bday'] = $input->request('bday'):'';
-        $input->request('score')?$Arr['score'] = $input->request('score'):'';
-        $input->request('balance')?$Arr['balance'] = $input->request('balance'):'';
         
 	    $pageUrl = $input->request('pageUrl');
 	    $data = Helper_Dao::updateItem(array(
 	            'editItem'       =>  $Arr, #数据列
 	            'dbName'         =>  'Db_Andyou',    #数据库名
-	            'tblName'        =>   'member',    #表名
+	            'tblName'        =>   'membercate',    #表名
 	            'where'          =>   ' id='.$input->request('dataid'), #更新条件
 	    ));
 	    /*backUrl*/
@@ -124,7 +105,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 
 		Helper_Dao::delItem(array(
                 'dbName'=> 'Db_Andyou',#数据库名
-                'tblName' => 'member',#表名
+                'tblName' => 'membercate',#表名
                 'where'=> 'id='.$input->post('dataid'),#更新条件
         ));
 		$pageUrl = $input->request('pageUrl');
@@ -142,7 +123,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 		$id = (int)$input->get('id');
 		$arr = Helper_Dao::getRows(array(
 		        'dbName'   => "Db_Andyou", #数据库名
-		        'tblName'  => "member", #表名
+		        'tblName'  => "membercate", #表名
 		        'cols'     => "*", #列名
 		        'whereSql' =>  ' and id='.$id
 		));
