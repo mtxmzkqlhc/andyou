@@ -20,6 +20,21 @@ return array(
             ),
         ),
     ),
+    '员工管理' => array(
+        'icon' => 'group',
+        'items' => array(
+            '员工列表' => array(
+                'url' => '?c=Staff&a=Default',
+                'ctrl' => 'Member',
+                'target' => '_self',
+            ),
+            '员工分类' => array(
+                'url' => '?c=StaffCate&a=Default',
+                'ctrl' => 'StaffCate',
+                'target' => '_self',
+            ),
+        ),
+    ),
     '权限管理' => array(
         'icon' => 'group',
         'items' => array(
