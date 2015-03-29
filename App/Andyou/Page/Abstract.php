@@ -51,7 +51,7 @@ abstract class Andyou_Page_Abstract extends ZOL_Abstract_Page{
         #Í·Î²html
 		$output->header     = $output->fetchCol("Part/Header");
          //×ó²à
-        $output->navi = $output->fetchCol("Part/Navi");
+        $output->navi       = $output->fetchCol("Part/Navi");
 		$output->footer     = $output->fetchCol("Part/Footer");
         return true;
 	}

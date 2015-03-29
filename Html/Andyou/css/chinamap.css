@@ -1,0 +1,4 @@
+#chart{width:576px;height:370px;margin:0px;padding:42px 312px 22px 12px;position:relative;}
+.chart-data{position:absolute;top:10px;right:10px;height:410px;width:280px;overflow:hidden;}
+.chart-data h3{height:22px;font:normal 14px/22px "Microsoft YaHei","\5FAE\8F6F\96C5\9ED1";color:#111111;}
+.chart-data ul li{width:130px;height:20px;margin-top:9px;float:left;display:block;vertical-align:middle;font:normal 12px/20px "Microsoft YaHei","\5FAE\8F6F\96C5\9ED1";color:#464646;}

@@ -1,0 +1,19 @@
+UEditor modify List
+
+2013-03-19
+-----------------------------------------------------------------------------------------------------
+É¾³ýÎÄ¼þ/ÎÄ¼þ¼Ð
+  . É¾³ýbuild/ÎÄ¼þ¼Ð
+  . É¾³ý_examples/ÎÄ¼þ¼Ð
+  . É¾³ýlang/en/ÎÄ¼þ¼Ð
+  . É¾³ýeditor_all.jsºÍeditor_all_min.jsÎÄ¼þ
+  . É¾³ýthird-party/snapscreen/
+  . É¾³ýdialogs/snapscreen¡¢dialogs/scrawl¡¢dialogs/webapp¡¢dialogs/music¡¢dialogs/map¡¢dialogs/gmap
+  . É¾³ýplugins/snapscreen.js¡¢plugins/webapp.js¡¢plugins/scrawl.js¡¢plugins/music.js
+ÐÞ¸ÄÎÄ¼þ
+  . ÐÞ¸Äeditor_api.jsºÍeditor_config.js
+-----------------------------------------------------------------------------------------------------
+2013-03-20
+-----------------------------------------------------------------------------------------------------
+É¾³ýÎÄ¼þ/ÎÄ¼þ¼Ð
+  . É¾³ýphp/ÎÄ¼þ¼Ð

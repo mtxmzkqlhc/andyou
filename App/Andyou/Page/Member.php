@@ -3,16 +3,13 @@
  * 会员管理管理
  *
  */
-class  Andyou_Member  extends Andyou_Abstract_Page {
+class  Andyou_Page_Member extends Andyou_Page_Abstract {
     /**
      * 验证
      */
     public function validate(ZOL_Request $input, ZOL_Response $output){
-		$output->pageType = 'Member';
-		$output->rnd      = SYSTEM_TIME;
-		$output->actName  = $input->actName = $input->getActionName();
-		$output->ctlName  = $input->ctlName = $input->getControllerName();
-		$output->admin    = $input->admin   = $input->cookie('S_uid');
+		$output->pageType = 'Member';		
+        if (!parent::baseValidate($input, $output)) { return false; }
 		return true;
 	}
 
