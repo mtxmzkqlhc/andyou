@@ -35,18 +35,19 @@ CREATE TABLE `membercate` (
 
 CREATE TABLE `product` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
+  `name` varchar(200) NOT NULL COMMENT '商品名',
   `code` varchar(50) NOT NULL COMMENT '条码号',
   `cateId` tinyint(4) NOT NULL COMMENT '分类ID',
   `price` int(11) NOT NULL COMMENT '存储*100的数字',
   `inPrice` int(11) NOT NULL COMMENT '进货价',
   `stock` int(11) NOT NULL COMMENT '库存数量',
-  `score` int(1) NOT NULL COMMENT '积分比例',
+  `score` int(4) NOT NULL COMMENT '积分比例',
+  `discut` int(4) NOT NULL COMMENT '最低折扣',
   `addtm` int(11) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
   KEY `code` (`code`(6)),
   KEY `cateId` (`cateId`,`addtm`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*数据表 `productcate` 的表结构*/
 
@@ -54,7 +55,7 @@ CREATE TABLE `productcate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*数据表 `staff` 的表结构*/
 

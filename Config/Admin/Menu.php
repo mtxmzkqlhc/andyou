@@ -5,6 +5,22 @@
  * 图标图片选择可以参照 http://clabs.co/projects/metro/icon.html
  */
 return array(
+    
+    '商品管理' => array(
+        'icon' => 'barcode',
+        'items' => array(
+            '商品列表' => array(
+                'url' => '?c=Product&a=Default',
+                'ctrl' => 'Member',
+                'target' => '_self',
+            ),
+            '商品分类' => array(
+                'url' => '?c=ProductCate&a=Default',
+                'ctrl' => 'ProductCate',
+                'target' => '_self',
+            ),
+        ),
+    ),
     '会员管理' => array(
         'icon' => 'group',
         'items' => array(
@@ -21,7 +37,7 @@ return array(
         ),
     ),
     '员工管理' => array(
-        'icon' => 'group',
+        'icon' => 'sitemap',
         'items' => array(
             '员工列表' => array(
                 'url' => '?c=Staff&a=Default',
@@ -36,7 +52,7 @@ return array(
         ),
     ),
     '权限管理' => array(
-        'icon' => 'group',
+        'icon' => 'user-md',
         'items' => array(
             '用户权限设置' => array(
                 'url' => '/?c=Permission_UserRole&uc=user',
