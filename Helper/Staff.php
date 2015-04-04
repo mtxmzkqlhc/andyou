@@ -15,6 +15,15 @@ class Helper_Staff extends Helper_Abstract {
             
     }
 
+    /**
+     * 获得会员分类管理列表
+     */
+    public static function getStaffPairs(){
+        
+        $db = Db_Andyou::instance();
+        return $db->getPairs("select id,name from staff","id","name");
+            
+    }
 
     
     
