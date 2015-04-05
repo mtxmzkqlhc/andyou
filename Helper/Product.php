@@ -54,6 +54,7 @@ class Helper_Product extends Helper_Abstract {
     public static function getProductInfo($params){
         $options = array(
             'id'              => false, #ID
+            'code'            => false, #条码
         );
         if(is_array($params)) $options = array_merge($options, $params);
         extract($options);        
@@ -61,11 +62,12 @@ class Helper_Product extends Helper_Abstract {
         $whereSql   = '';
 
         if($id)$whereSql .= "and id = '{$id}' " ;
+        if($code)$whereSql .= "and code = '{$code}' " ;
 
         $data = Helper_Dao::getRow(array(
                     'dbName'        => 'Db_Andyou',    #数据库名
                     'tblName'       => 'product',    #表名
-                    'cols'          => 'id id,name name,code code,cateId cateId,price price,inPrice inPrice,stock stock,score score,discut discut,addtm addtm',   #列名
+                    'cols'          => '*',   #列名
                     'whereSql'      => $whereSql,    #where条件
                     #'debug'        => 1,    #调试
        ));

@@ -4,7 +4,19 @@
  */
 class Helper_Bill extends Helper_Abstract {
    
-    
+    /**
+     * 获得一个单号
+     */
+    public static function getMaxBno(){
+        $db = Db_Andyou::instance();
+        //获得今天订单个数
+        $date = date("Y-m-d ",SYSTEM_TIME);
+        $startTm = strtotime($date."00:00:00");
+        $sql = "select count(*) from bills where tm >".$startTm;
+        $num = $db->getOne($sql);
+        
+        return date("Ymd",SYSTEM_TIME) . sprintf("%06d",($num+1));
+    }
 
 
     /**

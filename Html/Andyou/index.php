@@ -30,7 +30,24 @@ if(IS_DEBUGGING){
     error_reporting(E_ALL);
     ini_set("display_errors", 1);
 }
-
+/**
+ * json的相关处理
+ */
+function api_json_encode($value){
+  array_walk_recursive($value, "api_json_convert_encoding_g2u");
+  return json_encode($value);
+}
+function api_json_decode($value, $assoc = true){
+  $value = json_decode($value,$assoc);
+  array_walk_recursive($value, "api_json_convert_encoding_u2g");
+  return $value;
+}
+function api_json_convert_encoding_g2u(&$value, &$key){
+  $value = mb_convert_encoding($value, "UTF-8", "GBK");
+}
+function api_json_convert_encoding_u2g(&$value, &$key){
+  $value = mb_convert_encoding($value, "GBK", "UTF-8");
+}
 //define('ZOL_API_ISFW', true);#应用ZOL框架的项目
 //define('ZOL_API_STOPLOG', true);#应用ZOL框架的项目
 //require_once('/www/zdata/Api.php'); #API

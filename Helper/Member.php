@@ -61,16 +61,47 @@ class Helper_Member extends Helper_Abstract {
         if($id)$whereSql .= "and id = '{$id}' " ;
 
         $data = Helper_Dao::getRow(array(
-                    'dbName'        => 'Db_Andyou',    #数据库名
-                    'tblName'       => 'membercate',    #表名
-                    'cols'          => 'id id,name name',   #列名
-                    'whereSql'      => $whereSql,    #where条件
-                    #'debug'        => 1,    #调试
+                'dbName'        => 'Db_Andyou',    #数据库名
+                'tblName'       => 'membercate',    #表名
+                'cols'          => 'id id,name name',   #列名
+                'whereSql'      => $whereSql,    #where条件
+                #'debug'        => 1,    #调试
        ));
        
        return $data;
     }
 
+  /**
+     * 获得一条会员信息
+     */
+    public static function getMemberInfo($params){
+        $options = array(
+            'id'              => false, #ID
+            'phone'           => false, #ID
+        );
+        if(is_array($params)) $options = array_merge($options, $params);
+        extract($options);        
+            
+        $whereSql   = '';
+        if(!$id && !$phone)return false;
+        
+        if($id)$whereSql .= "and id = '{$id}' " ;
+        if($phone)$whereSql .= "and phone = '{$phone}' " ;
+
+        $data = Helper_Dao::getRow(array(
+                'dbName'        => 'Db_Andyou',    #数据库名
+                'tblName'       => 'member',    #表名
+                'cols'          => '*',   #列名
+                'whereSql'      => $whereSql,    #where条件
+               # 'debug'        => 1,    #调试
+       ));
+        //获得会员类型
+       $memberCate = Helper_Member::getMemberCatePairs();
+       if($data){
+            $data['cateName'] = isset( $memberCate[ $data["cateId"] ]) ? $memberCate[$data["cateId"]]:'未知';
+       }
+       return $data;
+    }
 
     
     

@@ -10,13 +10,11 @@
 <!--[if lt IE 9]>
 <script src="js/respond.min.js"></script>  
 <![endif]-->
-<script type="text/javascript" src="http://icon.zol-img.com.cn/public/js/swfupload.js"></script>
-<script type="text/javascript" src="http://icon.zol-img.com.cn/d/Image/js/uploadInput.js"></script> 
 <script src='js/jquery.dataTables.min.js'></script>
 <script src="js/index.js"></script>
 <!-- END CORE PLUGINS -->
 <script src="js/app.js"></script>      
-<script type="text/javascript" src="/js/artDialog/jquery.artDialog.source.js?skin=default"></script>
+<script type="text/javascript" src="js/artDialog/jquery.artDialog.source.js?skin=default"></script>
 <script>
 jQuery(document).ready(function() {
     App.init();
