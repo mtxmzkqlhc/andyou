@@ -37,13 +37,13 @@
                         <div class="box-l clearfix">
                             <dl>
                                 <dt>会员电话</dt>
-                                <dd><input type="text" value="" id="memberPhone"></dd>
+                                <dd><input type="text" value="13512026125" id="memberPhone"></dd>
                             </dl>
                         </div>
                         <div class="box-r">
                             <table width="100%" id="memberInfoTbl">
                                 <tr>
-                                    <td class="mtbl_l">姓名</td><td class="mtbl_r" id="memtbl_name"></td>
+                                    <td class="mtbl_l">会员姓名</td><td class="mtbl_r" id="memtbl_name"></td>
                                     <td class="mtbl_l">会员类型</td><td class="mtbl_r" id="memtbl_cate"></td>
                                     <td class="mtbl_l">享受折扣</td><td class="mtbl_r" id="memtbl_disc"</td>
                                 </tr>
@@ -93,7 +93,7 @@
                             </dl>
                             <dl class="clearfix">
                                 <dt>本次应收</dt>
-                                <dd><input type="text" value="0" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"/></dd>
+                                <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"/></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>卡内扣款</dt>
@@ -105,7 +105,7 @@
                             </dl>
                             <dl class="clearfix">
                                 <dt>本次需收款</dt>
-                                <dd><input type="text" value="0" id="bill_end_sum" name="bill[bill_end_sum]"></dd>
+                                <dd><input type="text" value="0.00" id="bill_end_sum" name="bill[bill_end_sum]"></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>销售员</dt>
@@ -128,13 +128,15 @@
                                 <input type="hidden" value="0" name="memberId" id="memberId"/>
                             </div>
                         </div>
-                        <div class="box-r" style="width:600px;">
+                        <div class="box-r" style="width:700px;">
                             <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="12345678890233232" id="proBarCode"></div>
                             <div>
                                 <table class="table table-striped table-bordered" id="proListTable">
-                                    <thead><tr role="row"><th>商品名称</th><th>库存</th><th>单价</th><th>数量</th><th>折扣</th><th>价格</th><th>销售员</th><th>操作</th></tr> </thead>   
+                                    <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th style="width:95px;">数量</th><th  style="width:30px;">折扣</th><th>价格</th><th style="width:60px;">销售员</th><th>操作</th></tr> </thead>   
 						  
-                                    <tbody id="proListTbody"></tbody></table>
+                                    <tbody id="proListTbody">
+                                        <tr><td colspan="10" style="text-align: center;color:#666666;padding:100px 0 200px;background:#ffffff;">-- 请扫描条码以添加商品 --</td></tr>
+                                    </tbody></table>
                             </div>
                         </div>
             </div>
@@ -150,12 +152,12 @@
         <td>${pro.name}</td>
         <td>${pro.stock}</td>
         <td id="item_sprice_${rowIdx}">${pro.price}</td>
-        <td><button class="btn btn-small btn-info"  onclick="proTblDelNum(${rowIdx})"><i class="halflings-icon minus white"></i></button>
+        <td align="center"><span class="btn btn-small btn-info"  onclick="proTblDelNum(${rowIdx})"><i class="halflings-icon minus white"></i></span>
         <input type='text' value='1' id='item_num_${rowIdx}' name='item_num[${rowIdx}]' class='tblProNum'>
-        <button class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></button></td>
+        <span class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></span></td>
         <td><input type='text' value='1' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc'></td>
         <td id="item_price_${rowIdx}" class="tblProPrice">${pro.price}</td>  
-        <td>&nbsp;</td>
+        <td><span style="color:#999999">同左边</span></td>
         <td><button class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></button>
             <input type="hidden" value="${pro.id}" name="item_id[${rowIdx}]"/>        
         </td>            
@@ -169,6 +171,7 @@
     //删除一个商品
     var proTblDel = function(i){
         $("#item_row_"+i).remove();
+        calcBillSumInfo();
     }
     var proTblNumChg = function(i,t){
         
@@ -198,10 +201,12 @@
     //增加购买数量
     var proTblAddNum = function(i){
         proTblNumChg(i,1);
+        return false;
     }
     //减少购买数量
     var proTblDelNum = function(i){
         proTblNumChg(i,0);
+        return false;
     };
     //计算最终订单的价格
     var calcBillPrice = function(){
@@ -259,6 +264,7 @@
     var appendProTable = function(proInfo){
         var data = {pro:proInfo,rowIdx:proTrIdx};
         var html = proJuicer.render(data);
+        if(proTrIdx == 0)$("#proListTbody").empty();
         $("#proListTbody").append(html);
         proTblCalPrice(proTrIdx);//计算单行价格
         calcBillSumInfo();//计算最后的订单价格
