@@ -132,7 +132,7 @@
                             <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="12345678890233232" id="proBarCode"></div>
                             <div>
                                 <table class="table table-striped table-bordered" id="proListTable">
-                                    <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th style="width:95px;">数量</th><th  style="width:30px;">折扣</th><th>价格</th><th style="width:60px;">销售员</th><th>操作</th></tr> </thead>   
+                                    <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th style="width:95px;">数量</th><th  style="width:30px;">折扣</th><th>价格</th><th style="width:60px;">销售员</th><th style="width:60px;">操作</th></tr> </thead>   
 						  
                                     <tbody id="proListTbody">
                                         <tr><td colspan="10" style="text-align: center;color:#666666;padding:100px 0 200px;background:#ffffff;">-- 请扫描条码以添加商品 --</td></tr>
@@ -143,6 +143,22 @@
             </form>
 </div>
 
+<div id="add-pro-box" style="display: none;">
+    <table class="table table-striped table-bordered" styple="width:100%">
+    <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th>操作</th></tr> </thead>
+    <tbody id="proAddBoxTbody"></tbody></table>
+</div>
+<div id="set-staff-box" style="display: none;">
+    <select onchange="chgSetStaff(this)"><option value='0'>请选择</option><option value='0'>同左边</option>
+            <?php
+            if ($staffArr) {
+                   foreach ($staffArr as $k=>$v) {
+                       echo '<option value="' . $k . '">' . $v . '</option>' . "\n";
+                   } 
+               }
+             ?>
+       </select> 
+</div>
 
 <?= $footer ?>
 <script type="text/javascript" src="js/global.js"></script>
@@ -157,9 +173,11 @@
         <span class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></span></td>
         <td><input type='text' value='1' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc'></td>
         <td id="item_price_${rowIdx}" class="tblProPrice">${pro.price}</td>  
-        <td><span style="color:#999999">同左边</span></td>
+        <td id="item_stafftd_${rowIdx}"><span style="color:#999999">同左边</span></td>
         <td><button class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></button>
-            <input type="hidden" value="${pro.id}" name="item_id[${rowIdx}]"/>        
+            <span class="btn btn-small" onclick="proTblSetStaff(${rowIdx})" title="设置该商品的销售员"><i class="halflings-icon user white"></i></span>
+            <input type="hidden" value="${pro.id}" name="item_id[${rowIdx}]"/>
+            <input type="hidden" value="0" name="item_staffid[${rowIdx}]" id="item_staff_${rowIdx}"/>        
         </td>            
     </tr>
 </script>
@@ -167,7 +185,25 @@
     $("#proBarCode").focus(); 
     
     //商品表格的操作
-    
+    //设置一个商品的营业员
+    var setStaffIdx = 0;
+    var setStaffDlg = null;
+    var proTblSetStaff = function(i){
+        setStaffIdx = i;
+        setStaffDlg = art.dialog({title: '请选择销售员',width:"300px",height:"100px",content: $("#set-staff-box").html()});
+    }
+    var chgSetStaff = function(o){
+        var i = o.value;
+        var name = o.options[o.options.selectedIndex].innerHTML;
+        if(i==0){
+            $("#item_stafftd_"+setStaffIdx).html('<span style="color:#999999">同左边</span>');            
+            $("#item_staff_"+setStaffIdx).val(0);
+        }else{
+            $("#item_stafftd_"+setStaffIdx).html(name);
+            $("#item_staff_"+setStaffIdx).val(i);
+        }
+        if(setStaffDlg != null)setStaffDlg.close();
+    }
     //删除一个商品
     var proTblDel = function(i){
         $("#item_row_"+i).remove();
@@ -308,16 +344,15 @@
             var url = "?c=Ajax_Product&a=GetProductByCode&code=" + barcode;
             $.getJSON(url,{},function(data){
                 if(data){
+                    art.dialog({title: '请选择商品',width:"600px",content: $("#add-pro-box").html()});
                     if(data.num == 1){
                         var proInfo = data.data[0];
                         appendProTable(proInfo);
-                    }else{
+                    }else if(data.num > 1){
                         
+                    }else{
+                        alert("该商品未入库");
                     }
-//                    $("#memtbl_name").html(data.name);
-//                    $("#memtbl_score").html(data.score);
-//                    $("#memtbl_card").html(data.card ? data.card : 0);
-//                    $("#memtbl_cate").html(data.cateName);
                 }else{
                     alert("该商品未入库");
                 }
