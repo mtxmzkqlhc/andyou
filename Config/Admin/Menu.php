@@ -6,6 +6,16 @@
  */
 return array(
     
+    '常用操作' => array(
+        'icon' => 'print',
+        'items' => array(
+            '前台收银' => array(
+                'url' => '?c=Checkout',
+                'ctrl' => 'Checkout',
+                'target' => '_self',
+            ),
+        ),
+    ),
     '商品管理' => array(
         'icon' => 'barcode',
         'items' => array(
@@ -54,54 +64,24 @@ return array(
     '权限管理' => array(
         'icon' => 'user-md',
         'items' => array(
-            '用户权限设置' => array(
-                'url' => '/?c=Permission_UserRole&uc=user',
-                'ctrl' => 'Permission_UserRole'
-            ),
-            '角色管理' => array(
-                'url' => '/?c=Permission_Role&uc=user',
-                'ctrl' => 'Permission_Role'
-            ),
-            '权限资源管理' => array(
-                'url' => '/?c=Permission_Option&uc=user',
-                'ctrl' => 'Permission_Option'
+            '管理员' => array(
+                'url' => '?c=AdminUser',
+                'ctrl' => 'AdminUser'
             ),
         ),
     ),
     '财务管理' => array(
         'icon' => 'inbox',
         'items' => array(
-            '用户余额' => array(
-                'url' => '/?c=Pay_Bill',
-                'ctrl' => 'Pay_Bill',
-                'target' => '_blank',
+            '消费订单' => array(
+                'url' => '?c=Bills',
+                'ctrl' => 'Bills',
+                'target' => '_self',
             ),
-            '充值记录' => array(
-                'url' => '/?c=Pay_Pay',
-                'ctrl' => 'Pay_Pay',
-                'target' => '_blank',
-            ),
-            '消费记录' => array(
-                'url' => '/?c=Pay_Consume',
-                'ctrl' => 'Pay_Consume',
-                'target' => '_blank',
-            ),
-            '发票管理' => array(
-                'url' => '/?c=Pay_Invoice',
-                'ctrl' => 'Pay_Invoice',
-                'target' => '_blank',
-            ),
-            '财务充值' => array(
-                'url' => '/?c=Pay_Finance',
-                'target' => '_blank',
-            ),
-            '奖品设置' => array(
-                'url' => '/?c=Pay_trophyInfo',
-                'target' => '_blank',
-            ),
-            '奖品兑换记录' => array(
-                'url' => '/?c=Pay_exchangeTrophyLog',
-                'target' => '_blank',
+            '订单明细' => array(
+                'url' => '?c=BillsItem',
+                'ctrl' => 'BillsItem',
+                'target' => '_self',
             ),
         ),
     ),
