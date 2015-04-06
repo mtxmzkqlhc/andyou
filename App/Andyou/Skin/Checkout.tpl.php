@@ -16,7 +16,7 @@
 #memberInfoTbl .mtbl_r{width:120px;}
 #billContent dl{margin-bottom:3px;margin-top: 5px;}
 .tblProNum{width:20px;margin-bottom:0px;}
-#barScanDiv{pdding:10px 0 15px 0;margin-bottom:10px;}
+#barScanDiv{padding:10px 0 15px 0;margin-bottom:10px;}
 #proBarCode{width:300px;}
 #proListTbody input{margin-bottom:0px;width:20px;}
 #proListTbody .btn-small{padding:0 0 0 3px;}
@@ -144,9 +144,11 @@
 </div>
 
 <div id="add-pro-box" style="display: none;">
-    <table class="table table-striped table-bordered" styple="width:100%">
+    <table class="table table-striped table-bordered" style="width:580px;margin:10px 0;font-size:12px;">
     <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th>操作</th></tr> </thead>
-    <tbody id="proAddBoxTbody"></tbody></table>
+    <tbody id="proAddBoxTbody">
+        <tr><td colspan="10" style="text-align: center;color:#666666;padding:20px 0 20px;background:#ffffff;">-- 加载中 --</td></tr>
+    </tbody></table>
 </div>
 <div id="set-staff-box" style="display: none;">
     <select onchange="chgSetStaff(this)"><option value='0'>请选择</option><option value='0'>同左边</option>
@@ -180,6 +182,18 @@
             <input type="hidden" value="0" name="item_staffid[${rowIdx}]" id="item_staff_${rowIdx}"/>        
         </td>            
     </tr>
+</script>
+<!--  多产品多选  -->
+<script id="proSelectTableTr" type="text/template">
+     {@each list as pro,index}
+            <tr>
+                <td>${pro.name}</td><td>${pro.stock}</td><td>${pro.price}</td>
+                <td style="width:80px;"><span class="btn btn-small btn-info" onclick="boxSelectPro(${pro.id})"><i class="halflings-icon ok white "></i>选择</span>                      
+                </td> 
+            </tr>
+     {@/each}
+
+    
 </script>
 <script>
     $("#proBarCode").focus(); 
@@ -306,7 +320,31 @@
         calcBillSumInfo();//计算最后的订单价格
         proTrIdx++;
     };
+    //多个商品
+    var proSelectTableTr = document.getElementById('proSelectTableTr').innerHTML;
+    var proSelectJuicer  = juicer(proSelectTableTr);
+    var appendSelectProTable = function(list,num){
+        var data = {list:list,num:num};
+        var html = proSelectJuicer.render(data);
+        $("#proAddBoxTbody").empty();
+        $("#proAddBoxTbody").append(html);
+    };
     
+    //从选择框中选了一个商品
+    var boxSelectPro = function(pid){
+        var len = selectProBoxData.length;
+        if(len > 0){
+            var proInfo = {}
+            for(var i=0;i<len;i++){
+                if(selectProBoxData[i].id == pid){
+                    proInfo = selectProBoxData[i];
+                    break;
+                }
+            }
+            appendProTable(proInfo);
+        }
+        if(selectProBoxDlg != null)selectProBoxDlg.close();
+    }
     
 //    var enterIn = function(evt){
 //        var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
@@ -338,18 +376,23 @@
         }
     }
     //条形码
+    var selectProBoxDlg = null;
+    var selectProBoxData = []; //保存已经存储产品数组
     iptEnter("#proBarCode",function(){
         var barcode = $("#proBarCode").val();
         if(barcode){//doGetProductByCode
             var url = "?c=Ajax_Product&a=GetProductByCode&code=" + barcode;
             $.getJSON(url,{},function(data){
                 if(data){
-                    art.dialog({title: '请选择商品',width:"600px",content: $("#add-pro-box").html()});
+                    
                     if(data.num == 1){
                         var proInfo = data.data[0];
                         appendProTable(proInfo);
-                    }else if(data.num > 1){
-                        
+                    }else if(data.num > 1){//如果一个条码有多个商品
+                        //$("#proAddBoxTbody").html('<tr><td colspan="10" style="text-align: center;color:#666666;padding:20px 0 20px;background:#ffffff;">-- 加载中 --</td></tr>');
+                        selectProBoxData = data.data;
+                        appendSelectProTable(data.data,data.num)
+                        selectProBoxDlg = art.dialog({title: '请选择商品',width:"600px",content: $("#add-pro-box").html()});
                     }else{
                         alert("该商品未入库");
                     }
