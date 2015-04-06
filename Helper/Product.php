@@ -37,12 +37,22 @@ class Helper_Product extends Helper_Abstract {
         $data = Helper_Dao::getRows(array(
                     'dbName'        => 'Db_Andyou',    #数据库名
                     'tblName'       => 'product',    #表名
-                    'cols'          => 'id id,name name,code code,cateId cateId,price price,inPrice inPrice,stock stock,score score,discut discut,addtm addtm',   #列名
+                    'cols'          => '*',   #列名
                     'limit'         => $num,    #条数
                     'whereSql'      => $whereSql,    #where条件
                     #'debug'        => 1,    #调试
        ));
-       
+       //对报价的处理
+        if($data){
+            foreach($data as $k => $v){
+                $data[$k]['oprice'] = $v["price"];//保存实际的价格
+                $data[$k]['price']  = $v["price"]/100;//保存实际的价格
+                
+                
+                $data[$k]['oinPrice'] = $v["inPrice"];//保存实际的价格
+                $data[$k]['inPrice']  = $v["inPrice"]/100;//保存实际的价格
+            }
+        }
        return $data;
     }
 
@@ -71,6 +81,13 @@ class Helper_Product extends Helper_Abstract {
                     'whereSql'      => $whereSql,    #where条件
                     #'debug'        => 1,    #调试
        ));
+        //对报价的处理
+        if($data){
+            $data['oprice']   = $data["price"];//保存实际的价格
+            $data['price']    = $data["price"]/100;//保存实际的价格
+            $data['oinPrice']  = $data["inPrice"];//保存实际的价格
+            $data['inPrice']  = $data["inPrice"]/100;//保存实际的价格
+        }
        
        return $data;
     }

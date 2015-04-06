@@ -67,16 +67,21 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
      * 添加记录
      */
 	public function doAddItem(ZOL_Request $input, ZOL_Response $output){
-	                        
-		$Arr['name'] = $input->post('name');
-        $Arr['code'] = $input->post('code');
-        $Arr['cateId'] = $input->post('cateId');
-        $Arr['price'] = $input->post('price');
+	       
+        $Arr = array();
+		$Arr['name']    = $input->post('name');
+        $Arr['code']    = $input->post('code');
+        $Arr['cateId']  = $input->post('cateId');
+        $Arr['price']   = $input->post('price');
         $Arr['inPrice'] = $input->post('inPrice');
-        $Arr['stock'] = $input->post('stock');
-        $Arr['score'] = $input->post('score');
-        $Arr['discut'] = $input->post('discut');
-        $Arr['addtm'] = SYSTEM_TIME;
+        $Arr['stock']   = $input->post('stock');
+        $Arr['score']   = $input->post('score');
+        $Arr['discut']  = $input->post('discut');
+        $Arr['addtm']  = SYSTEM_TIME;
+        
+        //产品报价，保存以分为单位的价格
+        $Arr['price']   = $Arr['price']   * 100;
+        $Arr['inPrice'] = $Arr['inPrice'] * 100;
         
 		$pageUrl = $input->request('pageUrl');
 		$data = Helper_Dao::insertItem(array(
@@ -104,6 +109,10 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
         $input->request('stock')?$Arr['stock'] = $input->request('stock'):'';
         $input->request('score')?$Arr['score'] = $input->request('score'):'';
         $input->request('discut')?$Arr['discut'] = $input->request('discut'):'';
+        
+        //产品报价，保存以分为单位的价格
+        if(isset($Arr['price']))  $Arr['price']   = $Arr['price']   * 100;
+        if(isset($Arr['inPrice']))$Arr['inPrice'] = $Arr['inPrice'] * 100;
         
 	    $pageUrl = $input->request('pageUrl');
 	    $data = Helper_Dao::updateItem(array(

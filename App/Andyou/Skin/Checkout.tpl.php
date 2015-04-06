@@ -18,8 +18,10 @@
 .tblProNum{width:20px;margin-bottom:0px;}
 #barScanDiv{padding:10px 0 15px 0;margin-bottom:10px;}
 #proBarCode{width:300px;}
-#proListTbody input{margin-bottom:0px;width:20px;}
+#proListTbody input{margin-bottom:0px;width:25px;}
 #proListTbody .btn-small{padding:0 0 0 3px;}
+#searchMemBtn,#searchProBtn,#setDiscBtn{padding:3px 4px;margin-bottom:10px;}
+#billContent .memextinfo{display:none}
 </style>
 <div id="content">
 
@@ -37,7 +39,8 @@
                         <div class="box-l clearfix">
                             <dl>
                                 <dt>会员电话</dt>
-                                <dd><input type="text" value="13512026125" id="memberPhone"></dd>
+                                <dd><input type="text" value="13512026125" id="memberPhone"><span class="btn btn-mini" title="查询用户" id="searchMemBtn"><i class="halflings-icon search white"></i></span>
+                                </dd>
                             </dl>
                         </div>
                         <div class="box-r">
@@ -85,13 +88,13 @@
                             </dl>
                             <dl class="clearfix">
                                 <dt>应收金额</dt>
-                                <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" /></dd>
+                                <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" trueprice="0" /></dd>
                             </dl>
-                            <dl class="clearfix">
+                            <dl class="clearfix" style="display:none">
                                 <dt>折扣</dt>
                                 <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]"/></dd>
                             </dl>
-                            <dl class="clearfix">
+                            <dl class="clearfix"  style="display:none">
                                 <dt>本次应收</dt>
                                 <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"  readonly="true" /></dd>
                             </dl>
@@ -105,7 +108,7 @@
                             </dl>
                             <dl class="clearfix">
                                 <dt>本次需收款</dt>
-                                <dd><input type="text" value="0.00" id="bill_end_sum" name="bill[bill_end_sum]"></dd>
+                                <dd><input type="text" value="0.00" id="bill_end_sum" name="bill[bill_end_sum]" style="font-weight:bold;color:#EB3C00"></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>销售员</dt>
@@ -120,6 +123,20 @@
                                         ?>
                                   </select>  
                                 </dd>
+                                <dl class="clearfix">
+                                    <dt>会员</dt>
+                                    <dd><input type="text" value="" id="bill_end_membernm"  disabled="true"></dd>
+                                </dl>
+                                
+                                <dl class="clearfix memextinfo">
+                                    <dt>卡上余额</dt>
+                                    <dd><input type="text" value="" id="bill_card_left"  disabled="true"></dd>
+                                </dl>
+                                
+                                <dl class="clearfix memextinfo">
+                                    <dt>积分余额</dt>
+                                    <dd><input type="text" value="" id="bill_score_left"  disabled="true"></dd>
+                                </dl>
                             </dl>
                             <div style="text-align:center;">
                                 <input type="submit" value="确认收款" class="btn btn-primary" id="addbtn"/>
@@ -129,10 +146,12 @@
                             </div>
                         </div>
                         <div class="box-r" style="width:700px;">
-                            <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="12345678890233232" id="proBarCode"></div>
+                            <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="12345678890233232" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
+                            <span class="btn btn-mini btn-info" title="批量设置折扣" id="setDiscBtn"><i class="halflings-icon th-list white"></i>批量设置折扣</span>
+                            </div>
                             <div>
                                 <table class="table table-striped table-bordered" id="proListTable">
-                                    <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th style="width:95px;">数量</th><th  style="width:30px;">折扣</th><th>价格</th><th style="width:60px;">销售员</th><th style="width:60px;">操作</th></tr> </thead>   
+                                    <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th style="width:99px;">数量</th><th  style="width:30px;">折扣</th><th>价格</th><th style="width:60px;">销售员</th><th style="width:60px;">操作</th></tr> </thead>   
 						  
                                     <tbody id="proListTbody">
                                         <tr><td colspan="10" style="text-align: center;color:#666666;padding:100px 0 200px;background:#ffffff;">-- 请扫描条码以添加商品 --</td></tr>
@@ -173,13 +192,15 @@
         <td align="center"><span class="btn btn-small btn-info"  onclick="proTblDelNum(${rowIdx})"><i class="halflings-icon minus white"></i></span>
         <input type='text' value='1' id='item_num_${rowIdx}' name='item_num[${rowIdx}]' class='tblProNum'>
         <span class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></span></td>
-        <td><input type='text' value='1' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc'></td>
-        <td id="item_price_${rowIdx}" class="tblProPrice">${pro.price}</td>  
+        <td><input type='text' value='1' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}"></td>
+        <td id="item_price_${rowIdx}" >${pro.price}</td>  
         <td id="item_stafftd_${rowIdx}"><span style="color:#999999">同左边</span></td>
         <td><button class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></button>
             <span class="btn btn-small" onclick="proTblSetStaff(${rowIdx})" title="设置该商品的销售员"><i class="halflings-icon user white"></i></span>
             <input type="hidden" value="${pro.id}" name="item_id[${rowIdx}]"/>
-            <input type="hidden" value="0" name="item_staffid[${rowIdx}]" id="item_staff_${rowIdx}"/>        
+            <input type="hidden" value="0" name="item_staffid[${rowIdx}]" id="item_staff_${rowIdx}"/>  
+            <input type="hidden" value="${pro.oprice}" id="item_org_sprice_${rowIdx}"/>
+            <input type="hidden" value="${pro.oprice}" id="item_calc_sprice_${rowIdx}" class="tblProPrice"/>
         </td>            
     </tr>
 </script>
@@ -197,7 +218,22 @@
 </script>
 <script>
     $("#proBarCode").focus(); 
-    
+    //积分转换价格
+    var scoreToMoney = function(score){
+        var rule = <?=$scoreRatio?>; //300分 = 10元
+        var price = Math.floor(score/rule);
+        var leftScore = score - price * rule;
+        return {
+          price :   price,
+          score :   leftScore,
+        };
+    }
+    //钱换积分
+    var moneyToScore = function(price){
+        var rule = <?=$scoreRatio?>; //300分 = 10元
+        return price * rule;
+    }
+
     //最后的提交验证
     var doCheckIpt = function(){
         
@@ -269,11 +305,13 @@
     }
     //计算一行的总价
     var proTblCalPrice = function(i){
-        var sprice = parseFloat($("#item_sprice_"+i).html());
+        var sprice = parseInt($("#item_org_sprice_"+i).val(),10);
         var num    = parseInt($("#item_num_"+i).val(),10);
         var disc   = parseFloat($("#item_disc_"+i).val());
         if(isNaN(disc) || disc > 1) disc =1;
         var price  = sprice * num * disc;
+        $("#item_calc_sprice_"+i).val(price);//保存以分为单位的价格
+        price = price / 100;
         price = price.toFixed(2);
         $("#item_price_"+i).html(price);
         calcBillSumInfo();
@@ -292,14 +330,15 @@
     var calcBillPrice = function(){
         var sum = 0;
         $(".tblProPrice").each(function(){
-            sum += $(this).html() - 0;
+            sum += $(this).val() - 0;
         });
-        $("#bill_sum_price").val(sum);
+        $("#bill_sum_price").attr("trueprice",sum);
+        $("#bill_sum_price").val((sum/100).toFixed(2));
     }
     //计算最终订单的总金额数据
     var calcBillSumInfo = function(){
         calcBillPrice();//计算总价
-        var billSumPrice         = parseFloat($("#bill_sum_price").val());//应收金额
+        var billSumPrice         = parseInt($("#bill_sum_price").attr("trueprice"),10);//parseFloat($("#bill_sum_price").val());//应收金额
         var billDisc             = parseFloat($("#bill_disc").val());//折扣
         var billMemCard          = parseFloat($("#bill_member_card").val());//卡上金额
         var billMemScore         = parseInt($("#bill_member_score").val(),10);//使用积分
@@ -309,31 +348,49 @@
          }
         
         var endPrice = billSumPrice * billDisc;//折扣后的价格
-        $("#bill_aftdisc_price").val(endPrice.toFixed(2));
+        $("#bill_aftdisc_price").val((endPrice/100).toFixed(2));
         if(billMemCard){//如果用户卡里还有余额
-            if(billMemCard > endPrice){//卡内还有前
-                  billMemCard = billMemCard - endPrice;
+            if(billMemCard * 100 > endPrice){//卡内还有前
+                  billMemCard = (billMemCard * 100 - endPrice) / 100;
                   endPrice = 0;  
             }else{
-                endPrice = endPrice - billMemCard;
+                endPrice = endPrice - billMemCard * 100;
                 billMemCard = 0;
             }
         }
         if(billMemScore){//使用用户的积分
-            if(billMemScore > endPrice){
-                billMemScore = billMemScore - endPrice;
+            if(billMemScore * 100 > endPrice){
+                billMemScore = (billMemScore * 100 - endPrice) / 100;
                 endPrice = 0;  
             }else{
-                endPrice = endPrice - billMemScore;
+                endPrice = endPrice - billMemScore * 100;
                 billMemScore = 0;                
             }
             
         }
-        //$("#bill_member_card").val()
-        $("#bill_end_sum").val(endPrice.toFixed(2));
+        //花钱得积分
+        if(endPrice){
+            billMemScore += moneyToScore(endPrice/100);
+        }
+        $("#bill_card_left").val($("#memtbl_card").html() - $("#bill_member_card").val() + billMemCard);
+        $("#bill_score_left").val($("#memtbl_score").html() - $("#bill_member_score").val() +billMemScore);
+        $("#bill_end_sum").val((endPrice/100).toFixed(2));
     }
     //账单有的输入框如何有所改变，就重新计算
     $(".billIptChg").blur(function(){
+        if($(this).attr("id") == "bill_member_card"){ //判断设置的金额不能过大
+            if($(this).val() -0 > $("#memtbl_card").html() -0){
+                $(this).val($("#memtbl_card").html());
+            }
+            if(!$(this).val())$(this).val(0);
+        }
+        if($(this).attr("id") == "bill_member_score"){ //判断设置的金额不能过大
+            if($(this).val() -0 > $("#memtbl_score").html() -0){
+                $(this).val($("#memtbl_score").html());
+            }
+            if(!$(this).val())$(this).val(0);
+        }
+            
         calcBillSumInfo();
     });
     
@@ -376,6 +433,28 @@
         if(selectProBoxDlg != null)selectProBoxDlg.close();
     }
     
+    //批量设置折扣
+    $("#setDiscBtn").click(function(){
+        art.dialog({
+            title : '批量设置商品折扣',
+            content: '<div style="padding:40px 80px;font-size:12px;">设置折扣： <input type="text" value="1" id="dlgSetDisVal" style="width:50px"></div>',
+            button: [{
+                name: '设置',
+                callback: function () {
+                    var v = $("#dlgSetDisVal").val();
+                    if(v > 1)v = 1;
+                    $(".tblProDisc").each(function(){
+                        $(this).val(v);
+                        var idx = $(this).attr("data-idx");
+                        proTblCalPrice(idx);
+                    })
+                    return true;
+                },
+                focus: true
+            }]
+        })
+        
+    });
 //    var enterIn = function(evt){
 //        var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
 //        if (evt.keyCode==13){
@@ -385,8 +464,9 @@
     //搜索会员
     iptEnter("#memberPhone",function(){
         doSearchMember();
-        $("#bill_member_card").removeAttr("readonly");
-        $("#bill_member_score").removeAttr("readonly");
+    });
+    $("#searchMemBtn").click(function(){
+        doSearchMember();
     });
     //条形码
     var doSearchMember = function(){
@@ -395,20 +475,48 @@
             var url = "?c=Ajax_Member&a=GetMemberByPhone&phone=" + phone;
             $.getJSON(url,{},function(data){
                 if(data){
+                    var bls = data.balance ? data.balance : 0;
                     $("#memtbl_name").html(data.name);
+                    $("#bill_end_membernm").val(data.name);
                     $("#memtbl_score").html(data.score);
-                    $("#memtbl_card").html(data.card ? data.card : 0);
+                    $("#memtbl_card").html(bls);
                     $("#memtbl_cate").html(data.cateName);
+                    $("#bill_member_card").val(bls);
                     
                     $("#memberId").val(data.id);
+                    $("#bill_member_card").removeAttr("readonly");
+                    $("#bill_member_score").removeAttr("readonly");
+                    
+                    $("#bill_card_left").val(bls);
+                    $("#bill_score_left").val(data.score);
+                    $(".memextinfo").show();
                 }
             });
+        }else{
+            $("#memtbl_name").html("");
+            $("#bill_end_membernm").val("");
+            $("#memtbl_score").html("");
+            $("#memtbl_card").html("");
+            $("#memtbl_cate").html("");
+            $("#memberId").val(0);
+            $("#bill_member_card").attr("readonly","true");
+            $("#bill_member_score").attr("readonly","true");
+            $("#bill_card_left").val(0);
+            $("#bill_score_left").val(0);
+            $(".memextinfo").hide();
         }
     }
     //条形码
     var selectProBoxDlg = null;
     var selectProBoxData = []; //保存已经存储产品数组
     iptEnter("#proBarCode",function(){
+        doSearchPro();        
+    });
+    $("#searchProBtn").click(function(){
+        doSearchPro();
+    })
+    var doSearchPro = function(){
+    
         var barcode = $("#proBarCode").val();
         if(barcode){//doGetProductByCode
             var url = "?c=Ajax_Product&a=GetProductByCode&code=" + barcode;
@@ -430,9 +538,8 @@
                     alert("该商品未入库");
                 }
             });
-            
         }
-    });
+    }
     
 </script>
 </body>

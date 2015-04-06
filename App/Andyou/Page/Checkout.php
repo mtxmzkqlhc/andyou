@@ -23,6 +23,10 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
 		//获得所有的员工
         $output->staffArr  = Helper_Staff::getStaffPairs();
         
+        //获得所有配置
+        $output->sysOptions = Helper_Option::getAllOptions();        
+        $output->scoreRatio = !empty($output->sysOptions["ScoreRatio"]) ? $output->sysOptions["ScoreRatio"]["value"] : 0;
+        
 		$output->setTemplate('Checkout');
 	}
 	
@@ -56,11 +60,12 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             foreach($itemIdArr as $idx => $pid){
                $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
                $num = (int)$itemNumArr[$idx];
-               $sumPrice += $price = $num * $proInfo["price"] * $itemDiscArr[$idx];
+               $price     = $num * $proInfo["oprice"] * $itemDiscArr[$idx];
+               $sumPrice += $price;
                $proInfoArr[] = array(
                    'proId'      => $pid,
                    'num'        => $num,
-                   'discount'   => $itemDiscArr[$idx]*100,
+                   'discount'   => $itemDiscArr[$idx],
                    'price'      => $price,
                    'staffid'    => $staffid,
                );
@@ -81,8 +86,9 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         if($sumPriceAftDisc && $memberCard && $billInfo["bill_member_card"]){
             
             $useCard = min($memberCard,$billInfo["bill_member_card"]);
+            $useCard = $useCard * 100;
             $useCard = min($useCard,$sumPriceAftDisc);//卡余额和收费的金额比较
-            $leftCard = $memberCard - $useCard;
+            $leftCard = $memberCard - $useCard /100;
             
             $sumPriceAftDisc = $sumPriceAftDisc - $useCard;
             
@@ -92,18 +98,25 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //会员卡的积分
         $leftScore = $memberScore;
         $useScoreFlag = false;
+        $sysOptions = Helper_Option::getAllOptions();        
+        $scoreRatio = !empty($sysOptions["ScoreRatio"]) ? $sysOptions["ScoreRatio"]["value"] : 0;
         if($sumPriceAftDisc && $memberScore && $billInfo["bill_member_score"]){
-            $sysOptions = Helper_Option::getAllOptions();
-            $scoreRatio = $sysOptions["ScoreRatio"] ? $sysOptions["ScoreRatio"] : 0;
             $useScore = min($memberScore,$billInfo["bill_member_score"]);//需要花多少积分
             
             //将用户的积分转换成钱
             $scoreMoney = floor($useScore / $scoreRatio);
+            $useCard    = $scoreMoney * 100;
             $scoreMoney = min($scoreMoney,$sumPriceAftDisc);
-            $leftScore  = $memberScore - $scoreMoney * $scoreRatio; //用户还剩多少积分
+            $leftScore  = $memberScore - ($scoreMoney/100) * $scoreRatio; //用户还剩多少积分
             
             
             $sumPriceAftDisc = $sumPriceAftDisc - $scoreMoney;
+            $useScoreFlag = true;
+            
+        }
+        //将金额换算积分
+        if($sumPriceAftDisc && $scoreRatio){
+            $leftScore = $leftScore + floor(($sumPriceAftDisc/$scoreRatio)/100);
             $useScoreFlag = true;
             
         }
@@ -121,18 +134,58 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         );
         $memLeftInfo = array();
         if($useScoreFlag){//使用了积分
-            $memLeftInfo['score'] = $leftScore;
+            $memLeftInfo['score'] = round($leftScore);
         }
         if($useCardFlag){//使用了会员卡
             $memLeftInfo['balance'] = $leftCard;
         }
-        echo "<pre>";
-        print_r($billInfo);
-        print_r($proInfoArr);
-        print_r($billDetail);
-        print_r($memberInfo);
-        print_r($memLeftInfo);
-        exit;
+        
+        //记入订单库
+        $bid = Helper_Dao::insertItem(array(
+		        'addItem'       =>  $billDetail,
+		        'dbName'        =>  'Db_Andyou',
+		        'tblName'       =>  'bills',
+		));
+        
+        //记入订单详情
+        if($proInfoArr){
+            foreach($proInfoArr as $item){
+                //补充信息
+                $item["bid"] = $bid;
+                $item["bno"] = $bno;
+                $item["memberId"] = $memberId;
+                $item["tm"]       = SYSTEM_TIME;
+                
+                 Helper_Dao::insertItem(array(
+                        'addItem'       =>  $item,
+                        'dbName'        =>  'Db_Andyou',
+                        'tblName'       =>  'billsitem',
+                ));
+            }
+        }
+        
+        //更新用户详情信息
+        Helper_Dao::updateItem(array(
+	            'editItem'       =>  $memLeftInfo,
+	            'dbName'         =>  'Db_Andyou',
+	            'tblName'        =>  'member',
+	            'where'          =>  ' id=' . $memberId, 
+	    ));
+        
+        $staffArr  = Helper_Staff::getStaffPairs();
+         
+         //准备进入打印页面
+        $output->bno          = $bno;
+        $output->billDetail   = $billDetail;
+        $output->proInfoArr   = $proInfoArr;
+        $output->memLeftInfo  = $memLeftInfo;
+        $output->staffid      = $staffid;
+        $output->staffName    = $staffArr[$staffid];
+        
+        
+		$output->setTemplate('BillPrint');
+        
+        
     }
 }
 

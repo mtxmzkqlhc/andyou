@@ -10,7 +10,7 @@ class Helper_Option extends Helper_Abstract {
      */
     public static function getAllOptions(){
         
-        $data = Helper_Dao::getRow(array(
+        $data = Helper_Dao::getRows(array(
                     'dbName'        => 'Db_Andyou',    #数据库名
                     'tblName'       => 'options',    #表名
                     'cols'          => '*',   #列名

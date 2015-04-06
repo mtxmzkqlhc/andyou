@@ -60,6 +60,7 @@ class  Andyou_Page_BillsItem  extends Andyou_Page_Abstract {
 			$output->pageUrl= $pageUrl;
 		}
 		
+        $output->staffInfo = Helper_Staff::getStaffPairs();
 		$output->setTemplate('BillsItem');
 	}
 	

@@ -26,27 +26,44 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>ID</th><th>订单ID</th><th>单号</th><th>产品ID</th><th>数量</th><th>折扣</th><th>价格</th><th>员工</th><th>会员</th><th>消费时间</th><th>操作</th>
+<th>单号</th><th>产品</th><th>原价</th><th>数量</th><th>折扣</th><th>售价</th><th>销售员</th><th>会员</th><th>消费时间</th><th>操作</th>
 </tr>
 </thead>
 <tbody>
 <?php
 if($data) {
+   $proArr = array();
    foreach($data as $v) {
+       $memName = "-";
+       if($v['memberId']){
+           $memInfo = Helper_Member::getMemberInfo(array("id"=>$v['memberId']));
+           $memName = $memInfo["name"];
+       }
+       //获得产品信息
+       $proId = (int)$v['proId'];
+       $proName = "";
+       $proPrice = 0;
+       if(!isset($proArr[$proId])){
+           $proArr[$proId] = Helper_Product::getProductInfo(array('id'=>$proId));
+       }
+       if( $proArr[$proId]){
+           $proName = $proArr[$proId]["name"];
+           $proPrice = $proArr[$proId]["price"];
+       }
+       
        $outStr = '<tr>';
-       $outStr.='<td>'.$v['id'].'</td>';
-       $outStr.='<td>'.$v['bid'].'</td>';
-       $outStr.='<td>'.$v['bno'].'</td>';
-       $outStr.='<td>'.$v['proId'].'</td>';
+       $outStr.='<td algin="left">'.$v['bno'].'</td>';
+       $outStr.='<td style="text-align:left">'.$proName.'</td>';
+       $outStr.='<td>'.($proPrice).'</td>';
        $outStr.='<td>'.$v['num'].'</td>';
        $outStr.='<td>'.$v['discount'].'</td>';
-       $outStr.='<td>'.$v['price'].'</td>';
-       $outStr.='<td>'.$v['staffid'].'</td>';
-       $outStr.='<td>'.$v['memberId'].'</td>';
-       $outStr.='<td>'.$v['tm'].'</td>';
+       $outStr.='<td>'.($v['price']/100).'</td>';
+       $outStr.='<td>'.(isset($staffInfo[$v['staffid']]) ? $staffInfo[$v['staffid']] : '-').'</td>';
+       $outStr.='<td>'.$memName.'</td>';
+       $outStr.='<td>'.date("Y-m-d H:i",$v['tm']).'</td>';
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnBillsItem"><i class="halflings-icon white edit"></i></a>
-       <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a></td>';
+       </td>';
        $outStr.='</tr>';
        echo $outStr;
    }

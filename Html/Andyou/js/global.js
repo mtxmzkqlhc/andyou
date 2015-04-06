@@ -8,14 +8,4 @@ var iptEnter = function(sel,callback){
     });
 };
 
-//积分转换价格
-var scoreToMoney = function(score){
-    var rule = 30; //300分 = 10元
-    var price = Math.floor(score/rule);
-    var leftScore = score - price * rule;
-    return {
-      price :   price,
-      score :   leftScore,
-    };
-}
 

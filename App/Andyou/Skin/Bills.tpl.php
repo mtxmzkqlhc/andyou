@@ -8,7 +8,7 @@
             <div class="box span12">
                 <div class="box-header" data-original-title>
                 	  <h2><i class="halflings-icon align-justify"></i><span class="break"></span>订单管理</h2>
-				     <button data-toggle="modal" role="button" href="#add-box" class="btn-addArea big-addbtn" type="button"> 添加数据</button>
+				     <!-- <button data-toggle="modal" role="button" href="#add-box" class="btn-addArea big-addbtn" type="button"> 添加数据</button> -->
                 </div>
                 <div class="box-content">
                 	 <!-- 搜索 -->
@@ -34,27 +34,32 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>ID</th><th>单号</th><th>使用积分</th><th>使用卡内余额</th><th>收款</th><th>折扣</th><th>员工ID</th><th>员工名</th><th>消费时间</th><th>会员ID</th><th>操作</th>
+<th>ID</th><th>单号</th><th>使用积分</th><th>使用会员卡</th><th>收款</th><th>折扣</th><th>员工</th><th>消费时间</th><th>会员ID</th><th>操作</th>
 </tr>
 </thead>
 <tbody>
 <?php
 if($data) {
    foreach($data as $v) {
+       $memName = "-";
+       if($v['memberId']){
+           $memInfo = Helper_Member::getMemberInfo(array("id"=>$v['memberId']));
+           $memName = $memInfo["name"];
+       }
        $outStr = '<tr>';
        $outStr.='<td>'.$v['id'].'</td>';
        $outStr.='<td>'.$v['bno'].'</td>';
        $outStr.='<td>'.$v['useScore'].'</td>';
        $outStr.='<td>'.$v['useCard'].'</td>';
-       $outStr.='<td>'.$v['price'].'</td>';
+       $outStr.='<td>'.($v['price']/100).'</td>';
        $outStr.='<td>'.$v['discount'].'</td>';
-       $outStr.='<td>'.$v['staffid'].'</td>';
-       $outStr.='<td>'.$v['staffName'].'</td>';
-       $outStr.='<td>'.$v['tm'].'</td>';
-       $outStr.='<td>'.$v['memberId'].'</td>';
+       $outStr.='<td>'.(isset($staffInfo[$v['staffid']]) ? $staffInfo[$v['staffid']] : '-').'</td>';
+       $outStr.='<td>'.date("Y-m-d H:i",$v['tm']).'</td>';
+       $outStr.='<td>'.$memName.'</td>';
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a>
-       <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a></td>';
+       <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
+       <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a> --></td>';
        $outStr.='</tr>';
        echo $outStr;
    }
