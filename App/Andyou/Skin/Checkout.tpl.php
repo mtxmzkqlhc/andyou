@@ -66,7 +66,7 @@
     
             <!--   账单部分     -->
     
-            <form method="POST" action="?">
+            <form method="POST" action="?" onsubmit="return doCheckIpt()">
 			<div class="row-fluid">
                 
                 <div class="box">
@@ -85,7 +85,7 @@
                             </dl>
                             <dl class="clearfix">
                                 <dt>应收金额</dt>
-                                <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]"></dd>
+                                <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" /></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>折扣</dt>
@@ -93,7 +93,7 @@
                             </dl>
                             <dl class="clearfix">
                                 <dt>本次应收</dt>
-                                <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"/></dd>
+                                <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"  readonly="true" /></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>卡内扣款</dt>
@@ -166,7 +166,7 @@
 <script type="text/javascript" src="js/global.js"></script>
 <script type="text/javascript" src="js/juicer-min.js"></script>
 <script id="proTableTr" type="text/template">
-    <tr id="item_row_${rowIdx}">
+    <tr id="item_row_${rowIdx}" class="item_row_tr">
         <td>${pro.name}</td>
         <td>${pro.stock}</td>
         <td id="item_sprice_${rowIdx}">${pro.price}</td>
@@ -197,6 +197,36 @@
 </script>
 <script>
     $("#proBarCode").focus(); 
+    
+    //最后的提交验证
+    var doCheckIpt = function(){
+        
+        //是否选择商品的验证
+        var rightRows = $(".item_row_tr").size();
+        if(rightRows < 1){
+            alert("请先添加商品");
+            return false;
+        }
+        
+        //验证应收价格
+        var ysPrice = $("#bill_sum_price").val();
+        if(ysPrice == "" || ysPrice == "0" || ysPrice == "0.00"){
+            alert("请先添加商品");
+            return false;
+        }
+        
+        //验证销售员是否已经选择
+        var staffid = parseInt($("#staffid").val(),10);
+        if(staffid == 0){
+            alert("请选择销售员");
+            return false;
+        }
+        
+        
+        return true;
+    }
+    
+    
     
     //商品表格的操作
     //设置一个商品的营业员
