@@ -52,7 +52,7 @@ if($data) {
            
        $outStr.='<td rel="'.$v['id'].'">
        <a title="ÐÞ¸Ä" class="btn btn-info editbtnMember"><i class="halflings-icon white edit"></i></a>
-       <a title="É¾³ý" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a></td>';
+       <!-- <a title="É¾³ý" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a>¡¡--></td>';
        $outStr.='</tr>';
        echo $outStr;
    }

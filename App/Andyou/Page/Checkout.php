@@ -83,6 +83,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //扣除会员卡内余额
         $leftCard = $memberCard;//扣除后，卡内还有的余额
         $useCardFlag = false;
+        $useCardMoney = 0;
         if($sumPriceAftDisc && $memberCard && $billInfo["bill_member_card"]){
             
             $useCard = min($memberCard,$billInfo["bill_member_card"]);
@@ -90,40 +91,30 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             $useCard = min($useCard,$sumPriceAftDisc);//卡余额和收费的金额比较
             $leftCard = $memberCard - $useCard /100;
             
+            $useCardMoney = $useCard /100;//记录用了多少卡的金额
             $sumPriceAftDisc = $sumPriceAftDisc - $useCard;
             
             $useCardFlag = true;
         }
         
-        //会员卡的积分
-        $leftScore = $memberScore;
-        $useScoreFlag = false;
+        //会员积分计算
         $sysOptions = Helper_Option::getAllOptions();        
         $scoreRatio = !empty($sysOptions["ScoreRatio"]) ? $sysOptions["ScoreRatio"]["value"] : 0;
+        $useScore   = (int)$billInfo["bill_member_score"];
         if($sumPriceAftDisc && $memberScore && $billInfo["bill_member_score"]){
-            $useScore = min($memberScore,$billInfo["bill_member_score"]);//需要花多少积分
+            $useScore = min($memberScore,$billInfo["bill_member_score"]);//需要花多少积分，避免比用户的积分还多
             
             //将用户的积分转换成钱
-            $scoreMoney = floor($useScore / $scoreRatio);
-            $useCard    = $scoreMoney * 100;
-            $scoreMoney = min($scoreMoney,$sumPriceAftDisc);
-            $leftScore  = $memberScore - ($scoreMoney/100) * $scoreRatio; //用户还剩多少积分
-            
+            $scoreMoney = floor($useScore / $scoreRatio);// 9 = 270 /30
+            $scoreMoney = $scoreMoney * 100;             // 900 = 9 * 100
+            $scoreMoney = min($scoreMoney,$sumPriceAftDisc); //避免花费的积分比剩余金额还多 
             
             $sumPriceAftDisc = $sumPriceAftDisc - $scoreMoney;
-            $useScoreFlag = true;
             
         }
-        //将金额换算积分
-        if($sumPriceAftDisc && $scoreRatio){
-            $leftScore = $leftScore + floor(($sumPriceAftDisc/$scoreRatio)/100);
-            $useScoreFlag = true;
-            
-        }
-        
         //获得订单的信息
         $billDetail = array(
-            'useScore' => (int)$billInfo["bill_member_score"],
+            'useScore' => $useScore,
             'useCard'  => $billInfo["bill_member_card"],
             'price'    => $sumPriceAftDisc,
             'discount' => $billDisc,
@@ -132,10 +123,13 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             'bno'      => $bno,
             'tm'       => SYSTEM_TIME,
         );
+        
+        //积分的重新计算
+        //         =  积分剩余额                                    +  实际消费产品的积分
+        $leftScore = ($memberScore - (int)$billDetail["useScore"]) +  ($billDetail["price"] / 100 + $billDetail["useCard"]) * $scoreRatio ;
         $memLeftInfo = array();
-        if($useScoreFlag){//使用了积分
-            $memLeftInfo['score'] = round($leftScore);
-        }
+        $memLeftInfo['score'] = round($leftScore);
+        
         if($useCardFlag){//使用了会员卡
             $memLeftInfo['balance'] = $leftCard;
         }

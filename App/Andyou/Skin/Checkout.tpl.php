@@ -46,7 +46,7 @@
                         <div class="box-r">
                             <table width="100%" id="memberInfoTbl">
                                 <tr>
-                                    <td class="mtbl_l">会员姓名</td><td class="mtbl_r" id="memtbl_name"></td>
+                                    <td class="mtbl_l">会员姓名</td><td class="mtbl_r"><span class="label label-success" id="memtbl_name"></span></td>
                                     <td class="mtbl_l">会员类型</td><td class="mtbl_r" id="memtbl_cate"></td>
                                     <td class="mtbl_l">享受折扣</td><td class="mtbl_r" id="memtbl_disc"</td>
                                 </tr>
@@ -87,7 +87,7 @@
                                 <dd><input type="text" value="<?=Helper_Bill::getMaxBno()?>" id="memberPhone" disabled="true" ></dd>
                             </dl>
                             <dl class="clearfix">
-                                <dt>应收金额</dt>
+                                <dt>总金额</dt>
                                 <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" trueprice="0" /></dd>
                             </dl>
                             <dl class="clearfix" style="display:none">
@@ -95,19 +95,21 @@
                                 <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]"/></dd>
                             </dl>
                             <dl class="clearfix"  style="display:none">
-                                <dt>本次应收</dt>
+                                <dt>折扣后金额</dt>
                                 <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"  readonly="true" /></dd>
                             </dl>
-                            <dl class="clearfix">
+                            <dl class="clearfix memextinfo">
                                 <dt>卡内扣款</dt>
                                 <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]"/></dd>
                             </dl>
-                            <dl class="clearfix">
+                            <dl class="clearfix memextinfo">
                                 <dt>使用积分</dt>
-                                <dd><input type="text" value="0" id="bill_member_score" class="billIptChg" readonly="true" name="bill[bill_member_score]"></dd>
+                                <dd><input type="text" value="0" id="bill_member_score" class="billIptChg" readonly="true" name="bill[bill_member_score]">
+                                   <br/><span style="color:#999999;padding-bottom:5px;">积分只能使用<?=$scoreRatio?>的整数倍</span>
+                                </dd>
                             </dl>
                             <dl class="clearfix">
-                                <dt>本次需收款</dt>
+                                <dt>应收款</dt>
                                 <dd><input type="text" value="0.00" id="bill_end_sum" name="bill[bill_end_sum]" style="font-weight:bold;color:#EB3C00"></dd>
                             </dl>
                             <dl class="clearfix">
@@ -134,7 +136,7 @@
                                 </dl>
                                 
                                 <dl class="clearfix memextinfo">
-                                    <dt>积分余额</dt>
+                                    <dt>最终积分</dt>
                                     <dd><input type="text" value="" id="bill_score_left"  disabled="true"></dd>
                                 </dl>
                             </dl>
@@ -226,6 +228,7 @@
         return {
           price :   price,
           score :   leftScore,
+          canUseScore :  price * rule ,
         };
     }
     //钱换积分
@@ -338,6 +341,15 @@
     //计算最终订单的总金额数据
     var calcBillSumInfo = function(){
         calcBillPrice();//计算总价
+        
+        var memberId = $("#memberId").val();
+        if(memberId){
+            //修正用户需要花费多少卡上金额
+            if(($("#bill_member_card").val()-0) > ($("#bill_sum_price").val()-0)){
+                $("#bill_member_card").val($("#bill_sum_price").val());
+            }
+        }
+        
         var billSumPrice         = parseInt($("#bill_sum_price").attr("trueprice"),10);//parseFloat($("#bill_sum_price").val());//应收金额
         var billDisc             = parseFloat($("#bill_disc").val());//折扣
         var billMemCard          = parseFloat($("#bill_member_card").val());//卡上金额
@@ -346,6 +358,8 @@
             var scoreToMoneyObj      = scoreToMoney(billMemScore);
             billMemScore = scoreToMoneyObj.price;
          }
+         //如果用户卡内有足够的积分
+         
         
         var endPrice = billSumPrice * billDisc;//折扣后的价格
         $("#bill_aftdisc_price").val((endPrice/100).toFixed(2));
@@ -369,25 +383,33 @@
             
         }
         //花钱得积分
-        if(endPrice){
-            billMemScore += moneyToScore(endPrice/100);
-        }
+        var newScore = 0;
+        newScore = moneyToScore($("#bill_sum_price").val()) - $("#bill_member_score").val();
+        
         $("#bill_card_left").val($("#memtbl_card").html() - $("#bill_member_card").val() + billMemCard);
-        $("#bill_score_left").val($("#memtbl_score").html() - $("#bill_member_score").val() +billMemScore);
+        $("#bill_score_left").val($("#memtbl_score").html() - $("#bill_member_score").val() +newScore);
         $("#bill_end_sum").val((endPrice/100).toFixed(2));
     }
     //账单有的输入框如何有所改变，就重新计算
     $(".billIptChg").blur(function(){
+        //卡内金额
         if($(this).attr("id") == "bill_member_card"){ //判断设置的金额不能过大
-            if($(this).val() -0 > $("#memtbl_card").html() -0){
+            if($(this).val()-0 > $("#memtbl_card").html()-0){
                 $(this).val($("#memtbl_card").html());
             }
-            if(!$(this).val())$(this).val(0);
+            if(!$(this).val()||$(this).val() == "")$(this).val(0);
         }
+        //积分
         if($(this).attr("id") == "bill_member_score"){ //判断设置的金额不能过大
             if($(this).val() -0 > $("#memtbl_score").html() -0){
                 $(this).val($("#memtbl_score").html());
             }
+            //将积分转换可以被可以整除的数字
+            var o = scoreToMoney($(this).val());
+            if(o){
+                $(this).val(o.canUseScore);
+            }
+            
             if(!$(this).val())$(this).val(0);
         }
             

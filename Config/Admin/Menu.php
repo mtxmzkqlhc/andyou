@@ -61,15 +61,6 @@ return array(
             ),
         ),
     ),
-    '权限管理' => array(
-        'icon' => 'user-md',
-        'items' => array(
-            '管理员' => array(
-                'url' => '?c=AdminUser',
-                'ctrl' => 'AdminUser'
-            ),
-        ),
-    ),
     '财务管理' => array(
         'icon' => 'inbox',
         'items' => array(
@@ -82,6 +73,19 @@ return array(
                 'url' => '?c=BillsItem',
                 'ctrl' => 'BillsItem',
                 'target' => '_self',
+            ),
+        ),
+    ),
+    '系统管理' => array(
+        'icon' => 'user-md',
+        'items' => array(
+            '管理员' => array(
+                'url' => '?c=AdminUser',
+                'ctrl' => 'AdminUser'
+            ),
+            '配置管理' => array(
+                'url' => '?c=Option',
+                'ctrl' => 'Option'
             ),
         ),
     ),
