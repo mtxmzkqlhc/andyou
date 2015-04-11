@@ -49,12 +49,12 @@ if($data) {
        $outStr = '<tr>';
        $outStr.='<td>'.$v['id'].'</td>';
        $outStr.='<td>'.$v['bno'].'</td>';
-       $outStr.='<td>'.$v['useScore'].'</td>';
+       $outStr.='<td style="text-align:left;">'.$v['useScore'].($v['useScore'] ? " <span style='color:#999999'>(".$v['useScoreAsMoney']."Ôª)</span>" : "").'</td>';//
        $outStr.='<td>'.$v['useCard'].'</td>';
        $outStr.='<td>'.($v['price']/100).'</td>';
        $outStr.='<td>'.$v['discount'].'</td>';
        $outStr.='<td>'.(isset($staffInfo[$v['staffid']]) ? $staffInfo[$v['staffid']] : '-').'</td>';
-       $outStr.='<td>'.date("Y-m-d H:i",$v['tm']).'</td>';
+       $outStr.='<td>'.date("m-d H:i",$v['tm']).'</td>';
        $outStr.='<td>'.$memName.'</td>';
        $outStr.='<td rel="'.$v['id'].'">
        <a title="ÐÞ¸Ä" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a>

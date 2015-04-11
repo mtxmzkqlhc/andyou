@@ -124,6 +124,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             'memberId' => $memberId,
             'bno'      => $bno,
             'tm'       => SYSTEM_TIME,
+            'dateDay'  => date("Ymd"),
             'memberScore'     => $memberScore,
             'memberCard'      => $memberCard,
         );
