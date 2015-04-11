@@ -105,7 +105,7 @@
                             <dl class="clearfix memextinfo">
                                 <dt>使用积分</dt>
                                 <dd><input type="text" value="0" id="bill_member_score" class="billIptChg" readonly="true" name="bill[bill_member_score]">
-                                   <br/><span style="color:#999999;padding-bottom:5px;">积分只能使用<?=$scoreRatio?>的整数倍</span>
+                                   <span style="color:#999999;padding-bottom:5px;" id="scoreToMoneyNote"></span>
                                 </dd>
                             </dl>
                             <dl class="clearfix">
@@ -135,7 +135,7 @@
                                     <dd><input type="text" value="" id="bill_card_left"  disabled="true"></dd>
                                 </dl>
                                 
-                                <dl class="clearfix memextinfo">
+                                <dl class="clearfix memextinfo" style="display:none;">
                                     <dt>最终积分</dt>
                                     <dd><input type="text" value="" id="bill_score_left"  disabled="true"></dd>
                                 </dl>
@@ -192,7 +192,7 @@
         <td>${pro.stock}</td>
         <td id="item_sprice_${rowIdx}">${pro.price}</td>
         <td align="center"><span class="btn btn-small btn-info"  onclick="proTblDelNum(${rowIdx})"><i class="halflings-icon minus white"></i></span>
-        <input type='text' value='1' id='item_num_${rowIdx}' name='item_num[${rowIdx}]' class='tblProNum'>
+        <input type='text' value='1' id='item_num_${rowIdx}' name='item_num[${rowIdx}]' class='tblProNum' onblur="proTblCalPrice(${rowIdx})">
         <span class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></span></td>
         <td><input type='text' value='1' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}"></td>
         <td id="item_price_${rowIdx}" >${pro.price}</td>  
@@ -219,15 +219,19 @@
     
 </script>
 <script>
+    var scoreRatio = <?=$scoreRatio?>;
     $("#proBarCode").focus(); 
     //积分转换价格
     var scoreToMoney = function(score){
         var rule = <?=$scoreRatio?>; //300分 = 10元
-        var price = Math.floor(score/rule);
-        var leftScore = score - price * rule;
+        
+        var price = (score/rule).toFixed(2);//Math.floor(score/rule);
+        var leftScore = score - Math.floor(price * rule);
+        var allScore  = parseInt($("#memtbl_score").html());
         return {
           price :   price,
           score :   leftScore,
+          allLeftScore : allScore - score + leftScore, 
           canUseScore :  price * rule ,
         };
     }
@@ -310,6 +314,10 @@
     var proTblCalPrice = function(i){
         var sprice = parseInt($("#item_org_sprice_"+i).val(),10);
         var num    = parseInt($("#item_num_"+i).val(),10);
+        if(num < 1){
+            num = 1;
+        }
+        $("#item_num_"+i).val(num);//数量取整后保存
         var disc   = parseFloat($("#item_disc_"+i).val());
         if(isNaN(disc) || disc > 1) disc =1;
         var price  = sprice * num * disc;
@@ -385,9 +393,16 @@
         //花钱得积分
         var newScore = 0;
         newScore = moneyToScore($("#bill_sum_price").val()) - $("#bill_member_score").val();
-        
+        //卡上剩余的前
         $("#bill_card_left").val($("#memtbl_card").html() - $("#bill_member_card").val() + billMemCard);
-        $("#bill_score_left").val($("#memtbl_score").html() - $("#bill_member_score").val() +newScore);
+        if(billMemScore){
+            //var scoreToMoneyObj;
+            var m1 = $("#bill_member_card").val()-0;
+            var m2 = $("#bill_end_sum").val()-0;
+            $("#bill_score_left").val(parseInt(scoreToMoneyObj.allLeftScore,10) + parseInt(moneyToScore(m1 - 0 + m2),10) -scoreToMoneyObj.canUseScore);
+        }else{
+            $("#bill_score_left").val($("#memtbl_score").html()-0 + newScore);
+        }
         $("#bill_end_sum").val((endPrice/100).toFixed(2));
     }
     //账单有的输入框如何有所改变，就重新计算
@@ -404,10 +419,11 @@
             if($(this).val() -0 > $("#memtbl_score").html() -0){
                 $(this).val($("#memtbl_score").html());
             }
-            //将积分转换可以被可以整除的数字
-            var o = scoreToMoney($(this).val());
+            //将积分转换可以被可以整除的数字 scoreRatio
+            var o = scoreToMoney($(this).val()); //########################
             if(o){
-                $(this).val(o.canUseScore);
+                $(this).val($(this).val());
+                $("#scoreToMoneyNote").html("<br/>以上积分相当于："+o.price+"元 ");//+o.allLeftScore
             }
             
             if(!$(this).val())$(this).val(0);

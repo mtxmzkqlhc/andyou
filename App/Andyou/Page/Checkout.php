@@ -105,16 +105,18 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             $useScore = min($memberScore,$billInfo["bill_member_score"]);//需要花多少积分，避免比用户的积分还多
             
             //将用户的积分转换成钱
-            $scoreMoney = floor($useScore / $scoreRatio);// 9 = 270 /30
+            $scoreMoney = round($useScore / $scoreRatio,2);// 9 = 270 /30
             $scoreMoney = $scoreMoney * 100;             // 900 = 9 * 100
             $scoreMoney = min($scoreMoney,$sumPriceAftDisc); //避免花费的积分比剩余金额还多 
             
             $sumPriceAftDisc = $sumPriceAftDisc - $scoreMoney;
             
         }
+        
         //获得订单的信息
         $billDetail = array(
             'useScore' => $useScore,
+            'useScoreAsMoney' => round($scoreMoney/100,2),
             'useCard'  => $billInfo["bill_member_card"],
             'price'    => $sumPriceAftDisc,
             'discount' => $billDisc,
@@ -122,6 +124,8 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             'memberId' => $memberId,
             'bno'      => $bno,
             'tm'       => SYSTEM_TIME,
+            'memberScore'     => $memberScore,
+            'memberCard'      => $memberCard,
         );
         
         //积分的重新计算
@@ -168,6 +172,27 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         
         $staffArr  = Helper_Staff::getStaffPairs();
          
+        //更新商品的库存情况
+        if($itemIdArr){
+            foreach($itemIdArr as $idx => $pid){
+               $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
+               $stock   = (int)$proInfo["stock"];
+               if($stock){
+                   $num = (int)$itemNumArr[$idx];
+                   $stock = $stock - $num;
+                   if($stock < 0)$stock = 0;
+                   
+                    Helper_Dao::updateItem(array(
+                            'editItem'       =>  array("stock"=>$stock),
+                            'dbName'         =>  'Db_Andyou',
+                            'tblName'        =>  'product',
+                            'where'          =>  ' id=' . $pid, 
+                    ));
+                   
+               }
+            }
+        }
+        
          //准备进入打印页面
         $output->bno          = $bno;
         $output->billDetail   = $billDetail;

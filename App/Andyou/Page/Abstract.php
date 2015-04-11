@@ -7,46 +7,27 @@ abstract class Andyou_Page_Abstract extends ZOL_Abstract_Page{
 	 */
 	public function baseValidate(ZOL_Request $input, ZOL_Response $output){
         
-        
-//        if(!$output->noAdminLogin){
-//        
-//            $loginFlag = ZOL_Api::run("Security.Auth.adminIsLogin" , array('remoteCheck'=>0,'recAdminLog'=>0));
-//            if(!$loginFlag){
-//                $this->showHtml("<a href=\"http://admin.zol.com.cn/login.php\"><img src='http://mj.zol.com.cn/img/login.jpg'  style='border:1px solid #ccc;padding:3px;'></a>
-//                                <Br/>不知所措了吧，还不去后台登录？我们的鼻涕都快流出来了！");
-//            }
-//        }
 
 		$output->execName   = $input->execName    = $input->getExecName();
 		$output->actName    = $input->actName     = $input->getActionName();
 		$output->ctlName    = $input->ctlName     = $input->getControllerName();
-        $output->admin      = $input->cookie("S_uid");
-        $output->userId     = $input->cookie("zol_userid"); #用户名
-        $cipher             = $input->cookie("star_cipher");
+        $output->admin      = $input->cookie(Helper_Member::$strUid);
+        $output->userId     = $input->cookie(Helper_Member::$strUid); #用户名
+        $cipher             = $input->cookie(Helper_Member::$strCipher);
         
-        #提交的
-        
-        
-        
-        $checkParam = array(
-            'userid' => $output->userId,  #用户id
-            'option' => $output->pageType, #操作
-        );
-//        $permission = Helper_Permission_Function::CheckPermission($checkParam);
-//        #进行用户权限的判断
-//        if(!$permission){
-//            Helper_Func_Front::showMsg(array(
-//                'message'       => '恭喜您，操作成功，请等待审核！',
-//                'level'         =>  2,     #0:提示，1:成功 2：失败
-//                'jumpSec'       =>  4,     #如果大于0，将跳转
-//                'jumpUrl'       =>  'http://www.zol.com.cn/',    #进行跳转的url
-//                'urlArr'        =>  array(#设置跳转的地址数组
-//                    '回到首页' => 'http://www.zol.com.cn/',
-//                    '个人中心' => 'http://my.zol.com.cn/',
-//                ), 
-//            )); 
-//            exit();
-//        }
+        if(!$output->noLoginCheck){
+            #验证登录
+            $output->isLogin = Helper_Member::checkLogin(array(
+                                                'userid'       => $output->userId,
+                                                'cipher'       => $cipher,
+                                           ));
+
+            if(!$output->isLogin){#如果登录不OK
+                $backUrl = isset($_SERVER['REQUEST_URI']) ? 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : '';
+                if(strpos($backUrl, "Login"))$backUrl = "";
+                Helper_Front::JumpToLogin(array('backUrl' => $backUrl));
+            }
+        }
         
         #头尾html
 		$output->header     = $output->fetchCol("Part/Header");
