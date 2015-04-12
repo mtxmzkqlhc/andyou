@@ -90,23 +90,23 @@
                                 <dt>总金额</dt>
                                 <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" trueprice="0" /></dd>
                             </dl>
-                            <dl class="clearfix" style="display:none">
-                                <dt>折扣</dt>
-                                <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]"/></dd>
-                            </dl>
-                            <dl class="clearfix"  style="display:none">
-                                <dt>折扣后金额</dt>
-                                <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"  readonly="true" /></dd>
-                            </dl>
-                            <dl class="clearfix memextinfo">
-                                <dt>卡内扣款</dt>
-                                <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]"/></dd>
-                            </dl>
                             <dl class="clearfix memextinfo">
                                 <dt>使用积分</dt>
                                 <dd><input type="text" value="0" id="bill_member_score" class="billIptChg" readonly="true" name="bill[bill_member_score]">
                                    <span style="color:#999999;padding-bottom:5px;" id="scoreToMoneyNote"></span>
                                 </dd>
+                            </dl>
+                            <dl class="clearfix">
+                                <dt>折扣</dt>
+                                <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]"/></dd>
+                            </dl>
+                            <dl class="clearfix"  style="display:none">
+                                <dt>折扣后应付</dt>
+                                <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"  readonly="true" /></dd>
+                            </dl>
+                            <dl class="clearfix memextinfo">
+                                <dt>卡内扣款</dt>
+                                <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]"/></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>应收款</dt>
@@ -125,7 +125,7 @@
                                         ?>
                                   </select>  
                                 </dd>
-                                <dl class="clearfix">
+                                <dl class="clearfix" style="display:none;">
                                     <dt>会员</dt>
                                     <dd><input type="text" value="" id="bill_end_membernm"  disabled="true"></dd>
                                 </dl>
@@ -149,7 +149,7 @@
                         </div>
                         <div class="box-r" style="width:750px;">
                             <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="12345678890233232" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
-                            <span class="btn btn-mini btn-info" title="批量设置折扣" id="setDiscBtn"><i class="halflings-icon th-list white"></i>批量设置折扣</span>
+                                <span class="btn btn-mini btn-info" title="设置折扣" id="setDiscBtn" style="display:none;"><i class="halflings-icon th-list white"></i>设置折扣</span>
                             </div>
                             <div>
                                 <table class="table table-striped table-bordered" id="proListTable">
@@ -479,7 +479,7 @@
     //批量设置折扣
     $("#setDiscBtn").click(function(){
         art.dialog({
-            title : '批量设置商品折扣',
+            title : '设置商品折扣',
             content: '<div style="padding:40px 80px;font-size:12px;">设置折扣： <input type="text" value="1" id="dlgSetDisVal" style="width:50px"></div>',
             button: [{
                 name: '设置',
@@ -552,6 +552,8 @@
             $("#bill_card_left").val(0);
             $("#bill_score_left").val(0);
             $(".memextinfo").hide();
+            $("#memtbl_remark").html("");
+            $("#memtbl_disc").html("");
         }
     }
     //条形码
