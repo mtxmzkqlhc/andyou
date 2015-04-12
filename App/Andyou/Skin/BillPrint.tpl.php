@@ -54,13 +54,17 @@
         <tr><td colspan="9">&nbsp;</td></tr>
         
         <tr><td>商品数量：</td><td><?=count($proInfoArr)?></td></tr>
-        <tr><td>营收金额合计：</td><td>￥</td></tr>
+        <tr><td>应收金额合计：</td><td>￥<?=$orgSumPrice/100?></td></tr>
+        <?php  if($memberInfo){  ?>
         <tr><td>积分抵扣金额：</td><td>￥<?=$billDetail["useScoreAsMoney"]?></td></tr>
         <tr><td>卡内支付金额：</td><td>￥<?=$billDetail["useCard"]?></td></tr>
-        <tr><td>打折的优惠金额：</td><td>￥</td></tr>
+        <?php }?>
+        <tr><td>打折的优惠金额：</td><td>￥<?=$discGetMoney/100?></td></tr>
         
         <tr><td>本次实付金额：</td><td>￥<?=$billDetail["price"]/100?></td></tr>
-        <tr><td>获得积分：</td><td></td></tr>
+        <?php  if($memberInfo){  ?>
+        <tr><td>获得积分：</td><td><?=$newScore?></td></tr>
+        <?php }?>
         <tr><td colspan="9">&nbsp;</td></tr>
         
         <tr><td>销售员：</td><td><?=$staffName?></td></tr>

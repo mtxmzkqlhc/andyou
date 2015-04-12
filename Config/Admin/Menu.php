@@ -43,6 +43,7 @@ return array(
                 'target' => '_self',
             ),
             '会员分类' => array(
+                'permission' => array(1),
                 'url' => '?c=MemberCate&a=Default',
                 'ctrl' => 'MemberCate',
                 'target' => '_self',
@@ -50,6 +51,7 @@ return array(
         ),
     ),
     '员工管理' => array(
+        'permission' => array(1),
         'icon' => 'sitemap',
         'items' => array(
             '员工列表' => array(
@@ -65,6 +67,7 @@ return array(
         ),
     ),
     '财务管理' => array(
+        'permission' => array(1),
         'icon' => 'inbox',
         'items' => array(
             '消费订单' => array(
@@ -80,6 +83,7 @@ return array(
         ),
     ),
     '系统管理' => array(
+        'permission' => array(1),
         'icon' => 'user-md',
         'items' => array(
             '管理员' => array(

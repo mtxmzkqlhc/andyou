@@ -938,7 +938,7 @@ _skin = 'default';
 if (_skin) {
 	var link = document.createElement('link');
 	link.rel = 'stylesheet';
-    link.href= 'http://icon.zol-img.com.cn/star/artDialog.css';
+    link.href= 'css/artDialog.css';
 	_thisScript.parentNode.insertBefore(link, _thisScript);  
 };
 
@@ -1046,7 +1046,7 @@ artDialog.defaults = {
 	focus: true,				// 是否支持对话框按钮自动聚焦
 	show: true,					// 初始化后是否显示对话框
 	follow: null,				// 跟随某元素(即让对话框在元素附近弹出)
-	path: 'http://icon.zol-img.com.cn/star',				// artDialog路径
+	path: '',				// artDialog路径
 	lock: true,			    	// 是否锁屏
 	background: '#000',			// 遮罩颜色
 	opacity: .1,				// 遮罩透明度

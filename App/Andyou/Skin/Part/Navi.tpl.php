@@ -24,6 +24,12 @@
                 
                 if($menuArr){
                     foreach($menuArr as $name => $menu){
+                        //权限判定
+                        if(!empty($menu["permission"])){
+                            if(!in_array($adminType, $menu["permission"])){
+                                continue;
+                            } 
+                        }
                         $cls = isset($menu['class']) ? $menu['class'] : '';
                         echo '<li class="sel '.$cls.'">
                                 <a href="javascript:;"><i class="icon-'.$menu["icon"].'"></i><span class="title">'.$name.'</span><span class="arrow "></span></a>
@@ -31,6 +37,13 @@
                             ';
                         
                         foreach($menu['items'] as $k => $v){
+                            //权限判定
+                            if(!empty($v["permission"])){
+                                if(!in_array($adminType, $v["permission"])){
+                                    continue;
+                                } 
+                            }
+                        
                             $targetStr = isset($v['target']) ? " target='{$v['target']}' " : "";
                             echo '<li><a href="'.$v['url'].'" '.$targetStr.'>'.$k.'</a></li>';
                         }

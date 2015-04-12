@@ -9,6 +9,7 @@ class  Andyou_Page_AdminUser  extends Andyou_Page_Abstract {
      */
     public function validate(ZOL_Request $input, ZOL_Response $output){
 		$output->pageType = 'AdminUser';
+        $output->permission = array(1);//指定权限
         if (!parent::baseValidate($input, $output)) { return false; }
         $output->typeArr = array(
             0 => '普通用户',

@@ -30,7 +30,14 @@ abstract class Andyou_Page_Abstract extends ZOL_Abstract_Page{
                 Helper_Front::JumpToLogin(array('backUrl' => $backUrl));
             }
         }
+        #获得管理员身份
+        $output->adminInfo = Helper_AdminUser::getAdminUserInfo(array('userId'=>$output->userId));
+        $output->adminType = (int)$output->adminInfo["isAdmin"];//管理员类型，用于权限判断
         
+        if($output->permission && !in_array($output->adminType,$output->permission)){
+            echo "Permission denied";
+            exit;
+        }
         #头尾html
 		$output->header     = $output->fetchCol("Part/Header");
          //左侧

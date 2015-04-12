@@ -58,11 +58,16 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //----------------------
         $proInfoArr = array();
         $sumPrice   = 0;
+        //原价总金额
+        $orgSumPrice = 0;
+        //折扣获得的金额
+        $discGetMoney = 0;
         if($itemIdArr){
             foreach($itemIdArr as $idx => $pid){
                $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
                $num = (int)$itemNumArr[$idx];
-               $price     = $num * $proInfo["oprice"] * $itemDiscArr[$idx];
+               $price       = $num * $proInfo["oprice"] * $itemDiscArr[$idx];
+               $orgSumPrice = $num * $proInfo["oprice"];
                $sumPrice += $price;
                $proInfoArr[] = array(
                    'proId'      => $pid,
@@ -81,6 +86,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //----------------------
         $billDisc        = $billInfo["bill_disc"];//总折扣
         $sumPriceAftDisc = $sumPrice * $billDisc; //总折扣的价格
+        $discGetMoney    = $orgSumPrice - $sumPriceAftDisc;//折扣省下来的金额
         
         //扣除会员卡内余额
         $leftCard = $memberCard;//扣除后，卡内还有的余额
@@ -203,8 +209,11 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $output->memLeftInfo  = $memLeftInfo;
         $output->staffid      = $staffid;
         $output->staffName    = $staffArr[$staffid];
-        $output->memberInfo   = $memberInfo;
+        $output->memberInfo   = $memberInfo;//会员信息
         
+        $output->discGetMoney = $discGetMoney; //折扣省下的钱
+        $output->orgSumPrice  = $orgSumPrice; //原始总价
+        $output->newScore     = (int)(($billDetail['useCard'] + ($billDetail['price']/100)) * $scoreRatio);//获得的积分
         
 		$output->setTemplate('BillPrint');
         

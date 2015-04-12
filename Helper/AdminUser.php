@@ -56,7 +56,7 @@ class Helper_AdminUser extends Helper_Abstract {
         $data = Helper_Dao::getRow(array(
                     'dbName'        => 'Db_Andyou',    #数据库名
                     'tblName'       => 'adminUser',    #表名
-                    'cols'          => 'id id,userId userId,passwd passwd,isAdmin isAdmin',   #列名
+                    'cols'          => '*',   #列名
                     'whereSql'      => $whereSql,    #where条件
                     #'debug'        => 1,    #调试
        ));
