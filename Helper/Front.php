@@ -26,7 +26,7 @@ class Helper_Front extends Helper_Abstract {
      * Ìø×ªHomeÒ³Ãæ
      */
     public static function JumpToHome() {
-        header("Location:?c=Default");
+        header("Location:?c=Checkout");
         exit;
     }
 

@@ -3,7 +3,7 @@
     <head>
         <meta charset="GBK">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-        <title>请登录</title>
+        <title>登录<?=$sysName?></title>
         <style>
             body{margin: 0px;background:#000 url("image/loginbg.jpg") no-repeat;}
             .page{height: 100%;margin:0px;}

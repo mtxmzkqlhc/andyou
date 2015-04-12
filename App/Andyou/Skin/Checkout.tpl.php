@@ -56,7 +56,7 @@
                                     <td class="mtbl_l">&nbsp;</td><td class="mtbl_r" >&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td class="mtbl_l">±¸×¢</td><td class="mtbl_r" id="memtbl_info" colspan="8"> </td>
+                                    <td class="mtbl_l">±¸×¢</td><td class="mtbl_r" id="memtbl_remark" colspan="8"> </td>
                                 </tr>
                             </table>
                         </div>
@@ -519,6 +519,8 @@
                     $("#memtbl_score").html(data.score);
                     $("#memtbl_card").html(bls);
                     $("#memtbl_cate").html(data.cateName);
+                    $("#memtbl_disc").html(data.discount);
+                    $("#memtbl_remark").html(data.remark);
                     $("#bill_member_card").val(bls);
                     
                     $("#memberId").val(data.id);

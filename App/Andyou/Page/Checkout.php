@@ -3,6 +3,8 @@
  * 前台结账
  *
  */
+
+error_reporting(0);
 class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
     /**
      * 验证
@@ -201,6 +203,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $output->memLeftInfo  = $memLeftInfo;
         $output->staffid      = $staffid;
         $output->staffName    = $staffArr[$staffid];
+        $output->memberInfo   = $memberInfo;
         
         
 		$output->setTemplate('BillPrint');

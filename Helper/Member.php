@@ -51,8 +51,8 @@ class Helper_Member extends Helper_Abstract {
         $ip       = $_SERVER["REMOTE_ADDR"];#更换IP地址或方法，发现有些客户无法登录
         #为了兼容e.test.zol.com.cn e.zol.com.cn不能同时登录状态
         if($ip == "10.15.184.14") $ip = "10.19.12.122";
-        $dateStr1 = date("ymdH",SYSTEM_TIME); 
-        $dateStr2 = date("ymdH",SYSTEM_TIME-3600); #上个小时的时间信息
+        $dateStr1 = date("ymd",SYSTEM_TIME); 
+        $dateStr2 = date("ymd",SYSTEM_TIME-3600); #上个小时的时间信息
         $string   = $userid . $ip . $salt;// . $_SERVER['HTTP_USER_AGENT'];
         $thisCf   = substr(md5($string . $dateStr1),2,12);
         $lastCf   = substr(md5($string . $dateStr2),2,12);
@@ -134,6 +134,22 @@ class Helper_Member extends Helper_Abstract {
     }
 
 
+    /**
+     * 获得会员分类管理列表
+     */
+    public static function getMemberCateInfoPairs(){
+        
+        $db  = Db_Andyou::instance();
+        $res =  $db->getAll("select * from membercate ");
+        $outArr = array();
+        if($res){
+            foreach($res as $re){
+                $outArr[$re['id']] = $re;
+            }
+        }
+        return $outArr;
+            
+    }
     
     /**
      * 获得会员分类管理列表
@@ -153,7 +169,7 @@ class Helper_Member extends Helper_Abstract {
         $data = Helper_Dao::getRows(array(
                     'dbName'        => 'Db_Andyou',    #数据库名
                     'tblName'       => 'membercate',    #表名
-                    'cols'          => 'id id,name name',   #列名
+                    'cols'          => '*',   #列名
                     'limit'         => $num,    #条数
                     'whereSql'      => $whereSql,    #where条件
                     #'debug'        => 1,    #调试
@@ -214,9 +230,15 @@ class Helper_Member extends Helper_Abstract {
                # 'debug'        => 1,    #调试
        ));
         //获得会员类型
-       $memberCate = Helper_Member::getMemberCatePairs();
+       $memberCate = Helper_Member::getMemberCateInfoPairs();
        if($data){
-            $data['cateName'] = isset( $memberCate[ $data["cateId"] ]) ? $memberCate[$data["cateId"]]:'未知';
+           if(isset( $memberCate[ $data["cateId"] ])){
+               $data['cateName'] = $memberCate[$data["cateId"]]["name"];
+               $data['discount'] = $memberCate[$data["cateId"]]["discount"];;
+           }else{
+               $data['cateName'] = "未分类";
+               $data['discount'] = 1;
+           }
        }
        return $data;
     }

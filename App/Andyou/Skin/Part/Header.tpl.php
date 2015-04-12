@@ -10,7 +10,7 @@
 <!-- BEGIN HEAD http://www.keenthemes.com/preview/metronic/index.html -->
 <head>
 	<meta charset="GBK" />
-	<title><?=isset($htmlHeader) ? $htmlHeader . " - " : ""?>控制中心</title>
+	<title><?=$sysName?></title>
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />

@@ -63,8 +63,9 @@ class  Andyou_Page_MemberCate  extends Andyou_Page_Abstract {
      * Ìí¼Ó¼ÇÂ¼
      */
 	public function doAddItem(ZOL_Request $input, ZOL_Response $output){
-	                        
+	    $Arr = array();                    
 		$Arr['name'] = $input->post('name');
+        $Arr['discount'] = $input->post('discount');
         
 		$pageUrl = $input->request('pageUrl');
 		$data = Helper_Dao::insertItem(array(
@@ -85,6 +86,7 @@ class  Andyou_Page_MemberCate  extends Andyou_Page_Abstract {
 	    $Arr = array();
 	    
 	    $input->request('name')?$Arr['name'] = $input->request('name'):'';
+        $input->request('discount')?$Arr['discount'] = $input->request('discount'):'';
         
 	    $pageUrl = $input->request('pageUrl');
 	    $data = Helper_Dao::updateItem(array(

@@ -22,7 +22,7 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>ID</th><th>分类名</th><th>操作</th>
+<th>ID</th><th>分类名</th><th>折扣</th><th>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -32,6 +32,7 @@ if($data) {
        $outStr = '<tr>';
        $outStr.='<td>'.$v['id'].'</td>';
        $outStr.='<td>'.$v['name'].'</td>';
+       $outStr.='<td>'.$v['discount'].'</td>';
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnMemberCate"><i class="halflings-icon white edit"></i></a>
        <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a></td>';
@@ -69,6 +70,7 @@ if($data) {
                         <tbody><tr><td> <table class="item_edit_table"> <tbody>
                                             
                           <tr><td align="right">分类名:</td><td><input type="text"   name="name" /></td></tr>
+                          <tr><td align="right">折扣:</td><td><input type="text"   name="discount" /></td></tr>
 
                          </tbody></table></td></tr></tbody></table>
                          <input type="hidden" name="a" value="AddItem">
@@ -97,6 +99,7 @@ if($data) {
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
                           <tr><td align="right">分类名:</td><td><input type="text" id="name"  name="name" /></td></tr>
+                          <tr><td align="right">折扣:</td><td><input type="text" id="discount"  name="discount" /></td></tr>
 
                         </tbody></table></td></tr></tbody></table>
 				    <input type="hidden" id="dataid" name="dataid" value="">
@@ -142,6 +145,7 @@ $('.editbtnMemberCate').live('click',function(){
     var id = $(this).parent().attr('rel');
     getdatainfo(id,'MemberCate',function(dat){
         $('#name').val(dat['name']);
+        $('#discount').val(dat['discount']);
     }); 
  });
 

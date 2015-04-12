@@ -102,7 +102,9 @@ if($data) {
                           </td></tr>
                           <tr><td align="right">生日:</td><td><input type="text" name="byear"  style="width:60px" /> 年 <input type="text" name="bmonth"  style="width:60px" /> 月 <input type="text" name="bday"  style="width:60px" /> 日</td></tr>
                           <tr><td align="right">积分:</td><td><input type="text"   name="score" value='0' /></td></tr>
-                          <tr><td align="right">余额:</td><td><input type="text"   name="balance" value='0'/></td></tr>
+                          <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr>
+                          <tr><td align="right">备注:</td><td><textarea  name="remark"  style="width:350px;height:50px"></textarea></td></tr>
+
 
                          </tbody></table></td></tr></tbody></table>
                          <input type="hidden" name="a" value="AddItem">
@@ -145,7 +147,8 @@ if($data) {
                               </td></tr>
                           <tr><td align="right">生日:</td><td><input type="text" id="byear" name="byear" style="width:60px" /> 年 <input type="text" id="bmonth"  name="bmonth"  style="width:60px" /> 月 <input type="text" id="bday"  name="bday"  style="width:60px" /> 日</td></tr>
                           <tr><td align="right">积分:</td><td><input type="text" id="score"  name="score"/></td></tr>
-                          <tr><td align="right">余额:</td><td><input type="text" id="balance"  name="balance" /></td></tr>
+                          <tr><td align="right">卡余额:</td><td><input type="text" id="balance"  name="balance" /></td></tr>
+                          <tr><td align="right">备注:</td><td><textarea id="remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
 
                         </tbody></table></td></tr></tbody></table>
 				    <input type="hidden" id="dataid" name="dataid" value="">
@@ -198,6 +201,7 @@ $('.editbtnMember').live('click',function(){
         $('#bday').val(dat['bday']);
         $('#score').val(dat['score']);
         $('#balance').val(dat['balance']);
+        $('#remark').html(dat['remark']);
     }); 
  });
 

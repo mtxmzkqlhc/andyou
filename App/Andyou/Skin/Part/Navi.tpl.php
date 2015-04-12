@@ -3,7 +3,7 @@
             
         <div class="navbar-inner">
             <div class="container-fluid">
-               <a href="?"><font style="color: rgb(255, 255, 255); font: 20px/40px 'Microsoft YaHei',arial;"><font style="color:#f54"></font>安之秀</font></a>
+               <a href="?"><font style="color: rgb(255, 255, 255); font: 20px/40px 'Microsoft YaHei',arial;"><font style="color:#f54"></font><?=$sysName?></font></a>
                <ul class="nav pull-right" style="color:#ffffff;padding:10px 20px 0 0;">
                    <li><i class="halflings-icon white user"></i> 你好,<?=$admin?> &nbsp;&nbsp;<i class="halflings-icon white off"></i><a href="?c=Login&a=Logout" style="display:inline;color:#ffffff;padding-left:5px;">退出登录</a></li>
                </ul>

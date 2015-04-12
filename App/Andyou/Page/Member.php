@@ -77,6 +77,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $Arr['addTm'] = SYSTEM_TIME;
         $Arr['score'] = $input->post('score');
         $Arr['balance'] = $input->post('balance');
+        $Arr['remark'] = $input->post('remark');
         
 		$pageUrl = $input->request('pageUrl');
 		$data = Helper_Dao::insertItem(array(
@@ -104,6 +105,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $input->request('bday')?$Arr['bday'] = $input->request('bday'):'';
         $input->request('score')?$Arr['score'] = $input->request('score'):'';
         $input->request('balance')?$Arr['balance'] = $input->request('balance'):'';
+        $input->request('remark')?$Arr['remark'] = $input->request('remark'):'';
         
 	    $pageUrl = $input->request('pageUrl');
 	    $data = Helper_Dao::updateItem(array(

@@ -84,8 +84,8 @@ return array(
                 'ctrl' => 'AdminUser'
             ),
             'ÅäÖÃ¹ÜÀí' => array(
-                'url' => '?c=Option',
-                'ctrl' => 'Option'
+                'url' => '?c=Options',
+                'ctrl' => 'Options'
             ),
         ),
     ),
