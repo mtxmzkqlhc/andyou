@@ -130,12 +130,12 @@
                                     <dd><input type="text" value="" id="bill_end_membernm"  disabled="true"></dd>
                                 </dl>
                                 
-                                <dl class="clearfix memextinfo">
+                                <dl class="clearfix" style="display:none;">
                                     <dt>卡上余额</dt>
                                     <dd><input type="text" value="" id="bill_card_left"  disabled="true"></dd>
                                 </dl>
                                 
-                                <dl class="clearfix memextinfo" style="display:none;">
+                                <dl class="clearfix" style="display:none;">
                                     <dt>最终积分</dt>
                                     <dd><input type="text" value="" id="bill_score_left"  disabled="true"></dd>
                                 </dl>
@@ -147,7 +147,7 @@
                                 <input type="hidden" value="0" name="memberId" id="memberId"/>
                             </div>
                         </div>
-                        <div class="box-r" style="width:700px;">
+                        <div class="box-r" style="width:750px;">
                             <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="12345678890233232" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
                             <span class="btn btn-mini btn-info" title="批量设置折扣" id="setDiscBtn"><i class="halflings-icon th-list white"></i>批量设置折扣</span>
                             </div>
@@ -194,7 +194,7 @@
         <td align="center"><span class="btn btn-small btn-info"  onclick="proTblDelNum(${rowIdx})"><i class="halflings-icon minus white"></i></span>
         <input type='text' value='1' id='item_num_${rowIdx}' name='item_num[${rowIdx}]' class='tblProNum' onblur="proTblCalPrice(${rowIdx})">
         <span class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></span></td>
-        <td><input type='text' value='1' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}"></td>
+        <td><input type='text' value='${memberDisc}' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}"></td>
         <td id="item_price_${rowIdx}" >${pro.price}</td>  
         <td id="item_stafftd_${rowIdx}"><span style="color:#999999">同左边</span></td>
         <td><button class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></button>
@@ -220,6 +220,7 @@
 </script>
 <script>
     var scoreRatio = <?=$scoreRatio?>;
+    var memberDisc = 1;//会员折扣价
     $("#proBarCode").focus(); 
     //积分转换价格
     var scoreToMoney = function(score){
@@ -437,7 +438,11 @@
     var proJuicer  = juicer(proTableTr);
     var proTrIdx   = 0; //记录插入了第几行了
     var appendProTable = function(proInfo){
-        var data = {pro:proInfo,rowIdx:proTrIdx};
+        var disc = memberDisc;
+        if(proInfo.discut && proInfo.discut > memberDisc){
+            disc = proInfo.discut;
+        }
+        var data = {pro:proInfo,rowIdx:proTrIdx,memberDisc:disc};
         var html = proJuicer.render(data);
         if(proTrIdx == 0)$("#proListTbody").empty();
         $("#proListTbody").append(html);
@@ -530,6 +535,9 @@
                     $("#bill_card_left").val(bls);
                     $("#bill_score_left").val(data.score);
                     $(".memextinfo").show();
+                    
+                    memberDisc = data.discount;//会员折扣
+                    if(memberDisc > 1)memberDisc = 1;
                 }
             });
         }else{

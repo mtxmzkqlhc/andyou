@@ -12,7 +12,7 @@
  	***/
  	.page-sidebar {
 		position: absolute;
- 		width: 200px;
+ 		width: 150px;
   	}
 
 	.page-sidebar-fixed .page-sidebar {
@@ -68,7 +68,7 @@
   	Page content
   	***/
   	.page-content { 
-  		margin-left: 200px; 
+  		margin-left: 150px; 
 		margin-top: 0px;
 		min-height: 760px; 
 	}

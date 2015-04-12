@@ -18,14 +18,14 @@
         <div class="page-sidebar nav-collapse"  id="page-sidebar">
             <!-- BEGIN SIDEBAR MENU -->        
             <ul class="page-sidebar-menu">
-                <li><div class="sidebar-toggler hidden-phone"></div></li>             
-                
+                <li><div class="sidebar-toggler hidden-phone"></div></li> 
                 <?php
                 $menuArr = ZOL_Config::get("Admin_Menu");
                 
                 if($menuArr){
                     foreach($menuArr as $name => $menu){
-                        echo '<li class="sel">
+                        $cls = isset($menu['class']) ? $menu['class'] : '';
+                        echo '<li class="sel '.$cls.'">
                                 <a href="javascript:;"><i class="icon-'.$menu["icon"].'"></i><span class="title">'.$name.'</span><span class="arrow "></span></a>
                                 <ul class="sub-menu">
                             ';

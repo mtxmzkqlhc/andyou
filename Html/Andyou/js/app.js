@@ -166,7 +166,7 @@ var App = function () {
                 var parent = $(this).parent().parent();
 
                 parent.children('li.open').children('a').children('.arrow').removeClass('open');
-                parent.children('li.open').children('.sub-menu').slideUp(200);
+                //parent.children('li.open').children('.sub-menu').hide();//.slideUp(200);
                 parent.children('li.open').removeClass('open');
 
                 var sub = jQuery(this).next();
@@ -310,7 +310,8 @@ var App = function () {
                 return;
             }
 
-            $(".sidebar-search", sidebar).removeClass("open");
+            //$(".sidebar-search", sidebar).removeClass("open");
+            //$(".open2 .sub-menu", sidebar).show();
 
             if (body.hasClass("page-sidebar-closed")) {
                 body.removeClass("page-sidebar-closed");

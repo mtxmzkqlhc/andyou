@@ -8,6 +8,7 @@ return array(
     
     '常用操作' => array(
         'icon' => 'print',
+        'class' => 'open2',
         'items' => array(
             '前台收银' => array(
                 'url' => '?c=Checkout',
@@ -18,6 +19,7 @@ return array(
     ),
     '商品管理' => array(
         'icon' => 'barcode',
+        'class' => 'open2',
         'items' => array(
             '商品列表' => array(
                 'url' => '?c=Product&a=Default',
@@ -33,6 +35,7 @@ return array(
     ),
     '会员管理' => array(
         'icon' => 'group',
+        'class' => 'open2',
         'items' => array(
             '会员列表' => array(
                 'url' => '?c=Member&a=Default',
