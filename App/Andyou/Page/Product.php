@@ -105,11 +105,11 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 	    $input->request('name')?$Arr['name'] = $input->request('name'):'';
         $input->request('code')?$Arr['code'] = $input->request('code'):'';
         $input->request('cateId')?$Arr['cateId'] = $input->request('cateId'):'';
-        $input->request('price')?$Arr['price'] = $input->request('price'):'';
-        $input->request('inPrice')?$Arr['inPrice'] = $input->request('inPrice'):'';
-        $input->request('stock')?$Arr['stock'] = $input->request('stock'):'';
-        $input->request('score')?$Arr['score'] = $input->request('score'):'';
-        $input->request('discut')?$Arr['discut'] = $input->request('discut'):'';
+        $input->request('price')!=''?$Arr['price'] = $input->request('price'):'';
+        $input->request('inPrice')!=''?$Arr['inPrice'] = $input->request('inPrice'):'';
+        $input->request('stock')!=''?$Arr['stock'] = $input->request('stock'):'';
+        $input->request('score')!=''?$Arr['score'] = $input->request('score'):'';
+        $input->request('discut')!=''?$Arr['discut'] = $input->request('discut'):'';
         
         //产品报价，保存以分为单位的价格
         if(isset($Arr['price']))  $Arr['price']   = $Arr['price']   * 100;

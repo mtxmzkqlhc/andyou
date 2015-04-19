@@ -64,10 +64,106 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 	}
 	
     /**
+     *  验证是否可以从订单添加会员
+     */
+    private function checkFromBill(ZOL_Request $input, ZOL_Response $output){
+        header("Content-type: text/html; charset=GBK");
+        //获得订单信息
+        $billInfo = Helper_Bill::getBillsInfo(array(
+            'id'              => $output->bid, #ID
+            'bno'             => $output->bno, #单号
+        ));
+        if(!$billInfo){
+            echo "Bill Not Found!";
+            exit;
+        }
+        if($billInfo["memberId"]){
+            echo "订单已经关联会员！";
+            exit;
+        }
+        $output->billInfo = $billInfo;
+        //可兑换积分
+        
+        $sysOptions = Helper_Option::getAllOptions();        
+        $scoreRatio = !empty($sysOptions["ScoreRatio"]) ? $sysOptions["ScoreRatio"]["value"] : 0;
+        
+        $price = $output->billInfo["price"];
+        $output->canGetScore = $scoreRatio ? round($price*$scoreRatio/100) : 0;
+    }
+    /**
+     * 从订单添加会员
+     */
+	public function doToAddUserFromBill(ZOL_Request $input, ZOL_Response $output){
+        $output->bno = $input->get("bno");
+        $output->bid = $input->get("bid");
+        $this->checkFromBill($input,$output);//验证订单
+        $output->memberCate = Helper_Member::getMemberCatePairs();
+		$output->setTemplate('MemberAddFromBill');
+        
+    }
+    /**
+     * 从订单添加会员模板
+     */
+    public function doAddUserFromBill(ZOL_Request $input, ZOL_Response $output){
+        $output->bno = $input->post("bno");
+        $output->bid = $input->post("bid");
+        
+        $this->checkFromBill($input,$output);//验证订单
+        ;
+        
+        
+        $price = $output->billInfo["price"];
+        
+        $Arr = array();        
+		$Arr['name']    = $input->post('name');
+        $Arr['phone']   = $input->post('phone');
+        $Arr['cateId']  = $input->post('cateId');
+        $Arr['byear']   = $input->post('byear');
+        $Arr['bmonth']  = $input->post('bmonth');
+        $Arr['bday']    = $input->post('bday');
+        $Arr['addTm']   = SYSTEM_TIME;
+        $Arr['score']   = $output->canGetScore;
+        $Arr['balance'] = $input->post('balance');
+        $Arr['remark']  = $input->post('remark');
+        
+        //查看该电话是否注册了
+        $minfo = Helper_Member::getMemberInfo(array(
+            'phone'           => $Arr['phone'], #ID
+        ));
+        if($minfo){
+            echo "该手机号，已经在使用了！";
+            exit;
+        }
+        
+		$memberId = Helper_Dao::insertItem(array(
+            'addItem'       =>  $Arr, #数据列
+            'dbName'        =>  'Db_Andyou',    #数据库名
+            'tblName'       =>  'member',    #表名
+		));
+		
+        //更新账单，关联上用户ID
+        $db = Db_Andyou::instance();
+        $bid = $output->billInfo["id"];
+        $bno = $output->billInfo["bno"];
+        
+        $sql = "update bills set memberId = {$memberId} where id = {$bid} limit 1";
+        $db->query($sql);
+                
+        $sql = "update billsitem set memberId = {$memberId} where id = {$bid}";
+        $db->query($sql);
+                
+        $urlStr = "?c={$output->ctlName}";
+	    echo "<script>document.location='{$urlStr}';</script>";
+		exit;
+        
+    }
+        
+    /**
      * 添加记录
      */
 	public function doAddItem(ZOL_Request $input, ZOL_Response $output){
-	                        
+	    $Arr = array();
+        
 		$Arr['name'] = $input->post('name');
         $Arr['phone'] = $input->post('phone');
         $Arr['cateId'] = $input->post('cateId');

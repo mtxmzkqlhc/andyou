@@ -103,7 +103,7 @@
                             </dl>
                             <dl class="clearfix">
                                 <dt>折扣</dt>
-                                <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]"/></dd>
+                                <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]" /></dd>
                             </dl>
                             <dl class="clearfix"  style="display:none">
                                 <dt>折扣后应付</dt>
@@ -143,6 +143,11 @@
                                 <dl class="clearfix" style="display:none;">
                                     <dt>最终积分</dt>
                                     <dd><input type="text" value="" id="bill_score_left"  disabled="true"></dd>
+                                </dl>
+                                
+                                <dl class="clearfix">
+                                    <dt>备注说明</dt>
+                                    <dd><textarea style="width:140px;height:50px;" name="remark"></textarea></dd>
                                 </dl>
                             </dl>
                             <div style="text-align:center;">
@@ -205,7 +210,7 @@
         <td align="center"><span class="btn btn-small btn-info"  onclick="proTblDelNum(${rowIdx})"><i class="halflings-icon minus white"></i></span>
         <input type='text' value='1' id='item_num_${rowIdx}' name='item_num[${rowIdx}]' class='tblProNum' onblur="proTblCalPrice(${rowIdx})">
         <span class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></span></td>
-        <td><input type='text' value='${memberDisc}' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}"></td>
+        <td><input type='text' value='${memberDisc}' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}" readonly="true"></td>
         <td id="item_price_${rowIdx}" >${pro.price}</td>  
         <td id="item_stafftd_${rowIdx}"><span style="color:#999999">同左边</span></td>
         <td><button class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></button>
@@ -447,6 +452,22 @@
         }
             
         calcBillSumInfo();
+    });
+    
+    
+    
+    //------------------------------------
+    //  左侧操作区
+    //------------------------------------
+    $("#bill_disc").blur(function(){//左侧折扣修改页面
+        var v = $(this).val();
+        //修改右侧所有表格内产品的折扣
+        $(".tblProDisc").each(function(){
+           $(this).val(v);
+           var i = $(this).attr("data-idx");
+           //计算每行的价格
+           proTblCalPrice(i);
+        });
     });
     
 //    var enterIn = function(evt){

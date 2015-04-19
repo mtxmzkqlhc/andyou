@@ -34,7 +34,7 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>ID</th><th>单号</th><th>使用积分</th><th>使用会员卡</th><th>收款</th><th>折扣</th><th>员工</th><th>消费时间</th><th>会员ID</th><th>操作</th>
+<th>ID</th><th>单号</th><th>使用积分</th><th>使用会员卡</th><th>收款</th><th>折扣</th><th>员工</th><th>消费时间</th><th>会员ID</th><th>备注</th><th>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -56,8 +56,15 @@ if($data) {
        $outStr.='<td>'.(isset($staffInfo[$v['staffid']]) ? $staffInfo[$v['staffid']] : '-').'</td>';
        $outStr.='<td>'.date("m-d H:i",$v['tm']).'</td>';
        $outStr.='<td>'.$memName.'</td>';
+       if($v['remark']){
+         $remark = str_replace(array("'",'"'), "", $v['remark']);
+         $outStr.='<td><a title="'.$remark.'" onclick="alert(\''.$remark.'\')" href="javascript:void(0);">有备注</a></td>';
+       }else{
+            $outStr.='<td>&nbsp;</td>';
+       }
        $outStr.='<td rel="'.$v['id'].'">
-       <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a>
+        <a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white   user"></i></a>
+       <!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
        <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
        <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a> --></td>';
        $outStr.='</tr>';

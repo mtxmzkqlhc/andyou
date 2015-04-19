@@ -24,7 +24,12 @@ return array(
             '查看商品' => array(
                 'permission' => array(0),//只有普通管理员可见
                 'url' => '?c=ProductSm&a=Default',
-                'ctrl' => 'Member',
+                'ctrl' => 'ProductSm',
+                'target' => '_self',
+            ),
+            '商品入库' => array(
+                'url' => '?c=InStorage',
+                'ctrl' => 'InStorage',
                 'target' => '_self',
             ),
             '商品列表' => array(

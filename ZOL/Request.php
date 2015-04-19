@@ -106,7 +106,7 @@ class ZOL_Request
 		{
 			//  don't operate on reference to avoid segfault :-(
 			$ret = $this->_a[$method][$key];
-
+            
 			//  if html not allowed, run an enhanced strip_tags()
 			if (false === $allowTags) 
 			{

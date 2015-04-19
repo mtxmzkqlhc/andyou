@@ -38,6 +38,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $itemDiscArr = $input->post("item_disc");//所有产品折扣
         $itemNumArr  = $input->post("item_num");//所有产品产品数量
         $staffid     = (int)$input->post("staffid");//员工
+        $remark      = $input->post("remark");//填写的备注
         
         //----------------------
         //获得会员信息
@@ -135,6 +136,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             'dateDay'  => date("Ymd"),
             'memberScore'     => $memberScore,
             'memberCard'      => $memberCard,
+            'remark'          => $remark,
         );
         
         //积分的重新计算

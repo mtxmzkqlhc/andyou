@@ -94,17 +94,18 @@ class Helper_Bill extends Helper_Abstract {
         if(is_array($params)) $options = array_merge($options, $params);
         extract($options);        
             
+        if(!$id && !$bno)return false;
         $whereSql   = '';
 
-        if($id)$whereSql .= "and id = '{$id}' " ;
+        if($id)$whereSql  .= "and id = '{$id}' " ;
         if($bno)$whereSql .= "and bno = '{$bno}' " ;
 
         $data = Helper_Dao::getRow(array(
-                    'dbName'        => 'Db_Andyou',    #数据库名
-                    'tblName'       => 'bills',    #表名
-                    'cols'          => 'id id,bno bno,useScore useScore,useCard useCard,price price,discount discount,staffid staffid,staffName staffName,tm tm,memberId memberId',   #列名
-                    'whereSql'      => $whereSql,    #where条件
-                    #'debug'        => 1,    #调试
+                'dbName'        => 'Db_Andyou',    #数据库名
+                'tblName'       => 'bills',    #表名
+                'cols'          => '*',   #列名
+                'whereSql'      => $whereSql,    #where条件
+                #'debug'        => 1,    #调试
        ));
        
        return $data;
