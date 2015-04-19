@@ -20,7 +20,7 @@
 #proBarCode{width:300px;}
 #proListTbody input{margin-bottom:0px;width:25px;}
 #proListTbody .btn-small{padding:0 0 0 3px;}
-#searchMemBtn,#searchProBtn,#setDiscBtn{padding:3px 4px;margin-bottom:10px;}
+#searchMemBtn,#searchProBtn,#setDiscBtn,#removeGoodsBtn,#removeMemInfo{padding:3px 4px;margin-bottom:10px;}
 #billContent .memextinfo{display:none}
 </style>
 <div id="content">
@@ -40,6 +40,11 @@
                             <dl>
                                 <dt>会员电话</dt>
                                 <dd><input type="text" value="13512026125" id="memberPhone"><span class="btn btn-mini" title="查询用户" id="searchMemBtn"><i class="halflings-icon search white"></i></span>
+                                </dd>
+                            </dl><dl>
+                                <dt>&nbsp;</dt>
+                                <dd style="text-align:right;width: 180px;">
+                                <span class="btn btn-mini btn-info" title="清空所有已选择的商品" id="removeMemInfo" style="display:none;"><i class="halflings-icon star-empty white"></i>清空</span>
                                 </dd>
                             </dl>
                         </div>
@@ -150,6 +155,7 @@
                         <div class="box-r" style="width:750px;">
                             <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="12345678890233232" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
                                 <span class="btn btn-mini btn-info" title="设置折扣" id="setDiscBtn" style="display:none;"><i class="halflings-icon th-list white"></i>设置折扣</span>
+                                <span class="btn btn-mini btn-info" title="清空所有已选择的商品" id="removeGoodsBtn" style="display:none;"><i class="halflings-icon th-list white"></i>清空商品</span>
                             </div>
                             <div>
                                 <table class="table table-striped table-bordered" id="proListTable">
@@ -157,7 +163,12 @@
 						  
                                     <tbody id="proListTbody">
                                         <tr><td colspan="10" style="text-align: center;color:#666666;padding:100px 0 200px;background:#ffffff;">-- 请扫描条码以添加商品 --</td></tr>
-                                    </tbody></table>
+                                    </tbody>
+                                
+                                    <tbody id="proTblNumRow">
+                                        <tr><td colspan="10" style="text-align: right;color:#666666;padding:10px 20px 10px;background:#ffffff;">商品总数：<span id="proTblNumRow_num">0</span></td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
             </div>
@@ -169,7 +180,7 @@
     <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th>操作</th></tr> </thead>
     <tbody id="proAddBoxTbody">
         <tr><td colspan="10" style="text-align: center;color:#666666;padding:20px 0 20px;background:#ffffff;">-- 加载中 --</td></tr>
-    </tbody></table>
+    </tbody> </table>
 </div>
 <div id="set-staff-box" style="display: none;">
     <select onchange="chgSetStaff(this)"><option value='0'>请选择</option><option value='0'>同左边</option>
@@ -292,11 +303,7 @@
         }
         if(setStaffDlg != null)setStaffDlg.close();
     }
-    //删除一个商品
-    var proTblDel = function(i){
-        $("#item_row_"+i).remove();
-        calcBillSumInfo();
-    }
+    
     var proTblNumChg = function(i,t){
         
         var num = parseInt($("#item_num_"+i).val(),10);
@@ -347,9 +354,18 @@
         $("#bill_sum_price").attr("trueprice",sum);
         $("#bill_sum_price").val((sum/100).toFixed(2));
     }
+    //计算商品合计
+    var calcProNum = function(){
+        var allNum = 0;
+        $(".tblProNum").each(function(){
+            allNum = allNum + parseInt($(this).val()); 
+        });
+        $("#proTblNumRow_num").html(allNum);
+    }
     //计算最终订单的总金额数据
     var calcBillSumInfo = function(){
         calcBillPrice();//计算总价
+        calcProNum();//计算商品数量合计
         
         var memberId = $("#memberId").val();
         if(memberId){
@@ -433,164 +449,15 @@
         calcBillSumInfo();
     });
     
-    //追加到产品列表
-    var proTableTr = document.getElementById('proTableTr').innerHTML;
-    var proJuicer  = juicer(proTableTr);
-    var proTrIdx   = 0; //记录插入了第几行了
-    var appendProTable = function(proInfo){
-        var disc = memberDisc;
-        if(proInfo.discut && proInfo.discut > memberDisc){
-            disc = proInfo.discut;
-        }
-        var data = {pro:proInfo,rowIdx:proTrIdx,memberDisc:disc};
-        var html = proJuicer.render(data);
-        if(proTrIdx == 0)$("#proListTbody").empty();
-        $("#proListTbody").append(html);
-        proTblCalPrice(proTrIdx);//计算单行价格
-        calcBillSumInfo();//计算最后的订单价格
-        proTrIdx++;
-    };
-    //多个商品
-    var proSelectTableTr = document.getElementById('proSelectTableTr').innerHTML;
-    var proSelectJuicer  = juicer(proSelectTableTr);
-    var appendSelectProTable = function(list,num){
-        var data = {list:list,num:num};
-        var html = proSelectJuicer.render(data);
-        $("#proAddBoxTbody").empty();
-        $("#proAddBoxTbody").append(html);
-    };
-    
-    //从选择框中选了一个商品
-    var boxSelectPro = function(pid){
-        var len = selectProBoxData.length;
-        if(len > 0){
-            var proInfo = {}
-            for(var i=0;i<len;i++){
-                if(selectProBoxData[i].id == pid){
-                    proInfo = selectProBoxData[i];
-                    break;
-                }
-            }
-            appendProTable(proInfo);
-        }
-        if(selectProBoxDlg != null)selectProBoxDlg.close();
-    }
-    
-    //批量设置折扣
-    $("#setDiscBtn").click(function(){
-        art.dialog({
-            title : '设置商品折扣',
-            content: '<div style="padding:40px 80px;font-size:12px;">设置折扣： <input type="text" value="1" id="dlgSetDisVal" style="width:50px"></div>',
-            button: [{
-                name: '设置',
-                callback: function () {
-                    var v = $("#dlgSetDisVal").val();
-                    if(v > 1)v = 1;
-                    $(".tblProDisc").each(function(){
-                        $(this).val(v);
-                        var idx = $(this).attr("data-idx");
-                        proTblCalPrice(idx);
-                    })
-                    return true;
-                },
-                focus: true
-            }]
-        })
-        
-    });
 //    var enterIn = function(evt){
 //        var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
 //        if (evt.keyCode==13){
 //            doSearchMember();
 //        }
 //    }
-    //搜索会员
-    iptEnter("#memberPhone",function(){
-        doSearchMember();
-    });
-    $("#searchMemBtn").click(function(){
-        doSearchMember();
-    });
-    //条形码
-    var doSearchMember = function(){
-        var phone = $("#memberPhone").val();
-        if(phone){
-            var url = "?c=Ajax_Member&a=GetMemberByPhone&phone=" + phone;
-            $.getJSON(url,{},function(data){
-                if(data){
-                    var bls = data.balance ? data.balance : 0;
-                    $("#memtbl_name").html(data.name);
-                    $("#bill_end_membernm").val(data.name);
-                    $("#memtbl_score").html(data.score);
-                    $("#memtbl_card").html(bls);
-                    $("#memtbl_cate").html(data.cateName);
-                    $("#memtbl_disc").html(data.discount);
-                    $("#memtbl_remark").html(data.remark);
-                    $("#bill_member_card").val(bls);
-                    
-                    $("#memberId").val(data.id);
-                    $("#bill_member_card").removeAttr("readonly");
-                    $("#bill_member_score").removeAttr("readonly");
-                    
-                    $("#bill_card_left").val(bls);
-                    $("#bill_score_left").val(data.score);
-                    $(".memextinfo").show();
-                    
-                    memberDisc = data.discount;//会员折扣
-                    if(memberDisc > 1)memberDisc = 1;
-                }
-            });
-        }else{
-            $("#memtbl_name").html("");
-            $("#bill_end_membernm").val("");
-            $("#memtbl_score").html("");
-            $("#memtbl_card").html("");
-            $("#memtbl_cate").html("");
-            $("#memberId").val(0);
-            $("#bill_member_card").attr("readonly","true");
-            $("#bill_member_score").attr("readonly","true");
-            $("#bill_card_left").val(0);
-            $("#bill_score_left").val(0);
-            $(".memextinfo").hide();
-            $("#memtbl_remark").html("");
-            $("#memtbl_disc").html("");
-        }
-    }
-    //条形码
-    var selectProBoxDlg = null;
-    var selectProBoxData = []; //保存已经存储产品数组
-    iptEnter("#proBarCode",function(){
-        doSearchPro();        
-    });
-    $("#searchProBtn").click(function(){
-        doSearchPro();
-    })
-    var doSearchPro = function(){
-    
-        var barcode = $("#proBarCode").val();
-        if(barcode){//doGetProductByCode
-            var url = "?c=Ajax_Product&a=GetProductByCode&code=" + barcode;
-            $.getJSON(url,{},function(data){
-                if(data){
-                    
-                    if(data.num == 1){
-                        var proInfo = data.data[0];
-                        appendProTable(proInfo);
-                    }else if(data.num > 1){//如果一个条码有多个商品
-                        //$("#proAddBoxTbody").html('<tr><td colspan="10" style="text-align: center;color:#666666;padding:20px 0 20px;background:#ffffff;">-- 加载中 --</td></tr>');
-                        selectProBoxData = data.data;
-                        appendSelectProTable(data.data,data.num)
-                        selectProBoxDlg = art.dialog({title: '请选择商品',width:"600px",content: $("#add-pro-box").html()});
-                    }else{
-                        alert("该商品未入库");
-                    }
-                }else{
-                    alert("该商品未入库");
-                }
-            });
-        }
-    }
     
 </script>
+<script type="text/javascript" src="js/checkout/memeber.js"></script>
+<script type="text/javascript" src="js/checkout/protbl.js"></script>
 </body>
 </html>

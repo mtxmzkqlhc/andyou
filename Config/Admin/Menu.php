@@ -21,7 +21,14 @@ return array(
         'icon' => 'barcode',
         'class' => 'open2',
         'items' => array(
+            '查看商品' => array(
+                'permission' => array(0),//只有普通管理员可见
+                'url' => '?c=ProductSm&a=Default',
+                'ctrl' => 'Member',
+                'target' => '_self',
+            ),
             '商品列表' => array(
+                'permission' => array(1),
                 'url' => '?c=Product&a=Default',
                 'ctrl' => 'Member',
                 'target' => '_self',

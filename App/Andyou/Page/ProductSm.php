@@ -1,15 +1,15 @@
 <?php
 /**
- * 商品管理管理
+ * 简单的商品管理管理
+ * 给普通员工使用的，没有多余的操作
  *
  */
-class  Andyou_Page_Product  extends Andyou_Page_Abstract {
+class  Andyou_Page_ProductSm  extends Andyou_Page_Abstract {
     /**
      * 验证
      */
     public function validate(ZOL_Request $input, ZOL_Response $output){
-		$output->pageType = 'Product';
-        $output->permission = array(1);//指定权限
+		$output->pageType = 'ProductSm';
         if (!parent::baseValidate($input, $output)) { return false; }
 		return true;
 	}
@@ -61,40 +61,9 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 		
         $output->cateInfo = Helper_Product::getProductCatePairs();
         
-		$output->setTemplate('Product');
+		$output->setTemplate('ProductSm');
 	}
 	
-    /**
-     * 添加记录
-     */
-	public function doAddItem(ZOL_Request $input, ZOL_Response $output){
-	       
-        $Arr = array();
-		$Arr['name']    = $input->post('name');
-        $Arr['code']    = $input->post('code');
-        $Arr['cateId']  = $input->post('cateId');
-        $Arr['price']   = $input->post('price');
-        $Arr['inPrice'] = $input->post('inPrice');
-        $Arr['stock']   = $input->post('stock');
-        $Arr['score']   = $input->post('score');
-        $Arr['discut']  = $input->post('discut');
-        $Arr['addtm']  = SYSTEM_TIME;
-        
-        //产品报价，保存以分为单位的价格
-        $Arr['price']   = $Arr['price']   * 100;
-        $Arr['inPrice'] = $Arr['inPrice'] * 100;
-        
-		$pageUrl = $input->request('pageUrl');
-		$data = Helper_Dao::insertItem(array(
-		        'addItem'       =>  $Arr, #数据列
-		        'dbName'        =>  'Db_Andyou',    #数据库名
-		        'tblName'       =>  'product',    #表名
-		));
-		/*backUrl*/
-        $urlStr = $pageUrl ? $pageUrl : "?c={$output->ctlName}&t={$output->rnd}";
-	    echo "<script>document.location='{$urlStr}';</script>";
-		exit;
-	}
     
     /**
      * 更新数据
@@ -127,41 +96,5 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 	    echo "<script>document.location='{$urlStr}';</script>";
 	    exit;
 	 }
-    /**
-     * 删除数据
-     */
-	 public function doDelItem(ZOL_Request $input, ZOL_Response $output) {
-
-		Helper_Dao::delItem(array(
-                'dbName'=> 'Db_Andyou',#数据库名
-                'tblName' => 'product',#表名
-                'where'=> 'id='.$input->post('dataid'),#更新条件
-        ));
-		$pageUrl = $input->request('pageUrl');
-		/*backUrl*/
-        $urlStr = $pageUrl ? $pageUrl : "?c={$output->ctlName}&t={$output->rnd}";
-	    echo "<script>document.location='{$urlStr}';</script>";
-		exit;
-	 }
-
-	
-    /**
-     * ajax获得指定数据
-     */
-	 public function doAjaxData(ZOL_Request $input, ZOL_Response $output) {
-		$id = (int)$input->get('id');
-		$arr = Helper_Dao::getRows(array(
-		        'dbName'   => "Db_Andyou", #数据库名
-		        'tblName'  => "product", #表名
-		        'cols'     => "*", #列名
-		        'whereSql' =>  ' and id='.$id
-		));
-		$data = ZOL_String::convToU8($arr);
-		if(isset($data[0])){
-		  echo json_encode($data[0]);
-		}
-		exit();
-	 }
-	
 }
 

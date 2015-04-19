@@ -25,7 +25,7 @@
                 if($menuArr){
                     foreach($menuArr as $name => $menu){
                         //权限判定
-                        if(!empty($menu["permission"])){
+                        if(isset($menu["permission"])){
                             if(!in_array($adminType, $menu["permission"])){
                                 continue;
                             } 
@@ -38,7 +38,7 @@
                         
                         foreach($menu['items'] as $k => $v){
                             //权限判定
-                            if(!empty($v["permission"])){
+                            if(isset($v["permission"])){
                                 if(!in_array($adminType, $v["permission"])){
                                     continue;
                                 } 
