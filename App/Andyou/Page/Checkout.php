@@ -60,7 +60,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $proInfoArr = array();
         $sumPrice   = 0;
         //原价总金额
-        $orgSumPrice = 0;
+        $orgSumPrice = 0; //商品总额
         //折扣获得的金额
         $discGetMoney = 0;
         if($itemIdArr){
@@ -68,7 +68,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
                $num = (int)$itemNumArr[$idx];
                $price       = $num * $proInfo["oprice"] * $itemDiscArr[$idx];
-               $orgSumPrice = $num * $proInfo["oprice"];
+               $orgSumPrice += $num * $proInfo["oprice"];
                $sumPrice += $price;
                $proInfoArr[] = array(
                    'proId'      => $pid,
@@ -86,7 +86,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //计算总金额
         //----------------------
         $billDisc        = $billInfo["bill_disc"];//总折扣
-        $sumPriceAftDisc = $sumPrice * $billDisc; //总折扣的价格
+        $sumPriceAftDisc = $orgSumPrice * $billDisc;//总折扣的价格  $sumPrice * $billDisc; //不可以给商品设置单价了
         $discGetMoney    = $orgSumPrice - $sumPriceAftDisc;//折扣省下来的金额
         
         //扣除会员卡内余额
@@ -105,7 +105,8 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             
             $useCardFlag = true;
         }
-        
+        /*
+         * 先不用会员积分了
         //会员积分计算
         $sysOptions = Helper_Option::getAllOptions();        
         $scoreRatio = !empty($sysOptions["ScoreRatio"]) ? $sysOptions["ScoreRatio"]["value"] : 0;
@@ -120,15 +121,17 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             
             $sumPriceAftDisc = $sumPriceAftDisc - $scoreMoney;
             
-        }
+        }*/
         
         //获得订单的信息
+        $sumPriceAftDisc = round($sumPriceAftDisc/100)*100; //金额的四舍五入
         $billDetail = array(
             'useScore' => $useScore,
             'useScoreAsMoney' => round($scoreMoney/100,2),
             'useCard'  => $billInfo["bill_member_card"],
             'price'    => $sumPriceAftDisc,
             'discount' => $billDisc,
+            'orgPrice' => $orgSumPrice,
             'staffid'  => $staffid,
             'memberId' => $memberId,
             'bno'      => $bno,

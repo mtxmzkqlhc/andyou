@@ -34,7 +34,7 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>ID</th><th>单号</th><th>使用积分</th><th>使用会员卡</th><th>收款</th><th>折扣</th><th>员工</th><th>消费时间</th><th>会员ID</th><th>备注</th><th>操作</th>
+<th>ID</th><th>单号</th><th>商品总价</th><th>使用会员卡</th><th>收款</th><th>折扣</th><th>员工</th><th>消费时间</th><th>会员ID</th><th>备注</th><th>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -49,9 +49,10 @@ if($data) {
        $outStr = '<tr>';
        $outStr.='<td>'.$v['id'].'</td>';
        $outStr.='<td>'.$v['bno'].'</td>';
-       $outStr.='<td style="text-align:left;">'.$v['useScore'].($v['useScore'] ? " <span style='color:#999999'>(".$v['useScoreAsMoney']."元)</span>" : "").'</td>';//
+       //$outStr.='<td style="text-align:left;">'.$v['useScore'].($v['useScore'] ? " <span style='color:#999999'>(".$v['useScoreAsMoney']."元)</span>" : "").'</td>';//
+       $outStr.='<td>'.round($v['orgPrice']/100,2).'</td>';
        $outStr.='<td>'.$v['useCard'].'</td>';
-       $outStr.='<td>'.($v['price']/100).'</td>';
+       $outStr.='<td>'.round($v['price']/100).'</td>';
        $outStr.='<td>'.$v['discount'].'</td>';
        $outStr.='<td>'.(isset($staffInfo[$v['staffid']]) ? $staffInfo[$v['staffid']] : '-').'</td>';
        $outStr.='<td>'.date("m-d H:i",$v['tm']).'</td>';

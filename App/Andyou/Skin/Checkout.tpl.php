@@ -217,7 +217,7 @@
             <span class="btn btn-small" onclick="proTblSetStaff(${rowIdx})" title="设置该商品的销售员"><i class="halflings-icon user white"></i></span>
             <input type="hidden" value="${pro.id}" name="item_id[${rowIdx}]"/>
             <input type="hidden" value="0" name="item_staffid[${rowIdx}]" id="item_staff_${rowIdx}"/>  
-            <input type="hidden" value="${pro.oprice}" id="item_org_sprice_${rowIdx}"/>
+            <input type="hidden" value="${pro.oprice}" id="item_org_sprice_${rowIdx}" class="tblProOrgPrice"/>
             <input type="hidden" value="${pro.oprice}" id="item_calc_sprice_${rowIdx}" class="tblProPrice"/>
         </td>            
     </tr>
@@ -353,7 +353,8 @@
     //计算最终订单的价格
     var calcBillPrice = function(){
         var sum = 0;
-        $(".tblProPrice").each(function(){
+       //$(".tblProPrice").each(function(){
+        $(".tblProOrgPrice").each(function(){
             sum += $(this).val() - 0;
         });
         $("#bill_sum_price").attr("trueprice",sum);
@@ -391,7 +392,7 @@
          //如果用户卡内有足够的积分
          
         
-        var endPrice = billSumPrice * billDisc;//折扣后的价格
+        var endPrice = billSumPrice * billDisc;//折扣后的价格  因为每行价格都记录了，就不需要最后在计算折扣了
         $("#bill_aftdisc_price").val((endPrice/100).toFixed(2));
         if(billMemCard){//如果用户卡里还有余额
             if(billMemCard * 100 > endPrice){//卡内还有前
@@ -425,7 +426,7 @@
         }else{
             $("#bill_score_left").val($("#memtbl_score").html()-0 + newScore);
         }
-        $("#bill_end_sum").val((endPrice/100).toFixed(2));
+        $("#bill_end_sum").val(Math.round((endPrice/100).toFixed(2)));
     }
     //账单有的输入框如何有所改变，就重新计算
     $(".billIptChg").blur(function(){
