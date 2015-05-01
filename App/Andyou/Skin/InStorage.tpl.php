@@ -116,6 +116,7 @@
         </td>            
         <td>${pro.stock}</td>
         <td id="item_sprice_${rowIdx}">${pro.price}</td>
+        <td><span class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></span></td>  
     </tr>
 </script>
 <!--  多产品多选  -->
@@ -209,11 +210,36 @@ var boxSelectPro = function(pid){
    
    
    
-   
-   
-   
-   
-   
+//数量的变化   
+
+var proTblNumChg = function(i,t){
+
+    var num = parseInt($("#item_num_"+i).val(),10);
+    if(t == 1){//加            
+        if(num>100)return false;
+        num++;
+    }else{
+        if(num<2)return false;
+        num--;
+    }
+    $("#item_num_"+i).val(num);
+}
+
+//增加购买数量
+var proTblAddNum = function(i){
+    proTblNumChg(i,1);
+    return false;
+}
+//减少购买数量
+var proTblDelNum = function(i){
+    proTblNumChg(i,0);
+    return false;
+};//删除一个商品
+var proTblDel = function(i){
+    if(confirm("确认去掉该行吗？")){
+        $("#item_row_"+i).remove();
+    }
+}
    
    
    

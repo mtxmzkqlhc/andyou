@@ -157,7 +157,107 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 		exit;
         
     }
+    /**
+     *  更新用户积分
+     */
+    public function doUpScore(ZOL_Request $input, ZOL_Response $output){
+        $mid       = (int)$input->post("mid");
+        $score     = (int)$input->post("score");
+        $direction = (int)$input->post("direction");
+        $remark    = $input->post("remark");
+        $urlStr = "?c={$output->ctlName}";
+        if($mid == 0){
+             echo "<script>alert('Error!');document.location='{$urlStr}';</script>";
+             exit;
+        }
+        if($score < 0)$score = -$score;
         
+        #获得会员信息
+        $minfo = Helper_Member::getMemberInfo(array("id"=>$mid));
+        if(!$minfo){
+             echo "<script>alert('Member Error!');document.location='{$urlStr}';</script>";
+             exit;
+        }
+        if($direction == 1){//减分的时候判断用户是否有这么多
+            if($minfo["score"] < $score){
+             echo "<script>alert('Score Error!');document.location='{$urlStr}';</script>";
+                exit;
+            }
+        }
+        $db = Db_Andyou::instance();
+        $op = $direction == 1 ? "-" : "+";
+        $sql = "update member set score = score {$op} {$score} where id = {$mid}";
+        $db->query($sql);
+        
+        $logItem = array(
+            "memberId"   => $mid,
+            "direction"  => $direction,
+            "score"      => $score,
+            "dateTm"     => SYSTEM_TIME,
+            "adminer"    => $output->admin,
+            "remark"     => $remark,
+            "orgScore"   => $minfo["score"],
+        );
+		$data = Helper_Dao::insertItem(array(
+		        'addItem'       =>  $logItem, #数据列
+		        'dbName'        =>  'Db_Andyou',    #数据库名
+		        'tblName'       =>  'log_scorechange',    #表名
+		));
+        echo "<script>alert('Success!');document.location='{$urlStr}';</script>";
+        exit;
+        
+    }
+    
+    /**
+     *  更新用户会员卡余额
+     */
+    public function doUpCard(ZOL_Request $input, ZOL_Response $output){
+        $mid       = (int)$input->post("mid");
+        $card     = (int)$input->post("card");
+        $direction = (int)$input->post("direction");
+        $remark    = $input->post("remark");
+        $urlStr = "?c={$output->ctlName}";
+        if($mid == 0){
+             echo "<script>alert('Error!');document.location='{$urlStr}';</script>";
+             exit;
+        }
+        if($card < 0)$card = -$card;
+        
+        #获得会员信息
+        $minfo = Helper_Member::getMemberInfo(array("id"=>$mid));
+        if(!$minfo){
+             echo "<script>alert('Member Error!');document.location='{$urlStr}';</script>";
+             exit;
+        }
+        if($direction == 1){//减分的时候判断用户是否有这么多
+            if($minfo["balance"] < $card){
+             echo "<script>alert('Balance Error!');document.location='{$urlStr}';</script>";
+                exit;
+            }
+        }
+        $db = Db_Andyou::instance();
+        $op = $direction == 1 ? "-" : "+";
+        $sql = "update member set balance = balance {$op} {$card} where id = {$mid}";
+        $db->query($sql);
+        
+        $logItem = array(
+            "memberId"   => $mid,
+            "direction"  => $direction,
+            "card"       => $card,
+            "dateTm"     => SYSTEM_TIME,
+            "adminer"    => $output->admin,
+            "remark"     => $remark,
+            "orgCard"    => $minfo["balance"],
+        );
+		$data = Helper_Dao::insertItem(array(
+		        'addItem'       =>  $logItem, #数据列
+		        'dbName'        =>  'Db_Andyou',    #数据库名
+		        'tblName'       =>  'log_cardchange',    #表名
+		));
+        echo "<script>alert('Success!');document.location='{$urlStr}';</script>";
+        exit;
+        
+    }
     /**
      * 添加记录
      */

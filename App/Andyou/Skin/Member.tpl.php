@@ -52,6 +52,8 @@ if($data) {
            
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnMember"><i class="halflings-icon white edit"></i></a>
+       <a title="修改积分" class="btn btn-info btnUpScore" style="color:#ffffff;" data-mid="'.$v['id'].'" data-score="'.$v['score'].'">积分</a>
+       <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">余额</a>
        <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a>　--></td>';
        $outStr.='</tr>';
        echo $outStr;
@@ -165,6 +167,60 @@ if($data) {
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div class="modal hide fade" id="edit-box2"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:600px;font-size:12px">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="editform" method="post" action="?">
+                    <table>
+                        <tbody><tr><td> <table class="item_edit_table"><tbody>
+                          <tr><td align="right">增加/减少:</td><td><select name="direction"><option value="1">减少</option><option value="0">增加</option></select></td></tr>
+                          <tr><td align="right">积分:</td><td><input type="text" id="us_score"  name="score"/></td></tr>
+                          <tr><td align="right">备注:</td><td><textarea id="us_remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
+
+                        </tbody></table></td></tr></tbody></table>
+                    <input type="hidden" name="mid" value="0" id="us_mid" >
+                    <input type="hidden" name="a" value="UpScore">
+                    <input type="hidden" name="c" value="Member">
+					<input type="hidden" name="pageUrl" value="<?=$pageUrl?>">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="savebtn">确认修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal hide fade" id="edit-box4"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:600px;font-size:12px">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="editform" method="post" action="?">
+                    <table>
+                        <tbody><tr><td> <table class="item_edit_table"><tbody>
+                          <tr><td align="right">增加/减少:</td><td><select name="direction"><option value="1">减少</option><option value="0">增加</option></select></td></tr>
+                          <tr><td align="right">余额:</td><td><input type="text" id="uc_score"  name="card"/></td></tr>
+                          <tr><td align="right">备注:</td><td><textarea id="uc_remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
+
+                        </tbody></table></td></tr></tbody></table>
+                    <input type="hidden" name="mid" value="0" id="uc_mid" >
+                    <input type="hidden" name="a" value="UpCard">
+                    <input type="hidden" name="c" value="Member">
+					<input type="hidden" name="pageUrl" value="<?=$pageUrl?>">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="savebtn">确认修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <div id="del-box" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -221,6 +277,23 @@ var setDataValue = function(id,col,val){
         }
    });
 }
+
+$(".btnUpScore").click(function(){
+    //data-mid="'.$v['id'].'" data-score
+    var mid   = $(this).attr("data-mid");
+    var score = $(this).attr("data-score");
+    $("#us_score").val(score);
+    $("#us_mid").val(mid);
+    art.dialog({title: '积分修改',width:"600px",content: $("#edit-box2").html()});
+});
+$(".btnUpCard").click(function(){
+    //data-mid="'.$v['id'].'" data-score
+    var mid   = $(this).attr("data-mid");
+    var score = $(this).attr("data-card");
+    $("#uc_card").val(score);
+    $("#uc_mid").val(mid);
+    art.dialog({title: '会员卡余额修改',width:"600px",content: $("#edit-box4").html()});
+});
 
 </script>
 </body>

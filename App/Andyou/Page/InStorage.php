@@ -57,7 +57,7 @@ class  Andyou_Page_InStorage  extends Andyou_Page_Abstract {
             }
         }
         $urlStr = "?c={$output->ctlName}";
-	    echo "<script>document.location='{$urlStr}';</script>";
+	    echo "<script>alert('Success!');document.location='{$urlStr}';</script>";
 		exit;
         
 	}
