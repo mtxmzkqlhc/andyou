@@ -109,7 +109,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $output->bid = $input->post("bid");
         
         $this->checkFromBill($input,$output);//验证订单
-        ;
+        
         
         
         $price = $output->billInfo["price"];
@@ -130,30 +130,35 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $minfo = Helper_Member::getMemberInfo(array(
             'phone'           => $Arr['phone'], #ID
         ));
-        if($minfo){
-            echo "该手机号，已经在使用了！";
-            exit;
-        }
         
-		$memberId = Helper_Dao::insertItem(array(
-            'addItem'       =>  $Arr, #数据列
-            'dbName'        =>  'Db_Andyou',    #数据库名
-            'tblName'       =>  'member',    #表名
-		));
+        $db = Db_Andyou::instance();
+        if($minfo){ //如果会员已经存在了，就将这个积分累加到现有用户上
+            $memberId = $minfo["id"];
+            
+            //更新积分
+            $sql = "update member set score = score + {$output->canGetScore} where id = {$memberId}";
+            $db->query($sql);
+        
+        }else{
+            $memberId = Helper_Dao::insertItem(array(
+                'addItem'       =>  $Arr, #数据列
+                'dbName'        =>  'Db_Andyou',    #数据库名
+                'tblName'       =>  'member',    #表名
+            ));
+        }
 		
         //更新账单，关联上用户ID
-        $db = Db_Andyou::instance();
         $bid = $output->billInfo["id"];
         $bno = $output->billInfo["bno"];
         
         $sql = "update bills set memberId = {$memberId} where id = {$bid} limit 1";
         $db->query($sql);
                 
-        $sql = "update billsitem set memberId = {$memberId} where id = {$bid}";
+        $sql = "update billsitem set memberId = {$memberId} where bid = {$bid}";
         $db->query($sql);
                 
         $urlStr = "?c={$output->ctlName}";
-	    echo "<script>document.location='{$urlStr}';</script>";
+	    echo "<script>document.location='?c=Bills';</script>";
 		exit;
         
     }
@@ -274,7 +279,15 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $Arr['score'] = $input->post('score');
         $Arr['balance'] = $input->post('balance');
         $Arr['remark'] = $input->post('remark');
-        
+         //查看该电话是否注册了
+        $minfo = Helper_Member::getMemberInfo(array(
+            'phone'           => $Arr['phone'], #ID
+        ));
+        $urlStr =  "?c={$output->ctlName}&t={$output->rnd}";
+        if($minfo){
+            echo "<script>alert('该手机号已经存在了！');document.location='?c=Member&phone={$Arr['phone']}';</script>";
+            exit;
+        }
 		$pageUrl = $input->request('pageUrl');
 		$data = Helper_Dao::insertItem(array(
 		        'addItem'       =>  $Arr, #数据列
@@ -282,7 +295,6 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 		        'tblName'       =>  'member',    #表名
 		));
 		/*backUrl*/
-        $urlStr = $pageUrl ? $pageUrl : "?c={$output->ctlName}&t={$output->rnd}";
 	    echo "<script>document.location='{$urlStr}';</script>";
 		exit;
 	}

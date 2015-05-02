@@ -215,9 +215,9 @@
         <td id="item_stafftd_${rowIdx}"><span style="color:#999999">同左边</span></td>
         <td><button class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></button>
             <span class="btn btn-small" onclick="proTblSetStaff(${rowIdx})" title="设置该商品的销售员"><i class="halflings-icon user white"></i></span>
-            <input type="hidden" value="${pro.id}" name="item_id[${rowIdx}]"/>
+            <input type="hidden" value="${pro.id}" name="item_id[${rowIdx}]" class="proTblItemIds" data-idx="${rowIdx}"/>
             <input type="hidden" value="0" name="item_staffid[${rowIdx}]" id="item_staff_${rowIdx}"/>  
-            <input type="hidden" value="${pro.oprice}" id="item_org_sprice_${rowIdx}" class="tblProOrgPrice"/>
+            <input type="hidden" value="${pro.oprice}" id="item_org_sprice_${rowIdx}" class="tblProOrgPrice" data-idx="${rowIdx}"/>
             <input type="hidden" value="${pro.oprice}" id="item_calc_sprice_${rowIdx}" class="tblProPrice"/>
         </td>            
     </tr>
@@ -355,7 +355,10 @@
         var sum = 0;
        //$(".tblProPrice").each(function(){
         $(".tblProOrgPrice").each(function(){
-            sum += $(this).val() - 0;
+            //商品数量
+            var idx = $(this).attr("data-idx");
+            var num = parseInt($("#item_num_"+idx).val())
+            sum += $(this).val()*num - 0;
         });
         $("#bill_sum_price").attr("trueprice",sum);
         $("#bill_sum_price").val((sum/100).toFixed(2));
@@ -451,6 +454,14 @@
             
             if(!$(this).val())$(this).val(0);
         }
+        //折扣进行了修改，设置以后添加的商品都是这个折扣    
+        if($(this).attr("id") == "bill_disc"){
+            if($(this).val() > 1){
+                $(this).val(1);
+            }
+            memberDisc = $(this).val();
+        }
+        
             
         calcBillSumInfo();
     });

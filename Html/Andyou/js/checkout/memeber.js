@@ -38,7 +38,8 @@ var doSearchMember = function(){
 
                 memberDisc = data.discount;//会员折扣
                 if(memberDisc > 1)memberDisc = 1;
-
+                    
+                 $("#bill_disc").val(memberDisc);
                 //先关按钮的显示
                 $("#removeMemInfo").show();
             }

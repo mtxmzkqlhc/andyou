@@ -9,17 +9,33 @@ var proJuicer  = juicer(proTableTr);
 var proTrIdx   = 0; //记录插入了第几行了
 var appendProTable = function(proInfo){
     var disc = memberDisc;
-    if(proInfo.discut && proInfo.discut > memberDisc){
-        disc = proInfo.discut;
+    //if(proInfo.discut && proInfo.discut > memberDisc){
+    //    disc = proInfo.discut;
+    //}
+    //检查该产品是否在表格中已经在存在了，如果已经存在了，只要完成数量+1就可以了
+    var hasSamePro = false;
+    if(proTrIdx > 0){
+        $(".proTblItemIds").each(function(){
+            var v = $(this).val();
+            if(v == proInfo.id){
+                var idx = $(this).attr("data-idx");
+                proTblAddNum(idx);
+                hasSamePro = true;
+                
+                proTblCalPrice(idx);//计算单行价格
+                return false;
+            }
+        })
     }
-    var data = {pro:proInfo,rowIdx:proTrIdx,memberDisc:disc};
-    var html = proJuicer.render(data);
-    if(proTrIdx == 0)$("#proListTbody").empty();
-    $("#proListTbody").append(html);
-    proTblCalPrice(proTrIdx);//计算单行价格
+    if(!hasSamePro){
+        var data = {pro:proInfo,rowIdx:proTrIdx,memberDisc:disc};
+        var html = proJuicer.render(data);
+        if(proTrIdx == 0)$("#proListTbody").empty();
+        $("#proListTbody").append(html);
+        proTblCalPrice(proTrIdx);//计算单行价格
+        proTrIdx++;
+    }
     calcBillSumInfo();//计算最后的订单价格
-    proTrIdx++;
-
     //显示清空商品的按钮
     $("#removeGoodsBtn").show();
 };
