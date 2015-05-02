@@ -13,9 +13,10 @@
     ?>
     <div style="text-align:center;padding-top:10px;">
         
-        <input type="text" value="2" id="pnum" size="4"/>份
+        打印<input type="text" value="2" id="pnum" size="2"/>份
         <input type="button" value="打印" onclick="print()" id="btnPrint"/>
         <input type="button" value="返回" onclick="goback()"/>
+        <a href="?c=Bills&a=DelBill&bid=<?=$bid?>&sn=<?=$bsn?>">取消该订单</a>
     </div>
     <div id="printDiv">
     <table align="center" width="100%">

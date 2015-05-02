@@ -155,6 +155,7 @@
                                 <input type="hidden" value="Checkout" name="c"/>
                                 <input type="hidden" value="Done" name="a"/>
                                 <input type="hidden" value="0" name="memberId" id="memberId"/>
+                                <input type="hidden" value="0" name="endSumModifyFlag" id="endSumModifyFlag"/>
                             </div>
                         </div>
                         <div class="box-r" style="width:750px;">
@@ -481,7 +482,10 @@
            proTblCalPrice(i);
         });
     });
-    
+    //监控应付价格是否有调整
+    $("#bill_end_sum").keyup(function(){
+        $("#endSumModifyFlag").val(1);
+    })
 //    var enterIn = function(evt){
 //        var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
 //        if (evt.keyCode==13){

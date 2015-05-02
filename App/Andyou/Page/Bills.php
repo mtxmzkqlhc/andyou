@@ -9,7 +9,7 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
      */
     public function validate(ZOL_Request $input, ZOL_Response $output){
 		$output->pageType = 'Bills';
-        $output->permission = array(1);//指定权限
+        $output->permission = array(0,1);//指定权限
         if (!parent::baseValidate($input, $output)) { return false; }
 		return true;
 	}
@@ -117,6 +117,26 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
 	    echo "<script>document.location='{$urlStr}';</script>";
 	    exit;
 	 }
+     //从Checkout删除订单
+     public function doDelBill(ZOL_Request $input, ZOL_Response $output){
+         $bid = (int)$input->get("bid");
+         $sn  = $input->get("sn");
+         if($sn == substr(md5($bid."HOOHAHA"), 0,10)){
+             
+            Helper_Dao::delItem(array(
+                    'dbName'  => 'Db_Andyou',#数据库名
+                    'tblName' => 'bills',#表名
+                    'where'   => 'id='.$bid,#更新条件
+            ));
+            Helper_Dao::delItem(array(
+                    'dbName'  => 'Db_Andyou',#数据库名
+                    'tblName' => 'billsitem',#表名
+                    'where'   => 'bid='.$bid,#更新条件
+            ));
+            echo "<script>alert('删除成功！');document.location='?c=Checkout';</script>";
+         }
+         exit;
+     }
     /**
      * 删除数据
      */
@@ -126,6 +146,11 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
                 'dbName'=> 'Db_Andyou',#数据库名
                 'tblName' => 'bills',#表名
                 'where'=> 'id='.$input->post('dataid'),#更新条件
+        ));;
+        Helper_Dao::delItem(array(
+                'dbName'  => 'Db_Andyou',#数据库名
+                'tblName' => 'billsitem',#表名
+                'where'   => 'bid='.$input->post('dataid'),#更新条件
         ));
 		$pageUrl = $input->request('pageUrl');
 		/*backUrl*/

@@ -9,7 +9,7 @@ class  Andyou_Page_BillsItem  extends Andyou_Page_Abstract {
      */
     public function validate(ZOL_Request $input, ZOL_Response $output){
 		$output->pageType = 'BillsItem';
-        $output->permission = array(1);//指定权限
+        $output->permission = array(0,1);//指定权限
         if (!parent::baseValidate($input, $output)) { return false; }
 		return true;
 	}

@@ -78,6 +78,17 @@ return array(
             ),
         ),
     ),
+    '消费记录' => array(
+        'permission' => array(0),
+        'icon' => 'inbox',
+        'items' => array(
+            '消费订单' => array(
+                'url' => '?c=Bills',
+                'ctrl' => 'Bills',
+                'target' => '_self',
+            ),
+        ),
+    ),
     '财务管理' => array(
         'permission' => array(1),
         'icon' => 'inbox',

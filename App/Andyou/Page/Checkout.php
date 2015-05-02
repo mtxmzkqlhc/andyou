@@ -39,6 +39,8 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $itemNumArr  = $input->post("item_num");//所有产品产品数量
         $staffid     = (int)$input->post("staffid");//员工
         $remark      = $input->post("remark");//填写的备注
+        $endSumModifyFlag = (int)$input->post("endSumModifyFlag");//是否手工调整了最总价格
+        $endBillPrice = $billInfo["bill_end_sum"]; //最终的价格，这个价格是可以修改的
         
         //----------------------
         //获得会员信息
@@ -124,7 +126,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         }*/
         
         //获得订单的信息
-        $sumPriceAftDisc = round($sumPriceAftDisc/100)*100; //金额的四舍五入
+        $sumPriceAftDisc = round($sumPriceAftDisc/100)*100; //金额的四舍五入        
         $billDetail = array(
             'useScore' => $useScore,
             'useScoreAsMoney' => round($scoreMoney/100,2),
@@ -141,6 +143,15 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             'memberCard'      => $memberCard,
             'remark'          => $remark,
         );
+        
+        //如果销售眼前台修改了应收款，不是计算出来的，就记录
+        if($endSumModifyFlag){
+           if($sumPriceAftDisc != $endBillPrice){
+               $billDetail["priceTrue"] = $billDetail["price"];
+               $billDetail["price"]     = $endBillPrice*100;//使用销售员修改的
+               
+           } 
+        }
         
         //积分的重新计算
         //         =  积分剩余额                                    +  实际消费产品的积分
@@ -209,6 +220,8 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         
          //准备进入打印页面
         $output->bno          = $bno;
+        $output->bid          = $bid;
+        $output->bsn          = substr(md5($bid."HOOHAHA"), 0,10);
         $output->billDetail   = $billDetail;
         $output->proInfoArr   = $proInfoArr;
         $output->memLeftInfo  = $memLeftInfo;
