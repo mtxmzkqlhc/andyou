@@ -106,6 +106,10 @@ return array(
                 'url' => '?c=Options',
                 'ctrl' => 'Options'
             ),
+            '数据备份' => array(
+                'url' => '?c=Data&a=BackUp',
+                'ctrl' => 'BackUp'
+            ),
         ),
     ),
 );

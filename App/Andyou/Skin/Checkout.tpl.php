@@ -39,7 +39,7 @@
                         <div class="box-l clearfix">
                             <dl>
                                 <dt>会员电话</dt>
-                                <dd><input type="text" value="13512026125" id="memberPhone"><span class="btn btn-mini" title="查询用户" id="searchMemBtn"><i class="halflings-icon search white"></i></span>
+                                <dd><input type="text" value="" id="memberPhone"><span class="btn btn-mini" title="查询用户" id="searchMemBtn"><i class="halflings-icon search white"></i></span>
                                 </dd>
                             </dl><dl>
                                 <dt>&nbsp;</dt>
@@ -158,7 +158,7 @@
                             </div>
                         </div>
                         <div class="box-r" style="width:750px;">
-                            <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="12345678890233232" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
+                            <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
                                 <span class="btn btn-mini btn-info" title="设置折扣" id="setDiscBtn" style="display:none;"><i class="halflings-icon th-list white"></i>设置折扣</span>
                                 <span class="btn btn-mini btn-info" title="清空所有已选择的商品" id="removeGoodsBtn" style="display:none;"><i class="halflings-icon th-list white"></i>清空商品</span>
                             </div>
