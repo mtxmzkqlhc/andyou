@@ -4,7 +4,8 @@
 	<meta charset="GBK" />
 	<title>打印</title>
     <style>
-        #printDiv{width:400px;margin:10px auto;}
+        *{margin:0px;padding:0px;}
+        #printDiv{margin:auto;font-size:12px;}
     </style>
 </head>
 <body>
@@ -23,7 +24,7 @@
         <tr><td colspan="9">&nbsp;</td></tr>
         <tr><td colspan="9" style="font-weight: bold" align="center"><?=$sysName?></td></tr>
         <tr><td colspan="9" align="center"><?=$sysCfg['PrintSubTitle']["value"] ?></td></tr>
-        <tr><td>销售单号</td><td>No.<?=$bno?></td></tr>
+        <tr><td>销售单号</td><td style="font-size:11px;">No.<?=$bno?></td></tr>
         <tr><td colspan="9">&nbsp;</td></tr>
         <?php
         if($memberInfo){
@@ -34,8 +35,8 @@
             <tr><td colspan="9">&nbsp;</td></tr>
         <?php }?>
     </table>
-    
-    <table align="center" width="100%">
+    <!--
+    <table align="center" width="100%" style="font-size:12px;">
         <tr><td>商品</td><td>单价</td><td>数量</td><td>合计</td></tr>
         <?php
             if($proInfoArr){
@@ -63,11 +64,10 @@
         <tr><td>商品数量：</td><td align="right"><?=count($proInfoArr)?></td></tr>
         <tr><td>应收金额合计：</td><td align="right">￥<?=$orgSumPrice/100?></td></tr>
         <?php  if($memberInfo){  ?>
-        <!-- <tr><td>积分抵扣金额：</td><td>￥<?=$billDetail["useScoreAsMoney"]?></td></tr> -->
+      
         <tr><td>卡内支付金额：</td><td align="right">￥<?=$billDetail["useCard"]?></td></tr>
         <?php }?>
         <tr><td>本次折扣：</td><td align="right"><?=$billDetail["discount"]?></td></tr>
-        <!-- <tr><td>打折的优惠金额：</td><td align="right">￥<?=$discGetMoney/100?></td></tr> -->
         
         <tr><td>本次实付金额：</td><td align="right">￥<?=$billDetail["price"]/100?></td></tr>
         <?php  if($memberInfo){  ?>
@@ -81,15 +81,8 @@
         <tr><td colspan="9" align="center">谢谢光临，我们将竭诚为您服务！</td></tr>
         <tr><td colspan="9">&nbsp;</td></tr>
         <tr><td colspan="9">&nbsp;</td></tr>
-    </table>
+    </table>-->
     </div>
-    <pre style="display:none">
-        <?php
-            print_r($billDetail);
-            print_r($proInfoArr);
-            print_r($memLeftInfo);
-        ?>
-    </pre>
 <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
 <script src="js/jquery.jqprint.js" type="text/javascript"></script>
     <script>

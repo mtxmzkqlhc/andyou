@@ -42,6 +42,10 @@ var doSearchMember = function(){
                  $("#bill_disc").val(memberDisc);
                 //先关按钮的显示
                 $("#removeMemInfo").show();
+                
+                //计算一下金额
+                refreshRightTbl();
+                calcBillSumInfo();
             }
         });
     }else{
@@ -69,6 +73,9 @@ var removeMemInfo = function(){
 
     //先关按钮的隐藏
     $("#removeMemInfo").hide();
+    //计算一下金额
+    refreshRightTbl();
+    calcBillSumInfo();
 
 }
 //清除会员信息

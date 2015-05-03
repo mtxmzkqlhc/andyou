@@ -74,7 +74,7 @@
     
             <!--   账单部分     -->
     
-            <form method="POST" action="?" onsubmit="return doCheckIpt()">
+            <form method="POST" action="?" onsubmit="return doCheckIpt()" onkeydown="if(event.keyCode==13)return false;" >
 			<div class="row-fluid">
                 
                 <div class="box">
@@ -95,7 +95,7 @@
                                 <dt>总金额</dt>
                                 <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" trueprice="0" /></dd>
                             </dl>
-                            <dl class="clearfix memextinfo">
+                            <dl class="clearfix" style="display:none;">
                                 <dt>使用积分</dt>
                                 <dd><input type="text" value="0" id="bill_member_score" class="billIptChg" readonly="true" name="bill[bill_member_score]">
                                    <span style="color:#999999;padding-bottom:5px;" id="scoreToMoneyNote"></span>
@@ -469,18 +469,23 @@
     
     
     
+    
     //------------------------------------
     //  左侧操作区
     //------------------------------------
-    $("#bill_disc").blur(function(){//左侧折扣修改页面
-        var v = $(this).val();
-        //修改右侧所有表格内产品的折扣
+    //左侧区域重新计算
+    var refreshRightTbl = function(){
+        var v = $("#bill_disc").val();
         $(".tblProDisc").each(function(){
            $(this).val(v);
            var i = $(this).attr("data-idx");
            //计算每行的价格
            proTblCalPrice(i);
         });
+    }
+    //修改总折扣
+    $("#bill_disc").blur(function(){//左侧折扣修改页面
+        refreshRightTbl();
     });
     //监控应付价格是否有调整
     $("#bill_end_sum").keyup(function(){

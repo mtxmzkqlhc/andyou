@@ -63,6 +63,7 @@ var boxSelectPro = function(pid){
         appendProTable(proInfo);
     }
     if(selectProBoxDlg != null)selectProBoxDlg.close();
+    $("#proBarCode").focus(); 
 }
 
 //批量设置折扣
@@ -122,6 +123,7 @@ var doSearchPro = function(){
                 alert("该商品未入库");
             }
         });
+        $("#proBarCode").val("");
     }
 }
 

@@ -133,7 +133,7 @@
 </script>
 <script>
    
-   
+ $("#proBarCode").focus();   
 //条形码扫描
 var selectProBoxDlg = null;
 var selectProBoxData = []; //保存已经存储产品数组
@@ -160,12 +160,13 @@ var doSearchPro = function(){
                     appendSelectProTable(data.data,data.num)
                     selectProBoxDlg = art.dialog({title: '请选择商品',width:"600px",content: $("#add-pro-box").html()});
                 }else{
-                    //alert("该商品未入库");
+                    alert("该商品未入库");
                 }
             }else{
-                //alert("该商品未入库");
+                alert("该商品未入库");
             }
         });
+        $("#proBarCode").val("");
     }
 }
 
@@ -206,6 +207,7 @@ var boxSelectPro = function(pid){
         appendProTable(proInfo);
     }
     if(selectProBoxDlg != null)selectProBoxDlg.close();
+    $("#proBarCode").focus(); 
 }  
    
    

@@ -32,7 +32,7 @@ class  Andyou_Page_Data  extends Andyou_Page_Abstract {
                 foreach ($res as $re){
                     if(!$keys){
                         $keys = array_keys ($re);
-                        $sqlTxt .=  "('".  implode("','", $keys)."') values \n";
+                        $sqlTxt .=  "(".  implode(",", $keys).") values \n";
                     }
                     $sqlTxt .= $comma . "('" .  implode("','",$re) ."')\n";
                     $comma = ",";
