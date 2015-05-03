@@ -4,42 +4,98 @@
 	<meta charset="GBK" />
 	<title>打印</title>
     <style>
-        *{margin:0px;padding:0px;}
-        #printDiv{margin:auto;font-size:12px;}
+        
     </style>
 </head>
 <body>
     <?php
     error_reporting(0);
     ?>
-    <div style="text-align:center;padding-top:10px;">
+    <div style="text-align:center;padding:50px 0;margin:40px auto;width:500px;border:1px solid #cccccc;">
         
         打印<input type="text" value="2" id="pnum" size="2"/>份
-        <input type="button" value="打印" onclick="print()" id="btnPrint"/>
-        <input type="button" value="返回" onclick="goback()"/>
+        <input type="button" value="打印小票" onclick="print()" id="btnPrint"/>
+        <br/><br/>
+        <a href="?c=Checkout">返回继续收银</a> | 
         <a href="?c=Bills&a=DelBill&bid=<?=$bid?>&sn=<?=$bsn?>">取消该订单</a>
     </div>
-    <div id="printDiv">
-    <table align="center" width="100%">
-        <tr><td colspan="9">&nbsp;</td></tr>
-        <tr><td colspan="9" style="font-weight: bold" align="center"><?=$sysName?></td></tr>
-        <tr><td colspan="9" align="center"><?=$sysCfg['PrintSubTitle']["value"] ?></td></tr>
-        <tr><td>销售单号</td><td style="font-size:11px;">No.<?=$bno?></td></tr>
-        <tr><td colspan="9">&nbsp;</td></tr>
+<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script src="js/LodopFuncs.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript"> 
+   var LODOP; //声明为全局变量
+   var iTop = 0;
+   var pageWidth = "48mm";
+   var txtLineHeight = 16;
+	function MyPreview() {	
+		LODOP=getLodop();  
+		LODOP.PRINT_INIT("打印");
+		createContent();
+        var pnum = $("#pnum").val();
+        if(pnum != 1){
+            iTop += 50;
+            createContent();
+        }
+		LODOP.SET_PRINT_PAGESIZE(3,580,45,"");//这里3表示纵向打印且纸高“按内容的高度”；1385表示纸宽138.5mm；45表示页底空白4.5mm
+		//LODOP.PREVIEW();	
+		LODOP.PRINT();	
+	};
+    
+	function createContent(){	
+        
+        //顶部
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,20,"<?=$sysName?>");
+		LODOP.SET_PRINT_STYLEA(0,"FontSize",9);
+		LODOP.SET_PRINT_STYLEA(0,"Bold",1);
+		LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
+        //欢迎词
+        iTop += 20;
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"<?=$sysCfg['PrintSubTitle']["value"] ?>");
+		LODOP.SET_PRINT_STYLEA(0,"FontSize",8);
+		LODOP.SET_PRINT_STYLEA(0,"Bold",0);
+		LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
+        
+        //销售单号
+        iTop += txtLineHeight;
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"销售单号：No.<?=$bno?>");
+        
+        
+        //会员信息
         <?php
+        
         if($memberInfo){
+            $txtArr = array(
+                "会员类型：".$memberInfo["cateName"],
+            );
+            if(!empty($memLeftInfo["score"])){
+                $txtArr[] = "会员积分：". $memLeftInfo["score"];
+            }
+            if(!empty($memLeftInfo["balance"])){
+                $txtArr[] = "卡内余额：￥". $memLeftInfo["balance"];
+            }
+            $i = 4;
+            foreach ($txtArr as $txt){
+                echo "iTop += txtLineHeight;
+                LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,'{$txt}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);
+                ";
+                
+            }
+            
+        }
         ?>
-            <tr><td>会员类型</td><td><?=$memberInfo["cateName"]?></td></tr>
-            <tr><td>会员积分</td><td><?=empty($memLeftInfo["score"])? 0 : $memLeftInfo["score"]?></td></tr>
-            <tr><td>卡内余额</td><td>￥<?=empty($memLeftInfo["balance"])?0 : $memLeftInfo["balance"]?></td></tr>
-            <tr><td colspan="9">&nbsp;</td></tr>
-        <?php }?>
-    </table>
-    <!--
-    <table align="center" width="100%" style="font-size:12px;">
-        <tr><td>商品</td><td>单价</td><td>数量</td><td>合计</td></tr>
+               
+        iTop += 10;
+        
+        
+        //底部
         <?php
-            if($proInfoArr){
+        
+             if($proInfoArr){
+                 echo "iTop += txtLineHeight;"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,0,40,txtLineHeight,'品名');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,40,50,txtLineHeight,'单价');LODOP.SET_PRINT_STYLEA(0,'FontSize',8); "
+                         . "LODOP.ADD_PRINT_TEXT(iTop,90,40,txtLineHeight,'数量');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,130,60,txtLineHeight,'合计');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
                 $proArr = array();
                 foreach($proInfoArr as $proInfo){
                     $proId = $proInfo["proId"];
@@ -52,48 +108,66 @@
                         $proName = $proArr[$proId]["name"];
                         $proPrice = $proArr[$proId]["price"];
                     }
-                    echo "<tr><td colspan='9'>{$proName}</td></tr>";
-                    echo "<tr><td>&nbsp;</td><td>{$proPrice}</td><td>{$proInfo["num"]}</td><td>".($proPrice*$proInfo["num"])."</td></tr>";//<td>".($proInfo["price"]/100)."</td>
+                    echo "iTop += txtLineHeight;LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,'{$proName}'); LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
+                    //echo "<tr><td colspan='9'>{$proName}</td></tr>";
+                    echo "iTop += txtLineHeight;"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,40,50,txtLineHeight,'{$proPrice}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,90,30,txtLineHeight,'{$proInfo["num"]}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8); "
+                         . "LODOP.ADD_PRINT_TEXT(iTop,130,60,txtLineHeight,'".($proPrice*$proInfo["num"])."');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
+                    //echo "<tr><td>&nbsp;</td><td>{$proPrice}</td><td>{$proInfo["num"]}</td><td>".($proPrice*$proInfo["num"])."</td></tr>";//<td>".($proInfo["price"]/100)."</td>
                 }
             }
-        ?>
-    </table>
-    <table align="center"  width="100%">
-        <tr><td colspan="9">&nbsp;</td></tr>
+            echo "iTop += 10;  ";
         
-        <tr><td>商品数量：</td><td align="right"><?=count($proInfoArr)?></td></tr>
-        <tr><td>应收金额合计：</td><td align="right">￥<?=$orgSumPrice/100?></td></tr>
-        <?php  if($memberInfo){  ?>
-      
-        <tr><td>卡内支付金额：</td><td align="right">￥<?=$billDetail["useCard"]?></td></tr>
-        <?php }?>
-        <tr><td>本次折扣：</td><td align="right"><?=$billDetail["discount"]?></td></tr>
+       
+            $txtArr = array(
+                "商品数量："=>count($proInfoArr),
+                "应收金额合计："=>"￥".($orgSumPrice/100),
+            );
+            if($memberInfo && $billDetail["useCard"]){
+                $txtArr["卡内支付金额："] =  $billDetail["useCard"];
+            }
+            $txtArr["本次折扣："] =  $billDetail["discount"];
+            $txtArr["本次实付金额："] = "￥".($billDetail["price"]/100);
+            
+            if($memberInfo){
+                $txtArr["获得积分："] = $newScore;
+            }
+            $txtArr["销售员："] = $staffName;
+            foreach ($txtArr as $key => $txt){
+                echo "iTop += txtLineHeight;LODOP.ADD_PRINT_TEXT(iTop,0,100,txtLineHeight,'{$key}');LODOP.SET_PRINT_STYLEA(0,'Alignment',1);LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                . "LODOP.ADD_PRINT_TEXT(iTop,100,70,txtLineHeight,'{$txt}');LODOP.SET_PRINT_STYLEA(0,'Alignment',3);LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
+                
+            }
+         ?>
+                 
+        iTop += txtLineHeight;
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"出单时间：<?=date("Y-m-d H:i",$billDetail["tm"])?>");
+		LODOP.SET_PRINT_STYLEA(0,'FontSize',8);
+        //底部
+        iTop += txtLineHeight+10;
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"<?=$sysCfg['PrintEndTitle']["value"] ?>");
+		LODOP.SET_PRINT_STYLEA(0,"FontSize",8);
+		LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
         
-        <tr><td>本次实付金额：</td><td align="right">￥<?=$billDetail["price"]/100?></td></tr>
-        <?php  if($memberInfo){  ?>
-        <tr><td>获得积分：</td><td align="right"><?=$newScore?></td></tr>
-        <?php }?>
-        <tr><td colspan="9">&nbsp;</td></tr>
+        iTop += txtLineHeight;
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"谢谢光临，我们将竭诚为您服务！");
+		LODOP.SET_PRINT_STYLEA(0,'FontSize',8);
+		LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
         
-        <tr><td>销售员：</td><td align="right"><?=$staffName?></td></tr>
-        <tr><td>出单时间：</td><td align="right"><?=date("Y-m-d H:i",$billDetail["tm"])?></td></tr>
-        <tr><td colspan="9" align="center" style="padding-top:8px;"><?=$sysCfg['PrintEndTitle']["value"] ?></td></tr>
-        <tr><td colspan="9" align="center">谢谢光临，我们将竭诚为您服务！</td></tr>
-        <tr><td colspan="9">&nbsp;</td></tr>
-        <tr><td colspan="9">&nbsp;</td></tr>
-    </table>-->
-    </div>
-<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
-<script src="js/jquery.jqprint.js" type="text/javascript"></script>
+        
+	};	
+</script> 
     <script>
         //printDiv
     var print = function(){
-        var pnum = $("#pnum").val();
-        if(pnum != 1){
-            $("#printDiv").append($("#printDiv").html());
-        }
-        $("#btnPrint").val("打印中...");
-        $("#printDiv").jqprint();
+//        var pnum = $("#pnum").val();
+//        if(pnum != 1){
+//            $("#printDiv").append($("#printDiv").html());
+//        }
+        $("#btnPrint").val("打印中!...");
+        //$("#printDiv").jqprint();
+        MyPreview();
     }
     
     var goback = function(){

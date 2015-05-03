@@ -107,12 +107,12 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             
             $useCardFlag = true;
         }
-        /*
-         * 先不用会员积分了
         //会员积分计算
         $sysOptions = Helper_Option::getAllOptions();        
         $scoreRatio = !empty($sysOptions["ScoreRatio"]) ? $sysOptions["ScoreRatio"]["value"] : 0;
         $useScore   = (int)$billInfo["bill_member_score"];
+        /*
+         * 先不用会员积分了
         if($sumPriceAftDisc && $memberScore && $billInfo["bill_member_score"]){
             $useScore = min($memberScore,$billInfo["bill_member_score"]);//需要花多少积分，避免比用户的积分还多
             
@@ -232,7 +232,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $output->discGetMoney = $discGetMoney; //折扣省下的钱
         $output->orgSumPrice  = $orgSumPrice; //原始总价
         $output->newScore     = (int)(($billDetail['useCard'] + ($billDetail['price']/100)) * $scoreRatio);//获得的积分
-        
+              
 		$output->setTemplate('BillPrint');
         
         
