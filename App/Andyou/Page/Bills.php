@@ -24,6 +24,16 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
 		$output->serbno = $wArr['bno'] = $input->get('bno');
         $output->serstaffid = $wArr['staffid'] = $input->get('staffid');
         $output->sermemberId = $wArr['memberId'] = $input->get('memberId');
+        $output->sermemberPhone  = $input->get('memberPhone');
+        
+        //如果传入了会员电话
+        if($output->sermemberPhone){
+            $memInfo = Helper_Member::getMemberInfo(array('phone'=>$output->sermemberPhone));
+            if($memInfo){
+                $output->sermemberId = $wArr['memberId'] = (int)$memInfo["id"];
+            }
+        }
+        
         
 	    if(!empty ($wArr)){
 		    foreach($wArr as $k=>$v){
@@ -34,7 +44,7 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
                 }    
 		    }
 		}
-		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&bno={$wArr['bno']}&staffid={$wArr['staffid']}&memberId={$wArr['memberId']}";
+		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&bno={$wArr['bno']}&staffid={$wArr['staffid']}&memberPhone=$output->sermemberPhone";
 		$pageSize = 30;
 		$orderSql = "order by id desc";
 		

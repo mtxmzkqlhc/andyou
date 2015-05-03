@@ -200,7 +200,7 @@ if($data) {
                 <form id="editform" method="post" action="?">
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
-                          <tr><td align="right">增加/减少:</td><td><select name="direction"><option value="1">减少</option><option value="0">增加</option></select></td></tr>
+                          <tr><td align="right">增加/减少:</td><td><select name="direction"><option value="0">增加</option><option value="1">减少</option></select></td></tr>
                           <tr><td align="right">金额:</td><td><input type="text" id="uc_score"  name="card"/></td></tr>
                           <tr><td align="right">备注:</td><td><textarea id="uc_remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
 

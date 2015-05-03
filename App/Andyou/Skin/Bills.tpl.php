@@ -27,7 +27,7 @@
         
     }?>
 </select>
-会员ID:<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sermemberId?>" name="memberId" placeholder="会员ID">
+会员ID:<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sermemberPhone?>" name="memberPhone" placeholder="会员ID">
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    
 				    <!-- 列表 -->

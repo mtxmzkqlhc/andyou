@@ -15,7 +15,7 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="ProductCate" name="c">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="名称">
+名称:<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="名称">
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    
 				    <!-- 列表 -->
