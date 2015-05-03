@@ -15,7 +15,8 @@ $("#searchMemBtn").click(function(){
 var doSearchMember = function(){
     var phone = $("#memberPhone").val();
     if(phone){
-        var url = "?c=Ajax_Member&a=GetMemberByPhone&phone=" + phone;
+        var t = Date.parse(new Date()); 
+        var url = "?c=Ajax_Member&a=GetMemberByPhone&phone=" + phone+"&t="+t;
         $.getJSON(url,{},function(data){
             if(data){
                 var bls = data.balance ? data.balance : 0;

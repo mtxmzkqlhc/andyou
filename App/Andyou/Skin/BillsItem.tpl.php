@@ -15,11 +15,11 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="BillsItem" name="c">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$serbid?>" name="bid" placeholder="订单ID">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$serbno?>" name="bno" placeholder="单号">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$serproId?>" name="proId" placeholder="产品ID">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$serstaffid?>" name="staffid" placeholder="员工">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sermemberId?>" name="memberId" placeholder="会员">
+订单ID：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$serbid?>" name="bid" placeholder="订单ID">
+单号：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$serbno?>" name="bno" placeholder="单号">
+产品ID：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$serproId?>" name="proId" placeholder="产品ID">
+员工：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$serstaffid?>" name="staffid" placeholder="员工">
+会员：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sermemberId?>" name="memberId" placeholder="会员">
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    
 				    <!-- 列表 -->

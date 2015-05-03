@@ -15,7 +15,7 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="AdminUser" name="c">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$seruserId?>" name="userId" placeholder="用户名">
+<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$seruserId?>" name="userId" placeholder="用户名">
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    
 				    <!-- 列表 -->

@@ -30,10 +30,7 @@
                 <div class="box">
 					<div class="box-header">
 						<h2><i class="halflings-icon list-alt"></i><span class="break"></span>会员信息</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
-						</div>
+						
 					</div>
                     <div class="box-content clearfix">
                         <div class="box-l clearfix">
@@ -79,11 +76,7 @@
                 
                 <div class="box">
 					<div class="box-header">
-						<h2><i class="halflings-icon list-alt"></i><span class="break"></span>账单信息</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
-						</div>
+						<h2><i class="halflings-icon list-alt"></i><span class="break"></span>消费信息</h2>
 					</div>
                     <div class="box-content clearfix" id="billContent">
                         <div class="box-l clearfix">
@@ -227,7 +220,7 @@
 <script id="proSelectTableTr" type="text/template">
      {@each list as pro,index}
             <tr>
-                <td>${pro.name}</td><td>${pro.stock}</td><td>${pro.price}</td>
+                <td onclick="boxSelectPro(${pro.id})">${pro.name}</td><td>${pro.stock}</td><td>${pro.price}</td>
                 <td style="width:80px;"><span class="btn btn-small btn-info" onclick="boxSelectPro(${pro.id})"><i class="halflings-icon ok white "></i>选择</span>                      
                 </td> 
             </tr>
@@ -238,7 +231,7 @@
 <script>
     var scoreRatio = <?=$scoreRatio?>;
     var memberDisc = 1;//会员折扣价
-    $("#proBarCode").focus(); 
+    $("#memberPhone").focus(); 
     //积分转换价格
     var scoreToMoney = function(score){
         var rule = <?=$scoreRatio?>; //300分 = 10元
@@ -262,6 +255,8 @@
     //最后的提交验证
     var doCheckIpt = function(){
         
+       
+        
         //是否选择商品的验证
         var rightRows = $(".item_row_tr").size();
         if(rightRows < 1){
@@ -283,6 +278,9 @@
             return false;
         }
         
+         if(!confirm("是否确认收费")){
+            return false;
+        }
         
         return true;
     }

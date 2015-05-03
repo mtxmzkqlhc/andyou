@@ -15,8 +15,8 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="Member" name="c">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="姓名">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$serphone?>" name="phone" placeholder="手机号">
+姓名：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name">
+手机号：<input style="width:120px;height:25px;" class="spanmalt10" type="text" value="<?=$serphone?>" name="phone">
 <select name="cateId">
     <option value="0">所有分类</option>
     <?php
@@ -53,7 +53,7 @@ if($data) {
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnMember"><i class="halflings-icon white edit"></i></a>
        <a title="修改积分" class="btn btn-info btnUpScore" style="color:#ffffff;" data-mid="'.$v['id'].'" data-score="'.$v['score'].'">积分</a>
-       <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">会员卡</a>
+       <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">会员充值</a>
        <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a>　--></td>';
        $outStr.='</tr>';
        echo $outStr;
@@ -82,7 +82,7 @@ if($data) {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">添加数据</h4>
+                <h4 class="modal-title">添加会员</h4>
             </div>
             <div class="modal-body">
                 <form id="addform" method="post" action="?">
@@ -187,7 +187,6 @@ if($data) {
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" id="savebtn">确认修改</button>
             </div>
         </div><!-- /.modal-content -->
@@ -202,7 +201,7 @@ if($data) {
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
                           <tr><td align="right">增加/减少:</td><td><select name="direction"><option value="1">减少</option><option value="0">增加</option></select></td></tr>
-                          <tr><td align="right">余额:</td><td><input type="text" id="uc_score"  name="card"/></td></tr>
+                          <tr><td align="right">金额:</td><td><input type="text" id="uc_score"  name="card"/></td></tr>
                           <tr><td align="right">备注:</td><td><textarea id="uc_remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
 
                         </tbody></table></td></tr></tbody></table>
@@ -213,7 +212,6 @@ if($data) {
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" id="savebtn">确认修改</button>
             </div>
         </div><!-- /.modal-content -->

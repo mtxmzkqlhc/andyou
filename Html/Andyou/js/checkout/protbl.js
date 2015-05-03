@@ -104,7 +104,8 @@ var doSearchPro = function(){
 
     var barcode = $("#proBarCode").val();
     if(barcode){//doGetProductByCode
-        var url = "?c=Ajax_Product&a=GetProductByCode&code=" + barcode;
+        var t = Date.parse(new Date()); 
+        var url = "?c=Ajax_Product&a=GetProductByCode&code=" + barcode+"&t="+t;
         $.getJSON(url,{},function(data){
             if(data){
 

@@ -208,7 +208,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 		        'dbName'        =>  'Db_Andyou',    #数据库名
 		        'tblName'       =>  'log_scorechange',    #表名
 		));
-        echo "<script>alert('Success!');document.location='{$urlStr}';</script>";
+        echo "<script>alert('会员积分修改成功!');document.location='{$urlStr}';</script>";
         exit;
         
     }
@@ -259,7 +259,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 		        'dbName'        =>  'Db_Andyou',    #数据库名
 		        'tblName'       =>  'log_cardchange',    #表名
 		));
-        echo "<script>alert('Success!');document.location='{$urlStr}';</script>";
+        echo "<script>alert('会员卡余额修改成功!');document.location='{$urlStr}';</script>";
         exit;
         
     }

@@ -15,8 +15,8 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="Options" name="c">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="配置项名">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sercnName?>" name="cnName" placeholder="配置中文名">
+<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="配置项名">
+<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sercnName?>" name="cnName" placeholder="配置中文名">
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    
 				    <!-- 列表 -->

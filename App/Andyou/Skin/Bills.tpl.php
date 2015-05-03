@@ -15,7 +15,7 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="Bills" name="c">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$serbno?>" name="bno" placeholder="单号">
+单号:<input style="width:100px;height:25px;;" class="spanmalt10" type="text" value="<?=$serbno?>" name="bno" placeholder="单号">
 <select name="staffid">
     <option value="0">所有员工</option>
     <?php
@@ -27,14 +27,14 @@
         
     }?>
 </select>
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sermemberId?>" name="memberId" placeholder="会员ID">
+会员ID:<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sermemberId?>" name="memberId" placeholder="会员ID">
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    
 				    <!-- 列表 -->
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>单号</th><th>商品总价</th><th>折扣</th><th>使用会员卡</th><th>收款</th><th>员工</th><th>消费时间</th><th>会员ID</th><th>备注</th><th>操作</th>
+<th>单号</th><th>商品总价</th><th>折扣</th><th>消费卡内余额</th><th>收款</th><th>员工</th><th>消费时间</th><th>会员ID</th><th>备注</th><th>操作</th>
 </tr>
 </thead>
 <tbody>

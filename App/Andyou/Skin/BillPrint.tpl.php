@@ -12,12 +12,14 @@
     error_reporting(0);
     ?>
     <div style="text-align:center;padding:50px 0;margin:40px auto;width:500px;border:1px solid #cccccc;">
-        
+        小票打印中...
+        <!--
         打印<input type="text" value="2" id="pnum" size="2"/>份
         <input type="button" value="打印小票" onclick="print()" id="btnPrint"/>
         <br/><br/>
         <a href="?c=Checkout">返回继续收银</a> | 
         <a href="?c=Bills&a=DelBill&bid=<?=$bid?>&sn=<?=$bsn?>">取消该订单</a>
+        -->
     </div>
 <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
 <script src="js/LodopFuncs.js" type="text/javascript"></script>
@@ -26,7 +28,7 @@
    var LODOP; //声明为全局变量
    var iTop = 0;
    var pageWidth = "48mm";
-   var txtLineHeight = 16;
+   var txtLineHeight = 15;
 	function MyPreview() {	
 		LODOP=getLodop();  
 		LODOP.PRINT_INIT("打印");
@@ -58,6 +60,7 @@
         //销售单号
         iTop += txtLineHeight;
 		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"销售单号：No.<?=$bno?>");
+		LODOP.SET_PRINT_STYLEA(0,"FontSize",8);
         
         
         //会员信息
@@ -157,6 +160,10 @@
         
         
 	};	
+    MyPreview();
+    setTimeout(function(){
+         window.location.href = "?c=Checkout";
+    },2000);
 </script> 
     <script>
         //printDiv

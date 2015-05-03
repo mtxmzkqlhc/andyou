@@ -15,8 +15,8 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="Product" name="c">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sercode?>" name="code" placeholder="条码">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="商品名">
+条码：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sercode?>" name="code" placeholder="条码">
+商品名：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="商品名">
 <select name="cateId">
     <option value="0">所有分类</option>
     <?php

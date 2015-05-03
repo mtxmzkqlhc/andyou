@@ -14,8 +14,8 @@
                 	 <!-- 搜索 -->
 				     <div class="row-fluid">
 <form id="serform" method="get">
-<input type="hidden" value="Staff" name="c">
-<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="姓名">
+姓名：<input type="hidden" value="Staff" name="c">
+<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="姓名">
 <select name="cateId">
     <option value="0">所有分类</option>
     <?php

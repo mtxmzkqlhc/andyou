@@ -63,6 +63,7 @@ return array(
         ),
     ),
     '员工管理' => array(
+        'class' => 'open2',
         'permission' => array(1),
         'icon' => 'sitemap',
         'items' => array(
@@ -79,6 +80,7 @@ return array(
         ),
     ),
     '消费记录' => array(
+        'class' => 'open2',
         'permission' => array(0),
         'icon' => 'inbox',
         'items' => array(
@@ -89,7 +91,8 @@ return array(
             ),
         ),
     ),
-    '财务管理' => array(
+    '查询统计' => array(
+        'class' => 'open2',
         'permission' => array(1),
         'icon' => 'inbox',
         'items' => array(
@@ -106,6 +109,7 @@ return array(
         ),
     ),
     '系统管理' => array(
+        'class' => 'open2',
         'permission' => array(1),
         'icon' => 'user-md',
         'items' => array(
