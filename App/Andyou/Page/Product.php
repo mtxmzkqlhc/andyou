@@ -78,6 +78,7 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
         $Arr['stock']   = $input->post('stock');
         $Arr['score']   = $input->post('score');
         $Arr['discut']  = $input->post('discut');
+        $Arr['canByScore']  = (int)$input->post('canByScore');
         $Arr['addtm']  = SYSTEM_TIME;
         
         //产品报价，保存以分为单位的价格
@@ -110,6 +111,7 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
         $input->request('stock')!=''?$Arr['stock'] = $input->request('stock'):'';
         $input->request('score')!=''?$Arr['score'] = $input->request('score'):'';
         $input->request('discut')!=''?$Arr['discut'] = $input->request('discut'):'';
+        $input->request('canByScore')!=''?$Arr['canByScore'] = $input->request('canByScore'):'';
         
         //产品报价，保存以分为单位的价格
         if(isset($Arr['price']))  $Arr['price']   = $Arr['price']   * 100;

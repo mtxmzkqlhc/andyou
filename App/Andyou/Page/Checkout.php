@@ -88,7 +88,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //计算总金额
         //----------------------
         $billDisc        = $billInfo["bill_disc"];//总折扣
-        $sumPriceAftDisc = $orgSumPrice * $billDisc;//总折扣的价格  $sumPrice * $billDisc; //不可以给商品设置单价了
+        $sumPriceAftDisc = $sumPrice;//$orgSumPrice * $billDisc;//总折扣的价格  $sumPrice * $billDisc; //不可以给商品设置单价了
         $discGetMoney    = $orgSumPrice - $sumPriceAftDisc;//折扣省下来的金额
         
         //扣除会员卡内余额
@@ -233,7 +233,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $output->orgSumPrice  = $orgSumPrice; //原始总价
         $output->newScore     = (int)(($billDetail['useCard'] + ($billDetail['price']/100)) * $scoreRatio);//获得的积分
               
-		$output->setTemplate('BillPrint');
+		$output->setTemplate('BillPrint3');
         
         
     }

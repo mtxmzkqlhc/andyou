@@ -9,9 +9,9 @@ var proJuicer  = juicer(proTableTr);
 var proTrIdx   = 0; //记录插入了第几行了
 var appendProTable = function(proInfo){
     var disc = memberDisc;
-    //if(proInfo.discut && proInfo.discut > memberDisc){
-    //    disc = proInfo.discut;
-    //}
+    if(proInfo.discut && proInfo.discut > memberDisc){
+        disc = proInfo.discut;
+    }
     //检查该产品是否在表格中已经在存在了，如果已经存在了，只要完成数量+1就可以了
     var hasSamePro = false;
     if(proTrIdx > 0){

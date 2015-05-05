@@ -84,7 +84,7 @@
                                 <dt>单号</dt>
                                 <dd><input type="text" value="<?=Helper_Bill::getMaxBno()?>" id="memberPhone" disabled="true" ></dd>
                             </dl>
-                            <dl class="clearfix">
+                            <dl class="clearfix memextinfo">
                                 <dt>总金额</dt>
                                 <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" trueprice="0" /></dd>
                             </dl>
@@ -204,7 +204,7 @@
         <td align="center"><span class="btn btn-small btn-info"  onclick="proTblDelNum(${rowIdx})"><i class="halflings-icon minus white"></i></span>
         <input type='text' value='1' id='item_num_${rowIdx}' name='item_num[${rowIdx}]' class='tblProNum' onblur="proTblCalPrice(${rowIdx})">
         <span class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></span></td>
-        <td><input type='text' value='${memberDisc}' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}" readonly="true"></td>
+        <td><input type='text' value='${memberDisc}' data-rel='${pro.discut}' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}" readonly="true"></td>
         <td id="item_price_${rowIdx}" >${pro.price}</td>  
         <td id="item_stafftd_${rowIdx}"><span style="color:#999999">同左边</span></td>
         <td><button class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></button>
@@ -352,12 +352,15 @@
     //计算最终订单的价格
     var calcBillPrice = function(){
         var sum = 0;
-       //$(".tblProPrice").each(function(){
-        $(".tblProOrgPrice").each(function(){
+       $(".tblProPrice").each(function(){
+        //$(".tblProOrgPrice").each(function(){//不管最低折扣
+            sum += $(this).val() - 0;
+            /* 不管最低折扣
             //商品数量
             var idx = $(this).attr("data-idx");
             var num = parseInt($("#item_num_"+idx).val())
             sum += $(this).val()*num - 0;
+            */
         });
         $("#bill_sum_price").attr("trueprice",sum);
         $("#bill_sum_price").val((sum/100).toFixed(2));
@@ -394,7 +397,7 @@
          //如果用户卡内有足够的积分
          
         
-        var endPrice = billSumPrice * billDisc;//折扣后的价格  因为每行价格都记录了，就不需要最后在计算折扣了
+        var endPrice = billSumPrice;// * billDisc;//折扣后的价格  因为每行价格都记录了，就不需要最后在计算折扣了
         $("#bill_aftdisc_price").val((endPrice/100).toFixed(2));
         if(billMemCard){//如果用户卡里还有余额
             if(billMemCard * 100 > endPrice){//卡内还有前
@@ -473,9 +476,14 @@
     //------------------------------------
     //左侧区域重新计算
     var refreshRightTbl = function(){
-        var v = $("#bill_disc").val();
+        var v = $("#bill_disc").val() - 0;
         $(".tblProDisc").each(function(){
-           $(this).val(v);
+            var proDisc = $(this).attr("data-rel") - 0;//产品设置的最低折扣
+           if(proDisc == "0.00" || proDisc < v){//如果有设置最低折扣，就能按照总折扣进行计算
+              $(this).val(v);
+           }else if(proDisc > v){
+               $(this).val(proDisc);
+           }
            var i = $(this).attr("data-idx");
            //计算每行的价格
            proTblCalPrice(i);

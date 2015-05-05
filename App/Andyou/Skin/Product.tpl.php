@@ -34,7 +34,7 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>商品名</th><th>条码</th><th>分类</th><th>售价</th><th>进货价</th><th>库存</th><th>操作</th>
+<th>商品名</th><th>条码</th><th>分类</th><th>售价</th><th>进货价</th><th>库存</th><th>最低折扣</th><th>积分兑换</th><th>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -49,7 +49,8 @@ if($data) {
        $outStr.='<td class="editColumn" data="inPrice" rel="'.$v['id'].'" >'.round($v['inPrice']/100,2).'</td>';
        $outStr.='<td class="editColumn" data="stock" rel="'.$v['id'].'" >'.$v['stock'].'</td>';
        //$outStr.='<td class="editColumn" data="score" rel="'.$v['id'].'" >'.$v['score'].'</td>';
-       //$outStr.='<td class="editColumn" data="discut" rel="'.$v['id'].'" >'.$v['discut'].'</td>';
+       $outStr.='<td data="discut" rel="'.$v['id'].'" >'.($v['discut'] == "0.00" ? "-" : $v['discut']).'</td>';
+       $outStr.='<td>'.($v['canByScore']?"<font color='green'>是</font>":"否").'</td>';
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnProduct"><i class="halflings-icon white edit"></i></a>
        <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a> -->
@@ -103,8 +104,9 @@ if($data) {
                           <tr><td align="right">售价:</td><td><input type="text"   name="price" /></td></tr>
                           <tr><td align="right">进货价:</td><td><input type="text"   name="inPrice" /></td></tr>
                           <tr><td align="right">库存数量:</td><td><input type="text"   name="stock" /></td></tr>
-                          <!-- <tr><td align="right">积分比例:</td><td><input type="text" value='1'  name="score" /> <span style="color:#666666">1表示一元积一分</span></td></tr>
-                          <tr><td align="right">最低折扣:</td><td><input type="text" value='0'  name="discut"  /> 用小数表示,如:0.8 </td></tr> -->
+                          <!-- <tr><td align="right">积分比例:</td><td><input type="text" value='1'  name="score" /> <span style="color:#666666">1表示一元积一分</span></td></tr>-->
+                          <tr><td align="right">最低折扣:</td><td><input type="text" value='0'  name="discut"  /> 用小数表示,如:0.8 </td></tr> 
+                          <tr><td align="right">积分兑换:</td><td><select name="canByScore"><option value='0'>否</option><option value='1'>是</option></select></td></tr>
 
                          </tbody></table></td></tr></tbody></table>
                          <input type="hidden" name="a" value="AddItem">
@@ -148,8 +150,9 @@ if($data) {
                           <tr><td align="right">售价:</td><td><input type="text" id="price"  name="price" /></td></tr>
                           <tr><td align="right">进货价:</td><td><input type="text" id="inPrice"  name="inPrice" /></td></tr>
                           <tr><td align="right">库存数量:</td><td><input type="text" id="stock"  name="stock" /></td></tr>
-                          <!-- <tr><td align="right">积分比例:</td><td><input type="text" id="score"  name="score" /> <span style="color:#666666">1表示一元积一分</span></td></tr>
-                          <tr><td align="right">最低折扣:</td><td><input type="text" id="discut"  name="discut" /> 用小数表示,如:0.8</td></tr> -->
+                          <!-- <tr><td align="right">积分比例:</td><td><input type="text" id="score"  name="score" /> <span style="color:#666666">1表示一元积一分</span></td></tr>-->
+                          <tr><td align="right">最低折扣:</td><td><input type="text" id="discut"  name="discut" /> 用小数表示,如:0.8</td></tr>  
+                          <tr><td align="right">积分兑换:</td><td><select id="canByScore" name="canByScore"><option value='0'>否</option><option value='1'>是</option></select></td></tr>
 
                         </tbody></table></td></tr></tbody></table>
 				    <input type="hidden" id="dataid" name="dataid" value="">
@@ -202,6 +205,7 @@ $('.editbtnProduct').live('click',function(){
         $('#stock').val(dat['stock']);
         $('#score').val(dat['score']);
         $('#discut').val(dat['discut']);
+        $('#canByScore').val(dat['canByScore']);
     }); 
  });
 $('.tempEdit').live('blur',function(){

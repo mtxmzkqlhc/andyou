@@ -35,7 +35,7 @@
             <tr><td colspan="9">&nbsp;</td></tr>
         <?php }?>
     </table>
-    <!--
+    
     <table align="center" width="100%" style="font-size:12px;">
         <tr><td>商品</td><td>单价</td><td>数量</td><td>合计</td></tr>
         <?php
@@ -81,7 +81,7 @@
         <tr><td colspan="9" align="center">谢谢光临，我们将竭诚为您服务！</td></tr>
         <tr><td colspan="9">&nbsp;</td></tr>
         <tr><td colspan="9">&nbsp;</td></tr>
-    </table>-->
+    </table>
     </div>
 <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
 <script src="js/jquery.jqprint.js" type="text/javascript"></script>
