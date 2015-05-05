@@ -40,6 +40,7 @@
                           <tr><td align="right">可获积分:</td><td><?=$canGetScore?></td></tr>
                          <!-- <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr> -->
                           <tr><td align="right">备注:</td><td><textarea  name="remark"  style="width:350px;height:50px"></textarea></td></tr>
+                          <tr><td align="right">介绍人手机号:</td><td><input type="text"  name="introducer" value=''/></td></tr>
                           <tr><td>&nbsp;</td><td><input type="submit" value="确认添加" class="btn btn-primary"/></td></tr>
                           
 

@@ -162,7 +162,8 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         if($useCardFlag){//使用了会员卡
             $memLeftInfo['balance'] = $leftCard;
         }
-        
+        //计算用户的总消费额
+        $memLeftInfo['allsum'] = $memberInfo['allsum'] + round($sumPriceAftDisc/100) + $billInfo["bill_member_card"];
         //记入订单库
         $bid = Helper_Dao::insertItem(array(
 		        'addItem'       =>  $billDetail,

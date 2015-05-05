@@ -125,6 +125,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $Arr['score']   = $output->canGetScore;
         $Arr['balance'] = $input->post('balance');
         $Arr['remark']  = $input->post('remark');
+        $Arr['introducer']  = $input->post('introducer');
         
         //查看该电话是否注册了
         $minfo = Helper_Member::getMemberInfo(array(
@@ -279,6 +280,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $Arr['score'] = $input->post('score');
         $Arr['balance'] = $input->post('balance');
         $Arr['remark'] = $input->post('remark');
+        $Arr['introducer'] = $input->post('introducer');
          //查看该电话是否注册了
         $minfo = Helper_Member::getMemberInfo(array(
             'phone'           => $Arr['phone'], #ID
@@ -314,6 +316,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $input->request('score')?$Arr['score'] = $input->request('score'):'';
         $input->request('balance')?$Arr['balance'] = $input->request('balance'):'';
         $input->request('remark')?$Arr['remark'] = $input->request('remark'):'';
+        $input->request('introducer')?$Arr['introducer'] = $input->request('introducer'):'';
         
 	    $pageUrl = $input->request('pageUrl');
 	    $data = Helper_Dao::updateItem(array(

@@ -34,7 +34,7 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>姓名</th><th>手机号</th><th>分类</th><th>生日</th><th>积分</th><th>余额</th><th>添加时间</th><th>操作</th>
+<th>姓名</th><th>手机号</th><th>分类</th><th>生日</th><th>积分</th><th>余额</th><th>总消费</th><th>添加时间</th><th>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -48,6 +48,7 @@ if($data) {
        $outStr.='<td>'.$v['byear'].'/'.$v['bmonth'].'/'.$v['bday'].'</td>';
        $outStr.='<td>'.$v['score'].'</td>';
        $outStr.='<td>'.$v['balance'].'</td>';
+       $outStr.='<td>'.$v['allsum'].'</td>';
        $outStr.='<td>'.date("Y-m-d",$v['addTm']).'</td>';
            
        $outStr.='<td rel="'.$v['id'].'">
@@ -89,8 +90,8 @@ if($data) {
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"> <tbody>
                         
-                          <tr><td align="right">姓名:</td><td><input type="text"   name="name" /></td></tr>
                           <tr><td align="right">手机号:</td><td><input type="text"   name="phone" /></td></tr>
+                          <tr><td align="right">姓名:</td><td><input type="text"   name="name" /></td></tr>
                           <tr><td align="right">分类:</td><td>
                           <select name="cateId"><option value='0'>请选择</option>
                                 <?php
@@ -106,6 +107,7 @@ if($data) {
                           <tr><td align="right">积分:</td><td><input type="text"   name="score" value='0' /></td></tr>
                           <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr>
                           <tr><td align="right">备注:</td><td><textarea  name="remark"  style="width:350px;height:50px"></textarea></td></tr>
+                          <tr><td align="right">介绍人手机号:</td><td><input type="text" name="introducer" /></td></tr>
 
 
                          </tbody></table></td></tr></tbody></table>
@@ -134,8 +136,8 @@ if($data) {
                 <form id="editform" method="post" action="?">
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
-                          <tr><td align="right">姓名:</td><td><input type="text" id="name"  name="name" /></td></tr>
                           <tr><td align="right">手机号:</td><td><input type="text" id="phone"  name="phone" /></td></tr>
+                          <tr><td align="right">姓名:</td><td><input type="text" id="name"  name="name" /></td></tr>
                           <tr><td align="right">分类:</td><td>
                               <select id="cateId" name="cateId"><option value='0'>请选择</option>
                                 <?php
@@ -151,7 +153,8 @@ if($data) {
                          <!-- <tr><td align="right">积分:</td><td><input type="text" id="score"  name="score"/></td></tr>
                           <tr><td align="right">卡余额:</td><td><input type="text" id="balance"  name="balance" /></td></tr>-->
                           <tr><td align="right">备注:</td><td><textarea id="remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
-
+                          <tr><td align="right">介绍人手机号:</td><td><input type="text" id="introducer"  name="introducer" /></td></tr>
+                          
                         </tbody></table></td></tr></tbody></table>
 				    <input type="hidden" id="dataid" name="dataid" value="">
                     <input type="hidden" name="a" value="UpItem">
@@ -256,6 +259,7 @@ $('.editbtnMember').live('click',function(){
         $('#score').val(dat['score']);
         $('#balance').val(dat['balance']);
         $('#remark').html(dat['remark']);
+        $('#introducer').val(dat['introducer']);
     }); 
  });
 
