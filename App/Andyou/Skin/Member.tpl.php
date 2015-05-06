@@ -1,6 +1,8 @@
 <?= $header ?>
 <?= $navi ?>
-
+<style>
+#addCheckExs{padding:3px 4px;margin-bottom:10px;}
+</style>
 <div class="row-fluid">
     <div id="content" class="span12">         
         <h3 class="page-title">会员管理</h3>
@@ -8,7 +10,7 @@
             <div class="box span12">
                 <div class="box-header" data-original-title>
                 	  <h2><i class="halflings-icon align-justify"></i><span class="break"></span>会员管理</h2>
-				     <button data-toggle="modal" role="button" href="#add-box" class="btn-addArea big-addbtn" type="button"> 添加数据</button>
+				     <button data-toggle="modal" role="button" href="#add-box" class="btn-addArea big-addbtn" type="button"> 添加会员</button>
                 </div>
                 <div class="box-content">
                 	 <!-- 搜索 -->
@@ -90,10 +92,12 @@ if($data) {
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"> <tbody>
                         
-                          <tr><td align="right">手机号:</td><td><input type="text"   name="phone" /></td></tr>
-                          <tr><td align="right">姓名:</td><td><input type="text"   name="name" /></td></tr>
+                          <tr><td align="right">手机号:</td><td><input type="text" name="phone" id="add_phone"/>
+                              <span class="btn btn-mini" title="验证是否存在" id="addCheckExs"><i class="halflings-icon search white"></i></span>
+                          </td></tr>
+                          <tr><td align="right">姓名:</td><td><input type="text" name="name" id="add_name"/></td></tr>
                           <tr><td align="right">分类:</td><td>
-                          <select name="cateId"><option value='0'>请选择</option>
+                          <select name="cateId" id="add_cateId"><option value='0'>请选择</option>
                                 <?php
                                 if ($memberCate) {
                                        foreach ($memberCate as $k=>$v) {
@@ -103,11 +107,11 @@ if($data) {
                                  ?>
                            </select>    
                           </td></tr>
-                          <tr><td align="right">生日:</td><td><input type="text" name="byear"  style="width:60px" /> 年 <input type="text" name="bmonth"  style="width:60px" /> 月 <input type="text" name="bday"  style="width:60px" /> 日</td></tr>
-                          <tr><td align="right">积分:</td><td><input type="text"   name="score" value='0' /></td></tr>
-                          <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr>
+                          <tr><td align="right">生日:</td><td><input type="text" name="byear"  id="add_byear"  style="width:60px" /> 年 <input type="text" name="bmonth" id="add_bmonth"  style="width:60px" /> 月 <input type="text" name="bday" id="add_bday" style="width:60px" /> 日</td></tr>
+                          <tr><td align="right">积分:</td><td><input type="text"   name="score"  id="add_score" value='0' /></td></tr>
+                          <tr><td align="right">卡余额:</td><td><input type="text"   name="balance"  id="add_balance" value='0'/></td></tr>
                           <tr><td align="right">备注:</td><td><textarea  name="remark"  style="width:350px;height:50px"></textarea></td></tr>
-                          <tr><td align="right">介绍人手机号:</td><td><input type="text" name="introducer" /></td></tr>
+                          <tr><td align="right">介绍人手机号:</td><td><input type="text" name="introducer"  id="add_introducer"/></td></tr>
 
 
                          </tbody></table></td></tr></tbody></table>
@@ -175,15 +179,17 @@ if($data) {
     <div class="modal-dialog" style="width:600px;font-size:12px">
         <div class="modal-content">
             <div class="modal-body">
-                <form id="editform" method="post" action="?">
+                <form id="editform" method="post" action="?" onsubmit="return checkUpScore()">
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
-                          <tr><td align="right">增加/减少:</td><td><select name="direction"><option value="1">减少</option><option value="0">增加</option></select></td></tr>
+                          <tr><td align="right">用户当前积分:</td><td id="memNowScore" style="font-weight: bold;color:green;line-height:35px;"></td></tr>
+                          <tr><td align="right">增加/减少:</td><td><select name="direction" id="us_direction"><option value="1">减少</option><option value="0">增加</option></select></td></tr>
                           <tr><td align="right">积分:</td><td><input type="text" id="us_score"  name="score"/></td></tr>
                           <tr><td align="right">备注:</td><td><textarea id="us_remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
 
                         </tbody></table></td></tr></tbody></table>
                     <input type="hidden" name="mid" value="0" id="us_mid" >
+                    <input type="hidden" name="us_allscore" value="0" id="us_allscore" >
                     <input type="hidden" name="a" value="UpScore">
                     <input type="hidden" name="c" value="Member">
 					<input type="hidden" name="pageUrl" value="<?=$pageUrl?>">
@@ -200,15 +206,17 @@ if($data) {
     <div class="modal-dialog" style="width:600px;font-size:12px">
         <div class="modal-content">
             <div class="modal-body">
-                <form id="editform" method="post" action="?">
+                <form id="editform" method="post" action="?"  onsubmit="return checkUpCard()">
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
-                          <tr><td align="right">增加/减少:</td><td><select name="direction"><option value="0">增加</option><option value="1">减少</option></select></td></tr>
+                          <tr><td align="right">用户当前余额:</td><td id="memNowCard" style="font-weight: bold;color:green;line-height:35px;"></td></tr>
+                          <tr><td align="right">增加/减少:</td><td><select name="direction" id="uc_direction"><option value="0">增加</option><option value="1">减少</option></select></td></tr>
                           <tr><td align="right">金额:</td><td><input type="text" id="uc_score"  name="card"/></td></tr>
                           <tr><td align="right">备注:</td><td><textarea id="uc_remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
 
                         </tbody></table></td></tr></tbody></table>
                     <input type="hidden" name="mid" value="0" id="uc_mid" >
+                    <input type="hidden" name="uc_allcard" value="0" id="uc_allcard" >
                     <input type="hidden" name="a" value="UpCard">
                     <input type="hidden" name="c" value="Member">
 					<input type="hidden" name="pageUrl" value="<?=$pageUrl?>">
@@ -286,6 +294,8 @@ $(".btnUpScore").click(function(){
     var score = $(this).attr("data-score");
     $("#us_score").val(score);
     $("#us_mid").val(mid);
+    $("#memNowScore").html(score);
+    $("#us_allscore").val(score);
     art.dialog({title: '积分修改',width:"600px",content: $("#edit-box2").html()});
 });
 $(".btnUpCard").click(function(){
@@ -294,9 +304,51 @@ $(".btnUpCard").click(function(){
     var score = $(this).attr("data-card");
     $("#uc_card").val(score);
     $("#uc_mid").val(mid);
+    $("#memNowCard").html(score);
+    $("#uc_allcard").val(score);
+    
     art.dialog({title: '会员卡余额修改',width:"600px",content: $("#edit-box4").html()});
 });
+var checkUpCard = function(){
+    if($("#uc_direction").val()==1){
+        if($("#uc_allcard").val() < $("#uc_score").val()){
+            alert("用户的余额不足以扣除");
+            return false;
+        }
+    }
+    return true;
+}
 
+$("#addCheckExs").click(function(){
+    doSearchMember($("#add_phone").val(),function(d){
+        if(d){
+            $("#add_name").val(d.name);
+            $("#add_cateId").val(d.cateId);
+            $("#add_byear").val(d.byear);
+            $("#add_bmonth").val(d.bmonth);
+            $("#add_bday").val(d.bday);
+            $("#add_balance").val(d.balance);
+            $("#add_remark").val(d.remark);
+            $("#add_score").val(d.score);
+        }
+    })
+})
+
+//搜索用户
+var doSearchMember = function(phone,func){
+    
+    if(phone){
+        var t = Date.parse(new Date()); 
+        var url = "?c=Ajax_Member&a=GetMemberByPhone&phone=" + phone+"&t="+t;
+        $.getJSON(url,{},function(data){
+            if(data){                
+                func(data);
+            }
+        });
+    }else{
+        return false;;
+    }
+}
 </script>
 </body>
 </html>

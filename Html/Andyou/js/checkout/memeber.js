@@ -20,13 +20,14 @@ var doSearchMember = function(){
         $.getJSON(url,{},function(data){
             if(data){
                 var bls = data.balance ? data.balance : 0;
-                $("#memtbl_name").html(data.name);
+                $("#memtbl_name").show().html(data.name);
                 $("#bill_end_membernm").val(data.name);
                 $("#memtbl_score").html(data.score);
                 $("#memtbl_card").html(bls);
                 $("#memtbl_cate").html(data.cateName);
                 $("#memtbl_disc").html(data.discount);
                 $("#memtbl_remark").html(data.remark);
+                $("#memtbl_allsum").html(data.allsum);
                 $("#bill_member_card").val(bls);
 
                 $("#memberId").val(data.id);
@@ -56,7 +57,7 @@ var doSearchMember = function(){
 //清除会员相关信息
 var removeMemInfo = function(){
 
-    $("#memtbl_name").html("");
+    $("#memtbl_name").hide().html("");
     $("#bill_end_membernm").val("");
     $("#memtbl_score").html("");
     $("#memtbl_card").html("");
@@ -69,6 +70,7 @@ var removeMemInfo = function(){
     $(".memextinfo").hide();
     $("#memtbl_remark").html("");
     $("#memtbl_disc").html("");
+    $("#memtbl_allsum").html("");
 
     $("#memberPhone").val("");
 

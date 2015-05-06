@@ -48,14 +48,14 @@
                         <div class="box-r">
                             <table width="100%" id="memberInfoTbl">
                                 <tr>
-                                    <td class="mtbl_l">会员姓名</td><td class="mtbl_r"><span class="label label-success" id="memtbl_name"></span></td>
+                                    <td class="mtbl_l">会员姓名</td><td class="mtbl_r"><span class="label label-success" id="memtbl_name" style="display:none"></span></td>
                                     <td class="mtbl_l">会员类型</td><td class="mtbl_r" id="memtbl_cate"></td>
                                     <td class="mtbl_l">享受折扣</td><td class="mtbl_r" id="memtbl_disc"</td>
                                 </tr>
                                 <tr>
+                                    <td class="mtbl_l">累计消费</td><td class="mtbl_r" id="memtbl_allsum"></td>
                                     <td class="mtbl_l">当前积分</td><td class="mtbl_r" id="memtbl_score"></td>
                                     <td class="mtbl_l">卡内余额</td><td class="mtbl_r" id="memtbl_card"></td>
-                                    <td class="mtbl_l">&nbsp;</td><td class="mtbl_r" >&nbsp;</td>
                                 </tr>
                                 <tr>
                                     <td class="mtbl_l">备注</td><td class="mtbl_r" id="memtbl_remark" colspan="8"> </td>
@@ -151,7 +151,7 @@
                                 <input type="hidden" value="0" name="endSumModifyFlag" id="endSumModifyFlag"/>
                             </div>
                         </div>
-                        <div class="box-r" style="width:750px;">
+                        <div class="box-r" style="width:700px;">
                             <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
                                 <span class="btn btn-mini btn-info" title="设置折扣" id="setDiscBtn" style="display:none;"><i class="halflings-icon th-list white"></i>设置折扣</span>
                                 <span class="btn btn-mini btn-info" title="清空所有已选择的商品" id="removeGoodsBtn" style="display:none;"><i class="halflings-icon th-list white"></i>清空商品</span>
