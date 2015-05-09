@@ -3,7 +3,7 @@
             
         <div class="navbar-inner">
             <div class="container-fluid">
-               <a href="?"><font style="color: rgb(255, 255, 255); font: 20px/40px 'Microsoft YaHei',arial;"><font style="color:#f54"></font><?=$sysName?></font></a>
+               <a href="?"><font style="color: rgb(255, 255, 255); font: 18px/36px 'Microsoft YaHei',arial;"><font style="color:#f54"></font><?=$sysName?></font></a>
                <ul class="nav pull-right" style="color:#ffffff;padding:10px 20px 0 0;">
                    <li><i class="halflings-icon white user"></i> ÄãºÃ,<?=$admin?> &nbsp;&nbsp;<i class="halflings-icon white off"></i><a href="?c=Login&a=Logout" style="display:inline;color:#ffffff;padding-left:5px;">ÍË³öµÇÂ¼</a></li>
                </ul>

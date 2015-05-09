@@ -11,10 +11,10 @@
 .box-l dd{float:left}
 .box-l dd input{width:140px;}
 .box-l dd select{width:148px;}
-.mtbl_l{width:80px;font-weight: bold;color:#999;}
+.mtbl_l{width:80px;font-weight: bold;}
 .mtbl_r{text-align:left;padding-left:8px;min-width: 40px;}
 #memberInfoTbl .mtbl_r{width:120px;}
-#billContent dl{margin-bottom:3px;margin-top: 5px;}
+#billContent dl{margin-bottom:3px;margin-top:2px;}
 .tblProNum{width:20px;margin-bottom:0px;}
 #barScanDiv{padding:10px 0 15px 0;margin-bottom:10px;}
 #proBarCode{width:300px;}
@@ -28,11 +28,7 @@
 			<div class="row-fluid">
                 
                 <div class="box">
-					<div class="box-header">
-						<h2><i class="halflings-icon list-alt"></i><span class="break"></span>会员信息</h2>
-						
-					</div>
-                    <div class="box-content clearfix">
+                    <div class="box-content clearfix"  style="padding:15px 10px 8px;">
                         <div class="box-l clearfix">
                             <dl>
                                 <dt>会员电话</dt>
@@ -152,7 +148,7 @@
                             </div>
                         </div>
                         <div class="box-r" style="width:700px;">
-                            <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;">条码</span> <input type="text" value="" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
+                            <div id="barScanDiv"><span style="font-weight:bold;padding-right:10px;display: inline;">条码</span> <input type="text" value="" id="proBarCode"><span class="btn btn-mini" title="查询商品" id="searchProBtn"><i class="halflings-icon search white"></i></span>
                                 <span class="btn btn-mini btn-info" title="设置折扣" id="setDiscBtn" style="display:none;"><i class="halflings-icon th-list white"></i>设置折扣</span>
                                 <span class="btn btn-mini btn-info" title="清空所有已选择的商品" id="removeGoodsBtn" style="display:none;"><i class="halflings-icon th-list white"></i>清空商品</span>
                             </div>
@@ -161,7 +157,7 @@
                                     <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th style="width:99px;">数量</th><th  style="width:30px;">折扣</th><th>价格</th><th style="width:60px;">销售员</th><th style="width:60px;">操作</th></tr> </thead>   
 						  
                                     <tbody id="proListTbody">
-                                        <tr><td colspan="10" style="text-align: center;color:#666666;padding:100px 0 200px;background:#ffffff;">-- 请扫描条码以添加商品 --</td></tr>
+                                        <tr><td colspan="10" style="text-align: center;color:#666666;padding:100px 0 100px;background:#ffffff;">-- 请扫描条码以添加商品 --</td></tr>
                                     </tbody>
                                 
                                     <tbody id="proTblNumRow">

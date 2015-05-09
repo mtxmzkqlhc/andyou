@@ -7,7 +7,7 @@
         <div class="row-fluid sortable">		
             <div class="box span12">
                 <div class="box-header" data-original-title>
-                	  <h2><i class="halflings-icon align-justify"></i><span class="break"></span>订单管理</h2>
+                	  <h2><i class="halflings-icon align-justify"></i><span class="break"></span><?=$isAddUser?"添加会员":"订单管理"?></h2>
 				     <!-- <button data-toggle="modal" role="button" href="#add-box" class="btn-addArea big-addbtn" type="button"> 添加数据</button> -->
                 </div>
                 <div class="box-content">
@@ -15,6 +15,7 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="Bills" name="c">
+<input type="hidden" value="<?=$isAddUser?>" name="isAddUser">
 单号:<input style="width:100px;height:25px;;" class="spanmalt10" type="text" value="<?=$serbno?>" name="bno" placeholder="单号">
 <select name="staffid">
     <option value="0">所有员工</option>
@@ -34,7 +35,15 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>单号</th><th>商品总价</th><th>折扣</th><th>消费卡内余额</th><th>收款</th><th>员工</th><th>消费时间</th><th>会员ID</th><th>备注</th><th>操作</th>
+<th>单号</th><th>商品总价</th><th>折扣</th>
+<?php if(!$isAddUser){?>
+ <th>使用余额</th>
+<?php }?>
+<th>收取金额</th><th>销售员</th><th>消费时间</th>
+<?php if(!$isAddUser){?>
+<th>会员ID</th>
+<?php }?>
+<th>备注</th><th>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -51,7 +60,9 @@ if($data) {
        //$outStr.='<td style="text-align:left;">'.$v['useScore'].($v['useScore'] ? " <span style='color:#999999'>(".$v['useScoreAsMoney']."元)</span>" : "").'</td>';//
        $outStr.='<td>'.round($v['orgPrice']/100,2).'</td>';
        $outStr.='<td>'.$v['discount'].'</td>';
-       $outStr.='<td>'.$v['useCard'].'</td>';
+      if(!$isAddUser){
+            $outStr.='<td>'.$v['useCard'].'</td>';
+      }
        if($v['priceTrue']){//如果销售员修改了价格，记录
            $outStr.='<td style="color:red;font-weight:bold" title="销售员修改了价格，原价：'.round($v['priceTrue']/100).'">'.round($v['price']/100).'</td>';
        }else{
@@ -59,7 +70,9 @@ if($data) {
        }
        $outStr.='<td>'.(isset($staffInfo[$v['staffid']]) ? $staffInfo[$v['staffid']] : '-').'</td>';
        $outStr.='<td>'.date("m-d H:i",$v['tm']).'</td>';
-       $outStr.='<td>'.$memName.'</td>';
+       if(!$isAddUser){
+            $outStr.='<td>'.$memName.'</td>';
+       }
        if($v['remark']){
          $remark = str_replace(array("'",'"'), "", $v['remark']);
          $outStr.='<td><a title="'.$remark.'" onclick="alert(\''.$remark.'\')" href="javascript:void(0);">有备注</a></td>';
@@ -67,8 +80,8 @@ if($data) {
             $outStr.='<td>&nbsp;</td>';
        }
        $outStr.='<td rel="'.$v['id'].'" align="left" style="text-align:left;">';
-       if(empty($v['memberId'])){
-            $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white   user"></i></a>';
+       if(empty($v['memberId']) && $isAddUser){
+            $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" target="_blank" style="color:#ffffff">添加用户</a>';
        }
        $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
        <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>

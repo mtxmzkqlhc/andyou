@@ -27,14 +27,14 @@ class  Andyou_Page_Data  extends Andyou_Page_Abstract {
             $res = $db->getAll($sql);
             if($res){
                 $keys = false;
-                $sqlTxt .= "insert into {$tbl}";
+                $sqlTxt .= "\n\ninsert into {$tbl}";
                 $comma  = "";
                 foreach ($res as $re){
                     if(!$keys){
                         $keys = array_keys ($re);
                         $sqlTxt .=  "(".  implode(",", $keys).") values \n";
                     }
-                    $sqlTxt .= $comma . "('" .  implode("','",$re) ."')\n";
+                    $sqlTxt .= $comma . "('" .  implode("','",$re) ."')";
                     $comma = ",";
                 }
             }

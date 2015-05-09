@@ -211,16 +211,18 @@ class Helper_Member extends Helper_Abstract {
     public static function getMemberInfo($params){
         $options = array(
             'id'              => false, #ID
-            'phone'           => false, #ID
+            'phone'           => false, 
+            'name'             => false, 
         );
         if(is_array($params)) $options = array_merge($options, $params);
         extract($options);        
             
         $whereSql   = '';
-        if(!$id && !$phone)return false;
+        if(!$id && !$phone && !$name)return false;
         
         if($id)$whereSql .= "and id = '{$id}' " ;
         if($phone)$whereSql .= "and phone = '{$phone}' " ;
+        if($name)$whereSql .= "and name like '%{$name}%' " ;
 
         $data = Helper_Dao::getRow(array(
                 'dbName'        => 'Db_Andyou',    #Êı¾İ¿âÃû

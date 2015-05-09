@@ -19,6 +19,7 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
      */
 	public function doDefault(ZOL_Request $input, ZOL_Response $output){
 		$wArr     = array();#ËÑË÷×Ö¶Î
+        $output->isAddUser = (int)$input->get("isAddUser"); 
 		$whereSql = "";
 		$page = (int)$input->get('page')<1?1:(int)$input->get('page');
 		$output->serbno = $wArr['bno'] = $input->get('bno');
@@ -44,6 +45,9 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
                 }    
 		    }
 		}
+        if($output->isAddUser){
+            $whereSql .= " AND memberId = 0 ";
+        }
 		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&bno={$wArr['bno']}&staffid={$wArr['staffid']}&memberPhone=$output->sermemberPhone";
 		$pageSize = 30;
 		$orderSql = "order by id desc";

@@ -49,6 +49,11 @@ return array(
         'icon' => 'group',
         'class' => 'open2',
         'items' => array(
+            '添加会员' => array(
+                'url' => '?c=Bills&isAddUser=1',
+                'ctrl' => 'addUserFb',
+                'target' => '_self',
+            ),
             '会员列表' => array(
                 'url' => '?c=Member&a=Default',
                 'ctrl' => 'Member',
@@ -63,7 +68,6 @@ return array(
         ),
     ),
     '员工管理' => array(
-        'class' => 'open2',
         'permission' => array(1),
         'icon' => 'sitemap',
         'items' => array(
@@ -80,7 +84,6 @@ return array(
         ),
     ),
     '消费记录' => array(
-        'class' => 'open2',
         'permission' => array(0),
         'icon' => 'inbox',
         'items' => array(
@@ -92,7 +95,6 @@ return array(
         ),
     ),
     '查询统计' => array(
-        'class' => 'open2',
         'permission' => array(1),
         'icon' => 'inbox',
         'items' => array(
@@ -106,10 +108,19 @@ return array(
                 'ctrl' => 'BillsItem',
                 'target' => '_self',
             ),
+            '积分统计' => array(
+                'url' => '?c=LogScoreChange',
+                'ctrl' => 'LogScoreChange',
+                'target' => '_self',
+            ),
+            '充值统计' => array(
+                'url' => '?c=LogCardChange',
+                'ctrl' => 'LogCardChange',
+                'target' => '_self',
+            ),
         ),
     ),
     '系统管理' => array(
-        'class' => 'open2',
         'permission' => array(1),
         'icon' => 'user-md',
         'items' => array(
