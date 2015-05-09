@@ -245,6 +245,78 @@ class Helper_Member extends Helper_Abstract {
        return $data;
     }
 
+    /**
+     *  记录会员获得积分历史
+     */
+    public static function addScoreLog($params){
+        $options = array(
+            'memberId'         => false, #ID
+            'direction'        => 1, #1 减 0 加
+            'score'            => 0, #积分
+            'orgScore'         => -1, #原始积分
+            'bno'              => 0, #订单号
+            'remark'           => '', #
+        );
+        if(is_array($params)) $options = array_merge($options, $params);
+        extract($options);
+        
+        if(!$memberId)return false;
+        
+        $arr = $options;
+        $arr['dateTm'] = SYSTEM_TIME;
+        
+        if($orgScore === -1){
+            $info = self::getMemberInfo(array("id"=>$memberId));
+            if($info){
+                $arr['orgScore'] = $info["score"];
+            }
+        }
+        
+		Helper_Dao::insertItem(array(
+            'addItem'       =>  $arr, #数据列
+            'dbName'        =>  'Db_Andyou',    #数据库名
+            'tblName'       =>  'log_scorechange',    #表名
+		));
+        
+        return true;
+    }
     
+    
+
+    /**
+     *  记录会员获得会员卡余额历史
+     */
+    public static function addCardLog($params){
+        $options = array(
+            'memberId'         => false, #ID
+            'direction'        => 1, #1 减 0 加
+            'card'             => 0, #积分
+            'orgCard'         => -1, #原始积分
+            'bno'              => 0, #订单号
+            'remark'           => '', #
+        );
+        if(is_array($params)) $options = array_merge($options, $params);
+        extract($options);
+        
+        if(!$memberId)return false;
+        
+        $arr = $options;
+        $arr['dateTm'] = SYSTEM_TIME;
+        
+        if($orgScore === -1){
+            $info = self::getMemberInfo(array("id"=>$memberId));
+            if($info){
+                $arr['orgCard'] = $info["balance"];
+            }
+        }
+        
+		Helper_Dao::insertItem(array(
+            'addItem'       =>  $arr, #数据列
+            'dbName'        =>  'Db_Andyou',    #数据库名
+            'tblName'       =>  'log_cardchange',    #表名
+		));
+        
+        return true;
+    }
     
 }

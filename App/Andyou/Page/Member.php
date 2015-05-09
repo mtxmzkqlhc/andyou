@@ -147,10 +147,20 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
                 'tblName'       =>  'member',    #表名
             ));
         }
-		
         //更新账单，关联上用户ID
         $bid = $output->billInfo["id"];
         $bno = $output->billInfo["bno"];
+        
+        //记录会员积分历史        
+        Helper_Member::addScoreLog(array(
+            'memberId'         => $memberId, #ID
+            'direction'        => 0, #1 减 0 加
+            'score'            => $output->canGetScore, #积分
+            'orgScore'         => $minfo ? $minfo['score'] : 0, #原始积分
+            'bno'              => $bno, #订单号
+            'remark'           => '消费', #
+        ));
+		
         
         $sql = "update bills set memberId = {$memberId} where id = {$bid} limit 1";
         $db->query($sql);
@@ -159,7 +169,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $db->query($sql);
                 
         $urlStr = "?c={$output->ctlName}";
-	    echo "<script>document.location='?c=Bills';</script>";
+	    echo "<script>document.location='?c=Member&phone={$Arr['phone']}';</script>";
 		exit;
         
     }

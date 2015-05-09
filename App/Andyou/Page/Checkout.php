@@ -4,7 +4,7 @@
  *
  */
 
-error_reporting(0);
+//error_reporting(0);
 class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
     /**
      * 验证
@@ -165,6 +165,9 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //计算用户的总消费额
         $memLeftInfo['allsum'] = $memberInfo['allsum'] + round($sumPriceAftDisc/100) + $billInfo["bill_member_card"];
         //记入订单库
+        
+        $output->newScore       = (int)(($billDetail['useCard'] + ($billDetail['price']/100)) * $scoreRatio);//获得的积分
+        $billDetail["getScore"] = $output->newScore;
         $bid = Helper_Dao::insertItem(array(
 		        'addItem'       =>  $billDetail,
 		        'dbName'        =>  'Db_Andyou',
@@ -219,6 +222,55 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             }
         }
         
+        //记录积分历史
+        if($output->newScore && $memberId){
+            //记录自己的积分历史
+            Helper_Member::addScoreLog(array(
+                'memberId'         => $memberId, #ID
+                'direction'        => 0, #1 减 0 加
+                'score'            => $output->newScore, #积分
+                'orgScore'         => $memberInfo["score"], #原始积分
+                'bno'              => $bno, #订单号
+                'remark'           => '消费', #
+            ));
+            
+            //给介绍人增加积分
+            if($sysOptions && !empty($sysOptions["MemberParentRatio"])&& !empty($sysOptions["MemberParentRatio"]["value"])){
+                $introducerId = $memberInfo["introducerId"];
+                $introducer   = $memberInfo["introducer"];
+                if(!$introducerId || !$introducer){#如果没有ID,就尝试活儿
+
+                    $introInfo = Helper_Member::getMemberInfo(array('phone'=>$introducer,'id'=>$introducerId));
+                    $introducerId = $introInfo["id"];
+                    $iscore = $output->newScore * $sysOptions["MemberParentRatio"]["value"];
+                    
+                    //记录积分
+                    Helper_Member::addScoreLog(array(
+                        'memberId'         => $introducerId, #ID
+                        'direction'        => 0, #1 减 0 加
+                        'score'            => $iscore, #积分
+                        'orgScore'         => $memberInfo["score"], #原始积分
+                        'bno'              => $bno, #订单号
+                        'remark'           => '下线【'.$memberInfo["phone"]."-".$memberInfo["name"].'】消费得积分' . $output->newScore, #
+                    ));
+                    
+                }
+            }
+        }
+        
+        //记录会员会员卡使用记录 
+        if($memberId && $billDetail["useCard"]){
+            Helper_Member::addCardLog(array(
+                'memberId'         => $introducerId, #ID
+                'direction'        => 1, #1 减 0 加
+                'card'             => $billDetail["useCard"], #
+                'orgCard'          => $memberInfo["balance"], 
+                'bno'              => $bno, #订单号
+                'remark'           => '消费', #
+            ));
+        }
+        
+        
          //准备进入打印页面
         $output->bno          = $bno;
         $output->bid          = $bid;
@@ -232,7 +284,6 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         
         $output->discGetMoney = $discGetMoney; //折扣省下的钱
         $output->orgSumPrice  = $orgSumPrice; //原始总价
-        $output->newScore     = (int)(($billDetail['useCard'] + ($billDetail['price']/100)) * $scoreRatio);//获得的积分
               
 		$output->setTemplate('BillPrint3');
         
