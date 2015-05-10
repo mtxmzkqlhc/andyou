@@ -43,7 +43,7 @@ if($data) {
    foreach($data as $v) {
        $outStr = '<tr>';
        $outStr.='<td class="editColumn" data="name" rel="'.$v['id'].'" >'.$v['name'].'</td>';
-       $outStr.='<td class="editColumn" data="code" rel="'.$v['id'].'" >'.$v['code'].'</td>';
+       $outStr.='<td data="code" rel="'.$v['id'].'" >'.$v['code'].'</td>';
        $outStr.='<td>'.(isset($cateInfo[$v['cateId']]) ? $cateInfo[$v['cateId']] : '').'</td>';
        $outStr.='<td class="editColumn" data="price" rel="'.$v['id'].'" >'.round($v['price']/100,2).'</td>';
        $outStr.='<td class="editColumn" data="inPrice" rel="'.$v['id'].'" >'.round($v['inPrice']/100,2).'</td>';

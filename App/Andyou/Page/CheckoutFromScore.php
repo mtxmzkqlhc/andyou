@@ -1,16 +1,16 @@
 <?php
 /**
- * 前台结账
+ * 积分兑换页面
  *
  */
 
 //error_reporting(0);
-class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
+class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
     /**
      * 验证
      */
     public function validate(ZOL_Request $input, ZOL_Response $output){
-		$output->pageType = 'Checkout';
+		$output->pageType = 'CheckoutFromScore';
         if (!parent::baseValidate($input, $output)) { return false; }
 		return true;
 	}
@@ -27,9 +27,9 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         
         //获得所有配置
         $output->sysOptions = Helper_Option::getAllOptions();        
-        $output->scoreRatio = !empty($output->sysOptions["ScoreRatio"]) ? $output->sysOptions["ScoreRatio"]["value"] : 0;
-        
-		$output->setTemplate('Checkout');
+        $output->scoreRatio = !empty($output->sysOptions["DuihuanRatio"]) ? $output->sysOptions["DuihuanRatio"]["value"] : 0;
+        $output->minCheckoutScore = !empty($output->sysOptions["MinCheckoutScore"]) ? $output->sysOptions["MinCheckoutScore"]["value"] : 100;
+		$output->setTemplate('CheckoutFromScore');
 	}
 	
     public function doDone(ZOL_Request $input, ZOL_Response $output){
@@ -38,7 +38,6 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $itemDiscArr = $input->post("item_disc");//所有产品折扣
         $itemNumArr  = $input->post("item_num");//所有产品产品数量
         $staffid     = (int)$input->post("staffid");//员工
-        $isBuyScore  = (int)$input->post("isBuyScore");//是否是从积分兑换页面的提交
         $remark      = $input->post("remark");//填写的备注
         $endSumModifyFlag = (int)$input->post("endSumModifyFlag");//是否手工调整了最总价格
         $endBillPrice = $billInfo["bill_end_sum"]; //最终的价格，这个价格是可以修改的
@@ -112,10 +111,6 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $sysOptions = Helper_Option::getAllOptions();        
         $scoreRatio = !empty($sysOptions["ScoreRatio"]) ? $sysOptions["ScoreRatio"]["value"] : 0;
         $useScore   = (int)$billInfo["bill_member_score"];
-        if($useScore && $memberScore > 0){
-            $duihuanRatio = !empty($sysOptions["DuihuanRatio"]) ? $sysOptions["DuihuanRatio"]["value"] : 0;
-            $sumPriceAftDisc = $sumPriceAftDisc - round($useScore/$duihuanRatio)*100;
-        }
         /*
          * 先不用会员积分了
         if($sumPriceAftDisc && $memberScore && $billInfo["bill_member_score"]){
@@ -147,7 +142,6 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             'memberScore'     => $memberScore,
             'memberCard'      => $memberCard,
             'remark'          => $remark,
-            'isBuyScore'      => $isBuyScore, //是否是积分兑换
         );
         
         //如果销售眼前台修改了应收款，不是计算出来的，就记录
@@ -290,9 +284,8 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         
         $output->discGetMoney = $discGetMoney; //折扣省下的钱
         $output->orgSumPrice  = $orgSumPrice; //原始总价
-        
-        $output->isBuyScore   = $isBuyScore;
-		$output->setTemplate('BillPrint');
+              
+		$output->setTemplate('BillPrint3');
         
         
     }

@@ -13,15 +13,16 @@ class Andyou_Page_Ajax_Product extends Andyou_Page_Abstract{
      */
     public function doGetProductByCode(ZOL_Request $input, ZOL_Response $output) {
         $code = $input->get('code');
+        $fromScore = (int)$input->get('fromScore');
         if(!$code){
             echo "{}";exit;
         }
         //获得会员信息
-        $proList = Helper_Product::getProductList(array('code' => $code,'num'=>30));
+        $proList = Helper_Product::getProductList(array('code' => $code,'num'=>30,'canByScore'  => $fromScore));
         if($proList){
             $data = array(
-                'num'   => count($proList),
-                'data'  => $proList,
+                'num'         => count($proList),
+                'data'        => $proList,
             );
             echo api_json_encode($data);
         }else{

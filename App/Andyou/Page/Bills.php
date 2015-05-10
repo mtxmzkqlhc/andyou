@@ -26,6 +26,7 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
         $output->serstaffid = $wArr['staffid'] = $input->get('staffid');
         $output->sermemberId = $wArr['memberId'] = $input->get('memberId');
         $output->sermemberPhone  = $input->get('memberPhone');
+        $output->isBuyScore  = $input->get('isBuyScore');
         
         //如果传入了会员电话
         if($output->sermemberPhone){
@@ -34,6 +35,8 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
                 $output->sermemberId = $wArr['memberId'] = (int)$memInfo["id"];
             }
         }
+        if($output->isBuyScore == 1)$whereSql .= " and  isBuyScore = 1";
+        if($output->isBuyScore == 2)$whereSql .= " and  isBuyScore = 0";
         
         
 	    if(!empty ($wArr)){

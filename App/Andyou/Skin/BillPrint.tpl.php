@@ -59,7 +59,11 @@
         
         //销售单号
         iTop += txtLineHeight;
+        <?php if($isBuyScore){?>
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"积分兑换单号：No.<?=$bno?>");
+        <?php }else{?>
 		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"销售单号：No.<?=$bno?>");
+        <?php }?>
 		LODOP.SET_PRINT_STYLEA(0,"FontSize",8);
         
         
@@ -131,6 +135,9 @@
                 $txtArr["卡内支付金额："] =  $billDetail["useCard"];
             }
             $txtArr["本次折扣："] =  $billDetail["discount"];
+            if($isBuyScore){#积分兑换
+                $txtArr["使用积分："] =  $billDetail["useScore"];
+            }
             $txtArr["本次实付金额："] = "￥".($billDetail["price"]/100);
             
             if($memberInfo){

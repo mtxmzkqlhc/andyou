@@ -69,6 +69,10 @@
         <?php }?>
         <tr><td>本次折扣：</td><td align="right"><?=$billDetail["discount"]?></td></tr>
         
+        <?php  if($isBuyScore){  ?>
+      
+        <tr><td>使用积分：</td><td align="right"><?=$billDetail["useScore"]?></td></tr>
+        <?php }?>
         <tr><td>本次实付金额：</td><td align="right">￥<?=$billDetail["price"]/100?></td></tr>
         <?php  if($memberInfo){  ?>
         <tr><td>获得积分：</td><td align="right"><?=$newScore?></td></tr>

@@ -25,6 +25,7 @@ class Helper_Product extends Helper_Abstract {
             'num'             => 10,    #数量
             'code'            => false, #条码号
             'cateId'          => false, #分类ID
+            'canByScore'      => false, #是否可以积分兑换
         );
         if(is_array($params)) $options = array_merge($options, $params);
         extract($options);
@@ -33,6 +34,7 @@ class Helper_Product extends Helper_Abstract {
 
         if($code)$whereSql .= "and code = '{$code}' " ;
         if($cateId)$whereSql .= "and cateId = '{$cateId}' " ;
+        if($canByScore)$whereSql .= "and canByScore = {$canByScore} " ;
         
         $data = Helper_Dao::getRows(array(
                     'dbName'        => 'Db_Andyou',    #数据库名

@@ -20,19 +20,28 @@
 #proBarCode{width:300px;}
 #proListTbody input{margin-bottom:0px;width:25px;}
 #proListTbody .btn-small{padding:0 0 0 3px;}
-#searchMemBtn,#searchProBtn,#setDiscBtn,#removeGoodsBtn,#removeMemInfo{padding:3px 4px;margin-bottom:10px;}
+#searchMemBtn2,#searchProBtn,#setDiscBtn,#removeGoodsBtn,#removeMemInfo{padding:3px 4px;margin-bottom:10px;}
 #billContent .memextinfo{display:none}
+.yellow, .yellow [class="box-header"], .yellow.box, .slider.yellow .ui-slider-range, .progress.yellow .ui-progressbar-value, .sliderVertical.yellow .ui-slider-range, .progressSlim.yellow .ui-progressbar-value, .label-warning, .badge-warning {
+  background: #FFC40D !important;
+  border-color: #FFC40D !important;
+  
+}
+.yellow .box-header{color: #fff;}
+.box-content {
+  background: #fff !important;
+}
 </style>
 <div id="content">
 
 			<div class="row-fluid">
                 
-                <div class="box">
+                <div class="box" style="border-color: #FFC40D !important;">
                     <div class="box-content clearfix"  style="padding:15px 10px 8px;">
                         <div class="box-l clearfix">
                             <dl>
                                 <dt>会员电话</dt>
-                                <dd><input type="text" value="" id="memberPhone"><span class="btn btn-mini" title="查询用户" id="searchMemBtn"><i class="halflings-icon search white"></i></span>
+                                <dd><input type="text" value="" id="memberPhone"><span class="btn btn-mini" title="查询用户" id="searchMemBtn2"><i class="halflings-icon search white"></i></span>
                                 </dd>
                             </dl><dl>
                                 <dt>&nbsp;</dt>
@@ -68,43 +77,43 @@
             <!--   账单部分     -->
     
             <form method="POST" action="?" onsubmit="return doCheckIpt()" onkeydown="if(event.keyCode==13)return false;" >
-			<div class="row-fluid">
+			<div class="row-fluid" id="listBox" style="display:none">
                 
-                <div class="box">
+                <div class="box yellow">
 					<div class="box-header">
-						<h2>消费信息</h2>
+						<h2>积分兑换</h2>
 					</div>
                     <div class="box-content clearfix" id="billContent">
                         <div class="box-l clearfix">
                             <dl class="clearfix">
                                 <dt>单号</dt>
-                                <dd><input type="text" value="<?=Helper_Bill::getMaxBno()?>" id="memberPhone" disabled="true" ></dd>
+                                <dd><input type="text" value="S<?=Helper_Bill::getMaxBno()?>" id="memberPhone" disabled="true" ></dd>
+                            </dl>
+                            <dl class="clearfix">
+                                <dt>折扣</dt>
+                                <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]" /></dd>
                             </dl>
                             <dl class="clearfix memextinfo">
                                 <dt>总金额</dt>
                                 <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" trueprice="0" /></dd>
                             </dl>
-                            <dl class="clearfix" style="display:none;">
+                            <dl class="clearfix"  style="display:none">
+                                <dt>折扣后应付</dt>
+                                <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"  readonly="true" /></dd>
+                            </dl>
+                            <dl class="clearfix">
                                 <dt>使用积分</dt>
                                 <dd><input type="text" value="0" id="bill_member_score" class="billIptChg" readonly="true" name="bill[bill_member_score]">
                                    <span style="color:#999999;padding-bottom:5px;" id="scoreToMoneyNote"></span>
                                 </dd>
                             </dl>
                             <dl class="clearfix">
-                                <dt>折扣</dt>
-                                <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]" /></dd>
-                            </dl>
-                            <dl class="clearfix"  style="display:none">
-                                <dt>折扣后应付</dt>
-                                <dd><input type="text" value="0.00" id="bill_aftdisc_price" name="bill[bill_aftdisc_price]"  readonly="true" /></dd>
+                                <dt>还应收款</dt>
+                                <dd><input type="text" value="0.00" id="bill_end_sum" name="bill[bill_end_sum]" style="font-weight:bold;color:#EB3C00"></dd>
                             </dl>
                             <dl class="clearfix memextinfo">
                                 <dt>卡内扣款</dt>
                                 <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]"/></dd>
-                            </dl>
-                            <dl class="clearfix">
-                                <dt>应收款</dt>
-                                <dd><input type="text" value="0.00" id="bill_end_sum" name="bill[bill_end_sum]" style="font-weight:bold;color:#EB3C00"></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>销售员</dt>
@@ -140,10 +149,11 @@
                                 </dl>
                             </dl>
                             <div style="text-align:center;">
-                                <input type="submit" value="确认收款" class="btn btn-primary" id="addbtn"/>
+                                <input type="submit" value="确认兑换积分" class="btn btn-primary" id="addbtn" disabled="true"/>
                                 <input type="hidden" value="Checkout" name="c"/>
                                 <input type="hidden" value="Done" name="a"/>
                                 <input type="hidden" value="0" name="memberId" id="memberId"/>
+                                <input type="hidden" value="1" name="isBuyScore" id="isBuyScore"/>
                                 <input type="hidden" value="0" name="endSumModifyFlag" id="endSumModifyFlag"/>
                             </div>
                         </div>
@@ -225,7 +235,9 @@
     
 </script>
 <script>
+    var memberAllScore = 0;
     var scoreRatio = <?=$scoreRatio?>;
+    var minCheckoutScore = <?=$minCheckoutScore?>;
     var memberDisc = 1;//会员折扣价
     $("#memberPhone").focus(); 
     //积分转换价格
@@ -394,6 +406,20 @@
          
         
         var endPrice = billSumPrice;// * billDisc;//折扣后的价格  因为每行价格都记录了，就不需要最后在计算折扣了
+        
+        //计算这些钱需要多少积分
+        var needScore = Math.round((endPrice * scoreRatio)/100);
+        var needPayMoney = 0;
+        //alert(needScore);
+        if(memberAllScore < needScore){
+            //alert("会员的积分已不足");
+            needScore = memberAllScore;
+            needPayMoney = Math.round(endPrice - needScore/scoreRatio);
+            //$("#scoreToMoneyNote").show();
+            //alert(needPayMoney);
+        }
+        $("#bill_member_score").val(needScore);
+        
         $("#bill_aftdisc_price").val((endPrice/100).toFixed(2));
         if(billMemCard){//如果用户卡里还有余额
             if(billMemCard * 100 > endPrice){//卡内还有前
@@ -447,7 +473,7 @@
             var o = scoreToMoney($(this).val()); //########################
             if(o){
                 $(this).val($(this).val());
-                $("#scoreToMoneyNote").html("<br/>以上积分相当于："+o.price+"元 ");//+o.allLeftScore
+                $("#scoreToMoneyNote").html("<br/>以上积分相当于："+Math.round(o.price)+"元 ");//+o.allLeftScore
             }
             
             if(!$(this).val())$(this).val(0);
@@ -499,9 +525,9 @@
 //            doSearchMember();
 //        }
 //    }
-    
+
 </script>
-<script type="text/javascript" src="js/checkout/memeber.js"></script>
-<script type="text/javascript" src="js/checkout/protbl.js"></script>
+<script type="text/javascript" src="js/checkout/memeber_score.js"></script>
+<script type="text/javascript" src="js/checkout/protbl_score.js"></script>
 </body>
 </html>

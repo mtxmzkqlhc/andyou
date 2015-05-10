@@ -87,3 +87,4 @@ alter table `andyou`.`member` add column `introducer` varchar (20)   NOT NULL  C
 alter table `andyou`.`log_scorechange` add column `bno` varchar (20)   NOT NULL  COMMENT 'bill的no' after `remark`
 alter table `andyou`.`log_cardchange` add column `bno` varchar (20)   NOT NULL  COMMENT 'bill no' after `remark`
 alter table `andyou`.`bills` add column `getScore` int (11)   NOT NULL  COMMENT '用户获得多少积分' after `priceTrue`
+alter table `andyou`.`bills` add column `isBuyScore` tinyint (1)   NOT NULL  COMMENT '这是积分兑换的消费' after `getScore`

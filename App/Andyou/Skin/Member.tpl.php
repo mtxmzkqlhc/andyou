@@ -318,6 +318,16 @@ var checkUpCard = function(){
     }
     return true;
 }
+var checkUpScore = function(){
+    if($("#us_direction").val()==1){
+        if($("#us_allscore").val() < $("#us_score").val()){
+            alert("用户的积分不足以扣除");
+            return false;
+        }
+    }
+    return true;
+    
+}
 
 $("#addCheckExs").click(function(){
     doSearchMember($("#add_phone").val(),function(d){

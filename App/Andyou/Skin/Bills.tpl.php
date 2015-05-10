@@ -29,6 +29,17 @@
     }?>
 </select>
 会员ID:<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sermemberPhone?>" name="memberPhone" placeholder="会员ID">
+<select name="isBuyScore">
+    <option value="0">所有消费</option>
+    <?php
+    $arr = array(1=>'积分兑换',2=>'金钱消费');
+    foreach($arr as $k => $v){
+        $seled = $k == $isBuyScore ? "selected" : "";
+        echo "<option value='{$k}' {$seled}>{$v}</option>";
+    }
+        
+    ?>
+</select>
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    
 				    <!-- 列表 -->
@@ -38,6 +49,7 @@
 <th>单号</th><th>商品总价</th><th>折扣</th>
 <?php if(!$isAddUser){?>
  <th>使用余额</th>
+ <th>使用积分</th>
 <?php }?>
 <th>收取金额</th><th>销售员</th><th>消费时间</th>
 <?php if(!$isAddUser){?>
@@ -56,12 +68,14 @@ if($data) {
            $memName = $memInfo["name"];
        }
        $outStr = '<tr>';
-       $outStr.='<td>'.$v['bno'].'</td>';
+       $bno = $v['isBuyScore']?"<font color='blue'>S".$v['bno'].'</font>' : $v['bno'];
+       $outStr.='<td>'.$bno.'</td>';
        //$outStr.='<td style="text-align:left;">'.$v['useScore'].($v['useScore'] ? " <span style='color:#999999'>(".$v['useScoreAsMoney']."元)</span>" : "").'</td>';//
        $outStr.='<td>'.round($v['orgPrice']/100,2).'</td>';
        $outStr.='<td>'.$v['discount'].'</td>';
       if(!$isAddUser){
             $outStr.='<td>'.$v['useCard'].'</td>';
+            $outStr.='<td>'.$v['useScore'].'</td>';
       }
        if($v['priceTrue']){//如果销售员修改了价格，记录
            $outStr.='<td style="color:red;font-weight:bold" title="销售员修改了价格，原价：'.round($v['priceTrue']/100).'">'.round($v['price']/100).'</td>';

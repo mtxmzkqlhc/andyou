@@ -15,6 +15,11 @@ return array(
                 'ctrl' => 'Checkout',
                 'target' => '_self',
             ),
+            '积分兑换' => array(
+                'url' => '?c=CheckoutFromScore',
+                'ctrl' => 'CheckoutFromScore',
+                'target' => '_self',
+            ),
         ),
     ),
     '商品管理' => array(
