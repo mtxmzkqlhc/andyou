@@ -276,6 +276,17 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             ));
         }
         
+        //记录会员会员卡使用记录 
+        if($memberId && $billDetail["useScore"]){
+            Helper_Member::addScoreLog(array(
+                'memberId'         => $memberId, #ID
+                'direction'        => 1, #1 减 0 加
+                'score'             => $billDetail["useScore"], #
+                'orgScore'          => $memberInfo["score"], 
+                'bno'              => $bno, #订单号
+                'remark'           => '积分兑换', #
+            ));
+        }
         
          //准备进入打印页面
         $output->bno          = $bno;
