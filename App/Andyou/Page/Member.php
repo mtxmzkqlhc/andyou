@@ -132,15 +132,28 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
             'phone'           => $Arr['phone'], #ID
         ));
         
+        if(!$minfo && $Arr['introducer']){ //如果是新添加用户，验证介绍人是否存在
+            $pminfo = Helper_Member::getMemberInfo(array(
+                'phone'           => $Arr['introducer'], #ID
+            ));
+            if(!$pminfo){ #如果没有查到这个会员，清空介绍人字段
+                $Arr['introducer'] = false;
+            }
+        }
+        
+        //计算会员的消费总额 allsum
+        $toAllSumPrice = round($price/100);
+        $Arr['allsum'] = $toAllSumPrice;
+        
         $db = Db_Andyou::instance();
         if($minfo){ //如果会员已经存在了，就将这个积分累加到现有用户上
             $memberId = $minfo["id"];
-            
             //更新积分
-            $sql = "update member set score = score + {$output->canGetScore} where id = {$memberId}";
+            $sql = "update member set score = score + {$output->canGetScore},allsum=allsum + {$toAllSumPrice}  where id = {$memberId}";
             $db->query($sql);
         
         }else{
+            
             $memberId = Helper_Dao::insertItem(array(
                 'addItem'       =>  $Arr, #数据列
                 'dbName'        =>  'Db_Andyou',    #数据库名
@@ -167,6 +180,12 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
                 
         $sql = "update billsitem set memberId = {$memberId} where bid = {$bid}";
         $db->query($sql);
+        
+        //给介绍人添加积分
+        if(!emtpy($Arr['introducer'])){
+            
+        }
+        
                 
         $urlStr = "?c={$output->ctlName}";
 	    echo "<script>document.location='?c=Member&phone={$Arr['phone']}';</script>";

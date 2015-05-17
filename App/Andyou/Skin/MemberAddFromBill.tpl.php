@@ -49,6 +49,8 @@
                          <input type="hidden" name="a" value="AddUserFromBill">
                          <input type="hidden" name="c" value="Member">
                          <input type="hidden" name="bid" value="<?=$billInfo["id"]?>">
+                         <input type="hidden" name="billPrice" value="<?=round($billInfo["price"]/100)?>">
+                         
                 </form>
 					
                 </div>

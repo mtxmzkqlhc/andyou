@@ -312,7 +312,7 @@ $(".btnUpCard").click(function(){
 });
 var checkUpCard = function(){
     if($("#uc_direction").val()==1){
-        if($("#uc_allcard").val() < $("#uc_score").val()){
+        if($("#uc_allcard").val() - $("#uc_score").val() < 0){
             alert("用户的余额不足以扣除");
             return false;
         }
@@ -321,7 +321,7 @@ var checkUpCard = function(){
 }
 var checkUpScore = function(){
     if($("#us_direction").val()==1){
-        if($("#us_allscore").val() < $("#us_score").val()){
+        if($("#us_allscore").val() - $("#us_score").val() < 0){
             alert("用户的积分不足以扣除");
             return false;
         }
