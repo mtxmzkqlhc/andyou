@@ -240,7 +240,11 @@ class Helper_Member extends Helper_Abstract {
        if($data){
            if(isset( $memberCate[ $data["cateId"] ])){
                $data['cateName'] = $memberCate[$data["cateId"]]["name"];
-               $data['discount'] = $memberCate[$data["cateId"]]["discount"];;
+               $data['discount'] = $memberCate[$data["cateId"]]["discount"];
+               if($memberCate[$data["cateId"]]['discountStr']){//折扣的分类
+                   $data['discountArr'] = json_decode($memberCate[$data["cateId"]]['discountStr'], true);
+               }
+               
            }else{
                $data['cateName'] = "未分类";
                $data['discount'] = 1;

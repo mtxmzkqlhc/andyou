@@ -25,7 +25,7 @@ var doSearchMember = function(){
                 $("#memtbl_score").html(data.score);
                 $("#memtbl_card").html(bls);
                 $("#memtbl_cate").html(data.cateName);
-                $("#memtbl_disc").html(data.discount);
+                $("#memtbl_disc").html('<a href="javascript:;" target="_self" onclick="showMemDis()">查看具体折扣&gt;&gt;</a>');
                 $("#memtbl_remark").html(data.remark);
                 $("#memtbl_allsum").html(data.allsum);
                 $("#bill_member_card").val(bls);
@@ -40,6 +40,8 @@ var doSearchMember = function(){
 
                 memberDisc = data.discount;//会员折扣
                 if(memberDisc > 1)memberDisc = 1;
+                memberDiscArr = data.discountArr;
+                
                     
                  $("#bill_disc").val(memberDisc);
                 //先关按钮的显示
@@ -80,6 +82,7 @@ var removeMemInfo = function(){
 
     //先关按钮的隐藏
     $("#removeMemInfo").hide();
+    memberDiscArr = {};
     //计算一下金额
     refreshRightTbl();
     calcBillSumInfo();

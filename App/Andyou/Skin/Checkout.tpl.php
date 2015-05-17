@@ -46,7 +46,7 @@
                                 <tr>
                                     <td class="mtbl_l">会员姓名</td><td class="mtbl_r"><span class="label label-success" id="memtbl_name" style="display:none"></span></td>
                                     <td class="mtbl_l">会员类型</td><td class="mtbl_r" id="memtbl_cate"></td>
-                                    <td class="mtbl_l">享受折扣</td><td class="mtbl_r" id="memtbl_disc"</td>
+                                    <td class="mtbl_l">享受折扣</td><td class="mtbl_r" id="memtbl_disc"></td>
                                 </tr>
                                 <tr>
                                     <td class="mtbl_l">累计消费</td><td class="mtbl_r" id="memtbl_allsum"></td>
@@ -225,6 +225,7 @@
 <script>
     var scoreRatio = <?=$scoreRatio?>;
     var memberDisc = 1;//会员折扣价
+    var memberDiscArr = {};//会员折扣的全部数组
     $("#memberPhone").focus(); 
     //积分转换价格
     var scoreToMoney = function(score){
@@ -491,7 +492,22 @@
     //监控应付价格是否有调整
     $("#bill_end_sum").keyup(function(){
         $("#endSumModifyFlag").val(1);
-    })
+    });
+    
+    var showMemDis = function(){
+        if(memberDiscArr){
+            var proCateName = <?=$productCateJson?>;
+            var msgStr = "各分类的折扣分别是：\n\n";
+            
+            for(k in memberDiscArr){
+                if(k in proCateName){
+                    msgStr += "    " + proCateName[k] + " : " + memberDiscArr[k]+"\n";
+                }
+            }
+            alert(msgStr);
+        }
+        
+    }
 //    var enterIn = function(evt){
 //        var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
 //        if (evt.keyCode==13){

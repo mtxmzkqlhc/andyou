@@ -38,6 +38,9 @@ class  Andyou_Page_MemberCate  extends Andyou_Page_Abstract {
 		$pageSize = 30;
 		$orderSql = "order by id desc";
 		
+        //获得所有的产品分类
+        $output->productCate = Helper_Product::getProductCatePairs();
+        
 		$data = Helper_Dao::getList(array(
 			'dbName'        => "Db_Andyou",  #数据库名
 			'tblName'       => "membercate",       #表名
@@ -55,6 +58,8 @@ class  Andyou_Page_MemberCate  extends Andyou_Page_Abstract {
 		if($data){
 		    $output->pageBar = $data['pageBar'];
 		    $output->allCnt  = $data['allCnt'];
+            $lst = $data['data'];
+            //对数据进行二次加工
 		    $output->data    = $data['data'];
 			$output->pageUrl= $pageUrl;
 		}
@@ -70,6 +75,10 @@ class  Andyou_Page_MemberCate  extends Andyou_Page_Abstract {
 		$Arr['name'] = $input->post('name');
         $Arr['discount'] = $input->post('discount');
         
+        $discArr = $input->post('disc');
+        if($discArr){
+            $Arr['discountStr'] = json_encode($discArr);
+        }
 		$pageUrl = $input->request('pageUrl');
 		$data = Helper_Dao::insertItem(array(
 		        'addItem'       =>  $Arr, #数据列
@@ -91,6 +100,10 @@ class  Andyou_Page_MemberCate  extends Andyou_Page_Abstract {
 	    $input->request('name')?$Arr['name'] = $input->request('name'):'';
         $input->request('discount')?$Arr['discount'] = $input->request('discount'):'';
         
+        $discArr = $input->post('disc');
+        if($discArr){
+            $Arr['discountStr'] = json_encode($discArr);
+        }
 	    $pageUrl = $input->request('pageUrl');
 	    $data = Helper_Dao::updateItem(array(
 	            'editItem'       =>  $Arr, #数据列
@@ -132,6 +145,17 @@ class  Andyou_Page_MemberCate  extends Andyou_Page_Abstract {
 		        'cols'     => "*", #列名
 		        'whereSql' =>  ' and id='.$id
 		));
+        //数据补充
+        if($arr){
+            foreach($arr as $k => $v){
+                if($v["discountStr"]){
+                    $tmparr = json_decode($v["discountStr"],true);
+                    foreach($tmparr as $i => $iv){
+                        $arr[$k]["disc_".$i] = $iv;
+                    }
+                }
+            }
+        }
 		$data = ZOL_String::convToU8($arr);
 		if(isset($data[0])){
 		  echo json_encode($data[0]);

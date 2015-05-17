@@ -29,6 +29,11 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $output->sysOptions = Helper_Option::getAllOptions();        
         $output->scoreRatio = !empty($output->sysOptions["ScoreRatio"]) ? $output->sysOptions["ScoreRatio"]["value"] : 0;
         
+        
+        //获得商品的所有分类
+        $output->productCateArr = Helper_Product::getProductCatePairs();
+        $output->productCateJson = api_json_encode($output->productCateArr);
+        
 		$output->setTemplate('Checkout');
 	}
 	
