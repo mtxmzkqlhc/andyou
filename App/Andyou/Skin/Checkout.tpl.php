@@ -90,7 +90,7 @@
                                    <span style="color:#999999;padding-bottom:5px;" id="scoreToMoneyNote"></span>
                                 </dd>
                             </dl>
-                            <dl class="clearfix">
+                            <dl class="clearfix" style="display:none">
                                 <dt>折扣</dt>
                                 <dd><input type="text" value="1" id="bill_disc" class="billIptChg" name="bill[bill_disc]" /></dd>
                             </dl>
@@ -100,7 +100,7 @@
                             </dl>
                             <dl class="clearfix memextinfo">
                                 <dt>卡内扣款</dt>
-                                <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]"/></dd>
+                                <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>应收款</dt>
@@ -378,13 +378,13 @@
         if(memberId){
             //修正用户需要花费多少卡上金额
             if(($("#bill_member_card").val()-0) > ($("#bill_sum_price").val()-0)){
-                $("#bill_member_card").val($("#bill_sum_price").val());
+                $("#bill_member_card").val(Math.floor($("#bill_sum_price").val()));//卡内扣款 只能是整数
             }
         }
         
         var billSumPrice         = parseInt($("#bill_sum_price").attr("trueprice"),10);//parseFloat($("#bill_sum_price").val());//应收金额
         var billDisc             = parseFloat($("#bill_disc").val());//折扣
-        var billMemCard          = parseFloat($("#bill_member_card").val());//卡上金额
+        var billMemCard          = Math.floor($("#bill_member_card").val());//卡上金额
         var billMemScore         = parseInt($("#bill_member_score").val(),10);//使用积分
         if(billMemScore){
             var scoreToMoneyObj      = scoreToMoney(billMemScore);
@@ -434,6 +434,7 @@
         //卡内金额
         if($(this).attr("id") == "bill_member_card"){ //判断设置的金额不能过大
             if($(this).val()-0 > $("#memtbl_card").html()-0){
+                alert("会员的卡内余额不足");
                 $(this).val($("#memtbl_card").html());
             }
             if(!$(this).val()||$(this).val() == "")$(this).val(0);
@@ -499,7 +500,6 @@
 //            doSearchMember();
 //        }
 //    }
-    
 </script>
 <script type="text/javascript" src="js/checkout/memeber.js"></script>
 <script type="text/javascript" src="js/checkout/protbl.js"></script>

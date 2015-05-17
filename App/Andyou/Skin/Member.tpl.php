@@ -55,7 +55,7 @@ if($data) {
            
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnMember"><i class="halflings-icon white edit"></i></a>
-       <a title="修改积分" class="btn btn-info btnUpScore" style="color:#ffffff;" data-mid="'.$v['id'].'" data-score="'.$v['score'].'">积分</a>
+       <a title="修改积分" class="btn btn-info btnUpScore" style="color:#ffffff;" data-mid="'.$v['id'].'" data-score="'.$v['score'].'">积分调整</a>
        <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">会员充值</a>
        <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a>　--></td>';
        $outStr.='</tr>';
@@ -296,6 +296,7 @@ $(".btnUpScore").click(function(){
     $("#us_mid").val(mid);
     $("#memNowScore").html(score);
     $("#us_allscore").val(score);
+    $("#us_score").focus();
     art.dialog({title: '积分修改',width:"600px",content: $("#edit-box2").html()});
 });
 $(".btnUpCard").click(function(){
@@ -328,8 +329,7 @@ var checkUpScore = function(){
     return true;
     
 }
-
-$("#addCheckExs").click(function(){
+var checkHasOneToAdd = function(){
     doSearchMember($("#add_phone").val(),function(d){
         if(d){
             $("#add_name").val(d.name);
@@ -340,9 +340,17 @@ $("#addCheckExs").click(function(){
             $("#add_balance").val(d.balance);
             $("#add_remark").val(d.remark);
             $("#add_score").val(d.score);
+            alert("该会员已经存在，不能添加！");
         }
-    })
-})
+    });
+}
+
+$("#addCheckExs").click(function(){
+    checkHasOneToAdd();
+});
+$("#add_phone").blur(function(){
+    checkHasOneToAdd();
+});
 
 //搜索用户
 var doSearchMember = function(phone,func){

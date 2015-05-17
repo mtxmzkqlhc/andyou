@@ -1,5 +1,5 @@
    <!-- BEGIN HEADER -->
-    <div class="header navbar navbar-inverse navbar-fixed-top">
+    <div class="header navbar navbar-inverse">
             
         <div class="navbar-inner">
             <div class="container-fluid">

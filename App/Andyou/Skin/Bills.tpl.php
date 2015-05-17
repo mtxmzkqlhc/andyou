@@ -95,7 +95,7 @@ if($data) {
        }
        $outStr.='<td rel="'.$v['id'].'" align="left" style="text-align:left;">';
        if(empty($v['memberId']) && $isAddUser){
-            $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" target="_blank" style="color:#ffffff">添加用户</a>';
+            $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" target="_blank" style="color:#ffffff">添加会员</a>';
        }
        $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
        <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>

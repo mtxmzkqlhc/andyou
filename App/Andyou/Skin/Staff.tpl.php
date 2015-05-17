@@ -8,7 +8,7 @@
             <div class="box span12">
                 <div class="box-header" data-original-title>
                 	  <h2><i class="halflings-icon align-justify"></i><span class="break"></span>员工管理</h2>
-				     <button data-toggle="modal" role="button" href="#add-box" class="btn-addArea big-addbtn" type="button"> 添加数据</button>
+				     <button data-toggle="modal" role="button" href="#add-box" class="btn-addArea big-addbtn" type="button"> 添加员工</button>
                 </div>
                 <div class="box-content">
                 	 <!-- 搜索 -->
@@ -43,7 +43,7 @@ if($data) {
        $outStr = '<tr>';
        $outStr.='<td>'.$v['id'].'</td>';
        $outStr.='<td>'.$v['name'].'</td>';
-       $outStr.='<td>'.$v['inDate'].'</td>';
+       $outStr.='<td>'.$v['ryear'].'/'.$v['rmonth'].'/'.$v['rday'].'</td>';
        $outStr.='<td>'.$v['byear'].'/'.$v['bmonth'].'/'.$v['bday'].'</td>';
        $outStr.='<td>'.(isset($staffCate[$v['cateId']]) ? $staffCate[$v['cateId']] : '').'</td>';
        $outStr.='<td>'.$v['salary'].'</td>';
@@ -85,7 +85,9 @@ if($data) {
                         <tbody><tr><td> <table class="item_edit_table"> <tbody>
 				
                           <tr><td align="right">姓名:</td><td><input type="text"   name="name" /></td></tr>
-                          <tr><td align="right">入职时间:</td><td><input type="text"   name="inDate" /></td></tr>
+                          <tr><td align="right">入职时间:</td><td>
+                              <input type="text" name="ryear"  style="width:60px" /> 年 <input type="text" name="rmonth"  style="width:60px" /> 月 <input type="text" name="rday"  style="width:60px" /> 日
+                              </td></tr>
                           <tr><td align="right">生日:</td><td><input type="text" name="byear"  style="width:60px" /> 年 <input type="text" name="bmonth"  style="width:60px" /> 月 <input type="text" name="bday"  style="width:60px" /> 日</td></tr>
 
                           <tr><td align="right">分类:</td><td>
@@ -129,7 +131,10 @@ if($data) {
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
                           <tr><td align="right">姓名:</td><td><input type="text" id="name"  name="name" /></td></tr>
-                          <tr><td align="right">入职时间:</td><td><input type="text" id="inDate"  name="inDate" /></td></tr>
+                          <tr><td align="right">入职时间:</td><td>
+                                  <input type="text" id="ryear" name="ryear" style="width:60px" /> 年 <input type="text" id="rmonth"  name="rmonth"  style="width:60px" /> 月 <input type="text" id="rday"  name="rday"  style="width:60px" /> 日
+                         </td></tr>
+                          
                          <tr><td align="right">生日:</td><td><input type="text" id="byear" name="byear" style="width:60px" /> 年 <input type="text" id="bmonth"  name="bmonth"  style="width:60px" /> 月 <input type="text" id="bday"  name="bday"  style="width:60px" /> 日</td></tr>
 
                           <tr><td align="right">分类:</td><td>
@@ -195,6 +200,9 @@ $('.editbtnStaff').live('click',function(){
         $('#byear').val(dat['byear']);
         $('#bmonth').val(dat['bmonth']);
         $('#bday').val(dat['bday']);
+        $('#ryear').val(dat['ryear']);
+        $('#rmonth').val(dat['rmonth']);
+        $('#rday').val(dat['rday']);
         $('#cateId').val(dat['cateId']);
         $('#salary').val(dat['salary']);
         $('#percentage').val(dat['percentage']);

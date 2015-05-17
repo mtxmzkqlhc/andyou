@@ -7,7 +7,6 @@
 	<html lang="en" class="js inlinesvg"> 
 <![endif]-->
 <!--[if !IE]><!--> <html lang="en" class="js inlinesvg"> <!--<![endif]-->
-<!-- BEGIN HEAD http://www.keenthemes.com/preview/metronic/index.html -->
 <head>
 	<meta charset="GBK" />
 	<title><?=$sysName?></title>
@@ -27,9 +26,7 @@
     <link href="css/jquery-ui110.min.css" rel="stylesheet" type="text/css"/>
     <link href="css/newstyle-modify.css" rel="stylesheet" type="text/css"/>
 	<!-- END GLOBAL MANDATORY STYLES -->
-    <!--[if lt IE 9]> 
-	<link id="ie-style" href="css/ie.css" rel="stylesheet">
-    <![endif]--> 
+    
 	<link rel="shortcut icon" href="image/star.ico" />
     <style>
 .box-content{padding:15px 10px;}
@@ -44,4 +41,4 @@
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
-<body class="page-header-fixed">
+<body>

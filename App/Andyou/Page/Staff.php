@@ -69,9 +69,12 @@ class  Andyou_Page_Staff  extends Andyou_Page_Abstract {
 	                        
 		$Arr['name'] = $input->post('name');
         $Arr['inDate'] = $input->post('inDate');
-        $Arr['byear'] = $input->post('byear');
-        $Arr['bmonth'] = $input->post('bmonth');
-        $Arr['bday'] = $input->post('bday');
+        $Arr['byear'] = (int)$input->post('byear');
+        $Arr['bmonth'] = (int)$input->post('bmonth');
+        $Arr['bday'] = (int)$input->post('bday');
+        $Arr['ryear'] = (int)$input->post('ryear');
+        $Arr['rmonth'] = (int)$input->post('rmonth');
+        $Arr['rday'] = (int)$input->post('rday');
         $Arr['cateId'] = $input->post('cateId');
         $Arr['salary'] = $input->post('salary');
         $Arr['percentage'] = $input->post('percentage');
@@ -96,9 +99,12 @@ class  Andyou_Page_Staff  extends Andyou_Page_Abstract {
 	    
 	    $input->request('name')?$Arr['name'] = $input->request('name'):'';
         $input->request('inDate')?$Arr['inDate'] = $input->request('inDate'):'';
-        $input->request('byear')?$Arr['byear'] = $input->request('byear'):'';
-        $input->request('bmonth')?$Arr['bmonth'] = $input->request('bmonth'):'';
-        $input->request('bday')?$Arr['bday'] = $input->request('bday'):'';
+        $input->request('byear')?$Arr['byear'] = (int)$input->request('byear'):'';
+        $input->request('bmonth')?$Arr['bmonth'] = (int)$input->request('bmonth'):'';
+        $input->request('bday')?$Arr['bday'] = (int)$input->request('bday'):'';
+        $input->request('ryear')?$Arr['ryear'] = (int)$input->request('ryear'):'';
+        $input->request('rmonth')?$Arr['rmonth'] = (int)$input->request('rmonth'):'';
+        $input->request('rday')?$Arr['rday'] = (int)$input->request('rday'):'';
         $input->request('cateId')?$Arr['cateId'] = $input->request('cateId'):'';
         $input->request('salary')?$Arr['salary'] = $input->request('salary'):'';
         $input->request('percentage')?$Arr['percentage'] = $input->request('percentage'):'';

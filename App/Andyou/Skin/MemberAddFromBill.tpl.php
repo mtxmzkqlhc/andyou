@@ -3,7 +3,7 @@
 <style>
     #addUserTbl {font-size:12px;}
     #addUserTbl td{text-align: left;}
-#addCheckExs{padding:3px 4px;margin-bottom:10px;}
+#addCheckExs,#addIntrCheckExs{padding:3px 4px;margin-bottom:10px;}
 </style>
 <div class="content" style="padding-top:20px;">
         
@@ -11,7 +11,7 @@
                 
                 <div class="box">
 					<div class="box-header">
-						<h2><i class="halflings-icon list-alt"></i><span class="break"></span>商品入库</h2>
+						<h2><i class="halflings-icon list-alt"></i><span class="break"></span>添加会员</h2>
 						<div class="box-icon">
 							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
 							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
@@ -22,11 +22,11 @@
                          <table class="table table-center table-striped table-bordered" id="addUserTbl">
                         <tbody>
                         
-                          <tr><td align="right">单号:</td><td><?=$billInfo["bno"]?></td></tr>
-                          <tr><td align="right">消费金额:</td><td><?=round($billInfo["price"]/100,2)?></td></tr>
-                          <tr><td align="right">手机号:</td><td><input type="text"  id="phone"   name="phone" /> <span class="btn btn-mini" title="验证是否存在" id="addCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
-                          <tr><td align="right">姓名:</td><td><input type="text" id="name"  name="name" /></td></tr>
-                          <tr><td align="right">分类:</td><td>
+                          <tr><td align="right" style="text-align:right;">单号:</td><td style="font-weight:bold;color:green"><?=$billInfo["bno"]?></td></tr>
+                          <tr><td align="right" style="text-align:right;">消费金额:</td><td><?=round($billInfo["price"]/100,2)?> 元</td></tr>
+                          <tr><td align="right" style="text-align:right;">手机号:</td><td><input type="text"  id="phone"   name="phone" /> <span class="btn btn-mini" title="验证是否存在" id="addCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
+                          <tr><td align="right" style="text-align:right;">姓名:</td><td><input type="text" id="name"  name="name" /></td></tr>
+                          <tr><td align="right" style="text-align:right;">分类:</td><td>
                           <select name="cateId" id="cateId"><option value='0'>请选择</option>
                                 <?php
                                 if ($memberCate) {
@@ -37,11 +37,11 @@
                                  ?>
                            </select>    
                           </td></tr>
-                          <tr><td align="right">生日:</td><td><input type="text" name="byear" id="byear"  style="width:60px" /> 年 <input type="text" name="bmonth"  id="bmonth"  style="width:60px" /> 月 <input type="text" name="bday"  id="bday" style="width:60px" /> 日</td></tr>
-                          <tr><td align="right">可获积分:</td><td><?=$canGetScore?></td></tr>
+                          <tr><td align="right" style="text-align:right;">生日:</td><td><input type="text" name="byear" id="byear"  style="width:60px" /> 年 <input type="text" name="bmonth"  id="bmonth"  style="width:60px" /> 月 <input type="text" name="bday"  id="bday" style="width:60px" /> 日</td></tr>
+                          <tr><td align="right" style="text-align:right;">可获积分:</td><td><?=$canGetScore?></td></tr>
                          <!-- <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr> -->
-                          <tr><td align="right">备注:</td><td><textarea  name="remark" id="remark"  style="width:350px;height:50px"></textarea></td></tr>
-                          <tr><td align="right">介绍人手机号:</td><td><input type="text"  name="introducer" id="introducer" value=''/></td></tr>
+                          <tr><td align="right" style="text-align:right;">备注:</td><td><textarea  name="remark" id="remark"  style="width:350px;height:50px"></textarea></td></tr>
+                          <tr><td align="right" style="text-align:right;">介绍人手机号:</td><td><input type="text"  name="introducer" id="introducer" value=''/> <span class="btn btn-mini" title="验证是否存在" id="addIntrCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
                           <tr><td>&nbsp;</td><td><input type="submit" value="消费关联此会员" class="btn btn-primary"/></td></tr>
                           
 
@@ -70,6 +70,9 @@ var doCheckIpt = function(){
         alert("请填写完整！");
         return false;
     }
+    //验证用户
+    $.ajaxSettings.async = false;
+    
     return true;
     
 }
@@ -91,7 +94,7 @@ $('.editbtnMember').live('click',function(){
 
 
 //-------------------------------
-//用一个按钮修改一种状态的后台
+//用一个按钮修改一种状态的后台 introducer
 //-------------------------------
 var setDataValue = function(id,col,val){
     
@@ -105,25 +108,57 @@ var setDataValue = function(id,col,val){
         }
    });
 }
-$("#addCheckExs").click(function(){
+
+var checkHasOneToAdd = function(){
+    
+    $("#name").val("").removeAttr("readonly");
+    $("#cateId").val("").removeAttr("readonly");
+    $("#byear").val("").removeAttr("readonly");
+    $("#bmonth").val("").removeAttr("readonly");
+    $("#bday").val("").removeAttr("readonly");
+    $("#balance").val("").removeAttr("readonly");
+    $("#remark").val("").removeAttr("readonly");
+    $("#score").val("").removeAttr("readonly");
+    $("#introducer").val("").removeAttr("readonly");
+            
     doSearchMember($("#phone").val(),function(d){
-        if(d){
-            $("#name").val(d.name);
-            $("#cateId").val(d.cateId);
-            $("#byear").val(d.byear);
-            $("#bmonth").val(d.bmonth);
-            $("#bday").val(d.bday);
-            $("#balance").val(d.balance);
-            $("#remark").val(d.remark);
-            $("#score").val(d.score);
+        if(d && d.name){
+            $("#name").val(d.name).attr("readonly",true);
+            $("#cateId").val(d.cateId).attr("readonly",true);
+            $("#byear").val(d.byear).attr("readonly",true);
+            $("#bmonth").val(d.bmonth).attr("readonly",true);
+            $("#bday").val(d.bday).attr("readonly",true);
+            $("#balance").val(d.balance).attr("readonly",true);
+            $("#remark").val(d.remark).attr("readonly",true);
+            $("#score").val(d.score).attr("readonly",true);
+            $("#introducer").val(d.introducer).attr("readonly",true);
+            
         }
-    })
+    });
+}
+$("#addCheckExs").click(function(){
+    checkHasOneToAdd();
 })
+
+$("#phone").blur(function(){
+    checkHasOneToAdd();
+});
+
+$("#addIntrCheckExs").click(function(){
+    doSearchMember($("#introducer").val(),function(d){
+        if(!d || !d.name){
+            alert("介绍人手机号不存在");
+            $("#introducer").val("");
+            
+        }
+    });
+});
 
 //搜索用户
 var doSearchMember = function(phone,func){
     
     if(phone){
+        
         var t = Date.parse(new Date()); 
         var url = "?c=Ajax_Member&a=GetMemberByPhone&phone=" + phone+"&t="+t;
         $.getJSON(url,{},function(data){

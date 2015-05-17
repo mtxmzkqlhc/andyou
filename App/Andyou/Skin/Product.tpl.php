@@ -53,7 +53,7 @@ if($data) {
        $outStr.='<td>'.($v['canByScore']?"<font color='green'>是</font>":"否").'</td>';
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnProduct"><i class="halflings-icon white edit"></i></a>
-       <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a> -->
+        <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a> 
        </td>';
        $outStr.='</tr>';
        echo $outStr;
@@ -105,7 +105,7 @@ if($data) {
                           <tr><td align="right">进货价:</td><td><input type="text"   name="inPrice" /></td></tr>
                           <tr><td align="right">库存数量:</td><td><input type="text"   name="stock" /></td></tr>
                           <!-- <tr><td align="right">积分比例:</td><td><input type="text" value='1'  name="score" /> <span style="color:#666666">1表示一元积一分</span></td></tr>-->
-                          <tr><td align="right">最低折扣:</td><td><input type="text" value='0'  name="discut"  /> 用小数表示,如:0.8 </td></tr> 
+                          <tr><td align="right">最低折扣:</td><td><input type="text" value='0'  name="discut"  /> 0无最低折扣，1无折扣，0.9表示9折 </td></tr> 
                           <tr><td align="right">积分兑换:</td><td><select name="canByScore"><option value='0'>否</option><option value='1'>是</option></select></td></tr>
 
                          </tbody></table></td></tr></tbody></table>
@@ -151,7 +151,7 @@ if($data) {
                           <tr><td align="right">进货价:</td><td><input type="text" id="inPrice"  name="inPrice" /></td></tr>
                           <tr><td align="right">库存数量:</td><td><input type="text" id="stock"  name="stock" /></td></tr>
                           <!-- <tr><td align="right">积分比例:</td><td><input type="text" id="score"  name="score" /> <span style="color:#666666">1表示一元积一分</span></td></tr>-->
-                          <tr><td align="right">最低折扣:</td><td><input type="text" id="discut"  name="discut" /> 用小数表示,如:0.8</td></tr>  
+                          <tr><td align="right">最低折扣:</td><td><input type="text" id="discut"  name="discut" /> 0无最低折扣，1无折扣，0.9表示9折</td></tr>  
                           <tr><td align="right">积分兑换:</td><td><select id="canByScore" name="canByScore"><option value='0'>否</option><option value='1'>是</option></select></td></tr>
 
                         </tbody></table></td></tr></tbody></table>
@@ -200,8 +200,8 @@ $('.editbtnProduct').live('click',function(){
         $('#name').val(dat['name']);
         $('#code').val(dat['code']);
         $('#cateId').val(dat['cateId']);
-        $('#price').val(dat['price']);
-        $('#inPrice').val(dat['inPrice']);
+        $('#price').val(dat['price']/100);
+        $('#inPrice').val(dat['inPrice']/100);
         $('#stock').val(dat['stock']);
         $('#score').val(dat['score']);
         $('#discut').val(dat['discut']);
