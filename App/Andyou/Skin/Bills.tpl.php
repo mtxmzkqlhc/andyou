@@ -51,7 +51,11 @@
  <th>使用余额</th>
  <th>使用积分</th>
 <?php }?>
-<th>收取金额</th><th>销售员</th><th>消费时间</th>
+<th>收取金额</th>
+<?php if($hasChangePrice){?>
+<th>实际金额</th>
+<?php }?>
+<th>销售员</th><th>消费时间</th>
 <?php if(!$isAddUser){?>
 <th>会员ID</th>
 <?php }?>
@@ -82,6 +86,10 @@ if($data) {
        }else{
           $outStr.='<td>'.round($v['price']/100).'</td>';
        }
+       //销售员修改了价格
+        if($hasChangePrice){
+             $outStr.='<td>'.round($v['priceTrue']/100).'</td>';
+        }
        $outStr.='<td>'.(isset($staffInfo[$v['staffid']]) ? $staffInfo[$v['staffid']] : '-').'</td>';
        $outStr.='<td>'.date("m-d H:i",$v['tm']).'</td>';
        if(!$isAddUser){

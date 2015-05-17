@@ -27,6 +27,7 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
         $output->sermemberId = $wArr['memberId'] = $input->get('memberId');
         $output->sermemberPhone  = $input->get('memberPhone');
         $output->isBuyScore  = $input->get('isBuyScore');
+        $output->hasChangePrice   = (int)$input->get("hasChangePrice");//销售员修改过的订单
         
         //如果传入了会员电话
         if($output->sermemberPhone){
@@ -38,6 +39,8 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
         if($output->isBuyScore == 1)$whereSql .= " and  isBuyScore = 1";
         if($output->isBuyScore == 2)$whereSql .= " and  isBuyScore = 0";
         
+        //销售员修改了价格
+        if($output->hasChangePrice)$whereSql .= " and  priceTrue > 0 ";
         
 	    if(!empty ($wArr)){
 		    foreach($wArr as $k=>$v){
@@ -51,7 +54,7 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
         if($output->isAddUser){
             $whereSql .= " AND memberId = 0 ";
         }
-		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&bno={$wArr['bno']}&staffid={$wArr['staffid']}&memberPhone=$output->sermemberPhone";
+		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&bno={$wArr['bno']}&staffid={$wArr['staffid']}&memberPhone=$output->sermemberPhone&hasChangePrice=$output->hasChangePrice";
 		$pageSize = 30;
 		$orderSql = "order by id desc";
 		

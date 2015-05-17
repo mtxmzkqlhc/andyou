@@ -16,9 +16,9 @@ var doSearchMember = function(){
     var phone = $("#memberPhone").val();
     if(phone){
         var t = Date.parse(new Date()); 
-        var url = "?c=Ajax_Member&a=GetMemberByPhone&phone=" + phone+"&t="+t;
+        var url = "?c=Ajax_Member&a=GetMemberByPhone&phonecard=" + phone+"&t="+t;
         $.getJSON(url,{},function(data){
-            if(data){
+            if(data && data.name){
                 var bls = data.balance ? data.balance : 0;
                 $("#memtbl_name").show().html(data.name);
                 $("#bill_end_membernm").val(data.name);
@@ -44,14 +44,18 @@ var doSearchMember = function(){
                  $("#bill_disc").val(memberDisc);
                 //先关按钮的显示
                 $("#removeMemInfo").show();
-                
+                $("#proBarCode").focus();
                 //计算一下金额
                 refreshRightTbl();
                 calcBillSumInfo();
+            }else{
+                alert("该会员不存在");
+                removeMemInfo();
             }
         });
     }else{
         removeMemInfo();
+        $("#proBarCode").focus();
     }
 }
 //清除会员相关信息

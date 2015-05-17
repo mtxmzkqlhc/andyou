@@ -77,8 +77,11 @@ OK -- 具体消费会员卡的时候，要记录
 增加积分兑换：在常用操作-前台收银下方增加积分兑换，进入界面同前台收银，区别：用界面颜色或什么方法区别收银界面；扫描条码只能检索参与积分兑换的商品，左下侧增加本次兑换积分应收款根据输入
 积分减少，确认收款后打印小票并进入消费记录和积分统计中
 
+==
+tab To enter 
+ onkeydown="if(event.keyCode==13)return false;"
 
-
+class="entrnext" data-tab-index="5"
 
 ===
 执行SQL
@@ -88,3 +91,5 @@ alter table `andyou`.`log_scorechange` add column `bno` varchar (20)   NOT NULL 
 alter table `andyou`.`log_cardchange` add column `bno` varchar (20)   NOT NULL  COMMENT 'bill no' after `remark`
 alter table `andyou`.`bills` add column `getScore` int (11)   NOT NULL  COMMENT '用户获得多少积分' after `priceTrue`
 alter table `andyou`.`bills` add column `isBuyScore` tinyint (1)   NOT NULL  COMMENT '这是积分兑换的消费' after `getScore`
+
+alter table `andyou`.`staff` add column `ryear` int (4)   NOT NULL  COMMENT '入职年' after `percentage`, add column `rmonth` tinyint (2)   NOT NULL  COMMENT '入职月' after `ryear`, add column `rday` tinyint (2)   NOT NULL  COMMENT '入职日' after `rmonth`,change `bmonth` `bmonth` tinyint (2)   NULL  COMMENT '生日月'

@@ -22,6 +22,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 		$page = (int)$input->get('page')<1?1:(int)$input->get('page');
 		$output->sername = $wArr['name'] = $input->get('name');
         $output->serphone = $wArr['phone'] = $input->get('phone');
+        $output->sercardno = $wArr['cardno'] = $input->get('cardno');
         $output->sercateId = $wArr['cateId'] = $input->get('cateId');
         
 	    if(!empty ($wArr)){
@@ -33,7 +34,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
                 }    
 		    }
 		}
-		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&name={$wArr['name']}&phone={$wArr['phone']}&cateId={$wArr['cateId']}";
+		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&name={$wArr['name']}&phone={$wArr['phone']}&cardno={$wArr['cardno']}&cateId={$wArr['cateId']}";
 		$pageSize = 30;
 		$orderSql = "order by id desc";
 		
@@ -117,6 +118,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $Arr = array();        
 		$Arr['name']    = $input->post('name');
         $Arr['phone']   = $input->post('phone');
+        $Arr['cardno']  = $input->post('cardno');
         $Arr['cateId']  = $input->post('cateId');
         $Arr['byear']   = $input->post('byear');
         $Arr['bmonth']  = $input->post('bmonth');
@@ -300,6 +302,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 	    $Arr = array();
         
 		$Arr['name'] = $input->post('name');
+        $Arr['cardno'] = $input->post('cardno');
         $Arr['phone'] = $input->post('phone');
         $Arr['cateId'] = $input->post('cateId');
         $Arr['byear'] = $input->post('byear');
@@ -338,6 +341,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 	    
 	    $input->request('name')?$Arr['name'] = $input->request('name'):'';
         $input->request('phone')?$Arr['phone'] = $input->request('phone'):'';
+        $input->request('cardno')?$Arr['cardno'] = $input->request('cardno'):'';
         $input->request('cateId')?$Arr['cateId'] = $input->request('cateId'):'';
         $input->request('byear')?$Arr['byear'] = $input->request('byear'):'';
         $input->request('bmonth')?$Arr['bmonth'] = $input->request('bmonth'):'';

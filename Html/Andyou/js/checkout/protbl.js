@@ -116,7 +116,7 @@ var doSearchPro = function(){
                     //$("#proAddBoxTbody").html('<tr><td colspan="10" style="text-align: center;color:#666666;padding:20px 0 20px;background:#ffffff;">-- 加载中 --</td></tr>');
                     selectProBoxData = data.data;
                     appendSelectProTable(data.data,data.num)
-                    selectProBoxDlg = art.dialog({title: '请选择商品',width:"600px",content: $("#add-pro-box").html()});
+                    selectProBoxDlg = art.dialog({title: '请选择商品',width:"680px",content: $("#add-pro-box").html()});
                 }else{
                     alert("该商品未入库");
                 }

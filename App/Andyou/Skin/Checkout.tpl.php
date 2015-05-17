@@ -31,7 +31,7 @@
                     <div class="box-content clearfix"  style="padding:15px 10px 8px;">
                         <div class="box-l clearfix">
                             <dl>
-                                <dt>会员电话</dt>
+                                <dt>会员</dt>
                                 <dd><input type="text" value="" id="memberPhone"><span class="btn btn-mini" title="查询用户" id="searchMemBtn"><i class="halflings-icon search white"></i></span>
                                 </dd>
                             </dl><dl>
@@ -53,9 +53,7 @@
                                     <td class="mtbl_l">当前积分</td><td class="mtbl_r" id="memtbl_score"></td>
                                     <td class="mtbl_l">卡内余额</td><td class="mtbl_r" id="memtbl_card"></td>
                                 </tr>
-                                <tr>
-                                    <td class="mtbl_l">备注</td><td class="mtbl_r" id="memtbl_remark" colspan="8"> </td>
-                                </tr>
+                                <tr><td class="mtbl_l">备注</td><td class="mtbl_r" id="memtbl_remark" colspan="8"> </td></tr>
                             </table>
                         </div>
                     </div>
@@ -171,8 +169,8 @@
 </div>
 
 <div id="add-pro-box" style="display: none;">
-    <table class="table table-striped table-bordered" style="width:580px;margin:10px 0;font-size:12px;">
-    <thead><tr role="row"><th>商品名称</th><th  style="width:30px;">库存</th><th>单价</th><th>操作</th></tr> </thead>
+    <table class="table table-striped table-bordered" style="width:660px;margin:10px 0;font-size:12px;">
+    <thead><tr role="row"><th>商品名称</th><th>分类</th><th  style="width:30px;">库存</th><th>单价</th><th>最低折扣</th><th>操作</th></tr> </thead>
     <tbody id="proAddBoxTbody">
         <tr><td colspan="10" style="text-align: center;color:#666666;padding:20px 0 20px;background:#ffffff;">-- 加载中 --</td></tr>
     </tbody> </table>
@@ -216,7 +214,7 @@
 <script id="proSelectTableTr" type="text/template">
      {@each list as pro,index}
             <tr>
-                <td onclick="boxSelectPro(${pro.id})">${pro.name}</td><td>${pro.stock}</td><td>${pro.price}</td>
+                <td style="cursor:pointer" onclick="boxSelectPro(${pro.id})">${pro.name}</td><td>${pro.cateName}</td><td>${pro.stock}</td><td>${pro.price}</td><td>${pro.discut}</td>
                 <td style="width:80px;"><span class="btn btn-small btn-info" onclick="boxSelectPro(${pro.id})"><i class="halflings-icon ok white "></i>选择</span>                      
                 </td> 
             </tr>
@@ -434,7 +432,7 @@
         //卡内金额
         if($(this).attr("id") == "bill_member_card"){ //判断设置的金额不能过大
             if($(this).val()-0 > $("#memtbl_card").html()-0){
-                alert("会员的卡内余额不足");
+                alert("卡内余额不足本次输入金额系统将自动调整");
                 $(this).val($("#memtbl_card").html());
             }
             if(!$(this).val()||$(this).val() == "")$(this).val(0);

@@ -40,7 +40,7 @@
                     <div class="box-content clearfix"  style="padding:15px 10px 8px;">
                         <div class="box-l clearfix">
                             <dl>
-                                <dt>会员电话</dt>
+                                <dt>会员</dt>
                                 <dd><input type="text" value="" id="memberPhone"><span class="btn btn-mini" title="查询用户" id="searchMemBtn2"><i class="halflings-icon search white"></i></span>
                                 </dd>
                             </dl><dl>

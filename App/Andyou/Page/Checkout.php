@@ -42,7 +42,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $remark      = $input->post("remark");//填写的备注
         $endSumModifyFlag = (int)$input->post("endSumModifyFlag");//是否手工调整了最总价格
         $endBillPrice = $billInfo["bill_end_sum"]; //最终的价格，这个价格是可以修改的
-        
+        $db = Db_Andyou::instance();
         //----------------------
         //获得会员信息
         //----------------------
@@ -209,13 +209,16 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
          
         //更新商品的库存情况
         if($itemIdArr){
-            foreach($itemIdArr as $idx => $pid){
+            foreach($itemIdArr as $idx => $pid){               
+                $num = (int)$itemNumArr[$idx];
+                $db->query("update product set stock = stock - {$num} where id =  {$pid} ");
+                /*
                $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
                $stock   = (int)$proInfo["stock"];
                if($stock){
                    $num = (int)$itemNumArr[$idx];
                    $stock = $stock - $num;
-                   if($stock < 0)$stock = 0;
+                   //if($stock < 0)$stock = 0; 不限制负数了，一直减下去
                    
                     Helper_Dao::updateItem(array(
                             'editItem'       =>  array("stock"=>$stock),
@@ -225,6 +228,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                     ));
                    
                }
+                */
             }
         }
         

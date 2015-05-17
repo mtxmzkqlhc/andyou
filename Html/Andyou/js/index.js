@@ -190,7 +190,23 @@ $('.btn-ser').click(function(){
  $('#serform').submit();
 });
 
+$(".entrnext").keydown(function(e){
+    if(e.which == 13){
+        e.preventDefault();
+        //获得当前的input的tabindex
+        var idx = $(this).attr("data-tab-index");
+        idx++;
 
+        //找到下一个输入
+        $(".entrnext").each(function(){
+            if($(this).attr("data-tab-index") == idx){
+                $(this).focus();
+                return true;
+            }
+        });
+        return false;
+    }
+});
 
 
 

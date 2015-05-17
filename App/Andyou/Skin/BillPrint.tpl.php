@@ -13,12 +13,16 @@
     ?>
     <div style="text-align:center;padding:50px 0;margin:40px auto;width:500px;border:1px solid #cccccc;">
         小票打印中...
+        <br/><br/>
+        <a href="?c=Checkout">返回继续收银</a>
         <!--
         打印<input type="text" value="2" id="pnum" size="2"/>份
         <input type="button" value="打印小票" onclick="print()" id="btnPrint"/>
         <br/><br/>
         <a href="?c=Checkout">返回继续收银</a> | 
         <a href="?c=Bills&a=DelBill&bid=<?=$bid?>&sn=<?=$bsn?>">取消该订单</a>
+        <?=print_r($billDetail);?>
+        <?=print_r($proInfoArr);?>
         -->
     </div>
 <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
@@ -60,7 +64,7 @@
         //销售单号
         iTop += txtLineHeight;
         <?php if($isBuyScore){?>
-		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"积分兑换单号：No.<?=$bno?>");
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"积分单号：No.<?=$bno?>");
         <?php }else{?>
 		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"销售单号：No.<?=$bno?>");
         <?php }?>
@@ -99,10 +103,11 @@
         
              if($proInfoArr){
                  echo "iTop += txtLineHeight;"
-                         . "LODOP.ADD_PRINT_TEXT(iTop,0,40,txtLineHeight,'品名');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
-                         . "LODOP.ADD_PRINT_TEXT(iTop,40,50,txtLineHeight,'单价');LODOP.SET_PRINT_STYLEA(0,'FontSize',8); "
-                         . "LODOP.ADD_PRINT_TEXT(iTop,90,40,txtLineHeight,'数量');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
-                         . "LODOP.ADD_PRINT_TEXT(iTop,130,60,txtLineHeight,'合计');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
+                         . "LODOP.ADD_PRINT_TEXT(iTop,0,30,txtLineHeight,'品名');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,30,50,txtLineHeight,'单价');LODOP.SET_PRINT_STYLEA(0,'FontSize',8); "
+                         . "LODOP.ADD_PRINT_TEXT(iTop,80,30,txtLineHeight,'数量');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,110,30,txtLineHeight,'折扣');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,140,60,txtLineHeight,'合计');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
                 $proArr = array();
                 foreach($proInfoArr as $proInfo){
                     $proId = $proInfo["proId"];
@@ -118,9 +123,10 @@
                     echo "iTop += txtLineHeight;LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,'{$proName}'); LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
                     //echo "<tr><td colspan='9'>{$proName}</td></tr>";
                     echo "iTop += txtLineHeight;"
-                         . "LODOP.ADD_PRINT_TEXT(iTop,40,50,txtLineHeight,'{$proPrice}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
-                         . "LODOP.ADD_PRINT_TEXT(iTop,90,30,txtLineHeight,'{$proInfo["num"]}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8); "
-                         . "LODOP.ADD_PRINT_TEXT(iTop,130,60,txtLineHeight,'".($proPrice*$proInfo["num"])."');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
+                         . "LODOP.ADD_PRINT_TEXT(iTop,30,50,txtLineHeight,'{$proPrice}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                         . "LODOP.ADD_PRINT_TEXT(iTop,80,30,txtLineHeight,'{$proInfo["num"]}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8); "
+                         . "LODOP.ADD_PRINT_TEXT(iTop,110,30,txtLineHeight,'{$proInfo["discount"]}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8); "
+                         . "LODOP.ADD_PRINT_TEXT(iTop,140,60,txtLineHeight,'{$proInfo["price"]}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";//$proPrice*$proInfo["num"]
                     //echo "<tr><td>&nbsp;</td><td>{$proPrice}</td><td>{$proInfo["num"]}</td><td>".($proPrice*$proInfo["num"])."</td></tr>";//<td>".($proInfo["price"]/100)."</td>
                 }
             }
@@ -129,19 +135,19 @@
        
             $txtArr = array(
                 "商品数量："=>count($proInfoArr),
-                "应收金额合计："=>"￥".($orgSumPrice/100),
+                "应收金额："=>"￥".($orgSumPrice/100),
             );
             if($memberInfo && $billDetail["useCard"]){
                 $txtArr["卡内支付金额："] =  $billDetail["useCard"];
             }
-            $txtArr["本次折扣："] =  $billDetail["discount"];
+            //$txtArr["本次折扣："] =  $billDetail["discount"];
             if($isBuyScore){#积分兑换
                 $txtArr["使用积分："] =  $billDetail["useScore"];
             }
-            $txtArr["本次实付金额："] = "￥".($billDetail["price"]/100);
+            $txtArr["实收金额："] = "￥".($billDetail["price"]/100);
             
             if($memberInfo){
-                $txtArr["获得积分："] = $newScore;
+                //$txtArr["获得积分："] = $newScore;
             }
             $txtArr["销售员："] = $staffName;
             foreach ($txtArr as $key => $txt){

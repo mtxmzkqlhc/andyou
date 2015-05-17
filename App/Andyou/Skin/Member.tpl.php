@@ -19,6 +19,7 @@
 <input type="hidden" value="Member" name="c">
 姓名：<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name">
 手机号：<input style="width:120px;height:25px;" class="spanmalt10" type="text" value="<?=$serphone?>" name="phone">
+卡号：<input style="width:120px;height:25px;" class="spanmalt10" type="text" value="<?=$sercardno?>" name="cardno">
 <select name="cateId">
     <option value="0">所有分类</option>
     <?php
@@ -96,6 +97,7 @@ if($data) {
                               <span class="btn btn-mini" title="验证是否存在" id="addCheckExs"><i class="halflings-icon search white"></i></span>
                           </td></tr>
                           <tr><td align="right">姓名:</td><td><input type="text" name="name" id="add_name"/></td></tr>
+                          <tr><td align="right">卡号:</td><td><input type="text" name="cardno" id="add_cardno"/></td></tr>
                           <tr><td align="right">分类:</td><td>
                           <select name="cateId" id="add_cateId"><option value='0'>请选择</option>
                                 <?php
@@ -142,6 +144,7 @@ if($data) {
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
                           <tr><td align="right">手机号:</td><td><input type="text" id="phone"  name="phone" /></td></tr>
                           <tr><td align="right">姓名:</td><td><input type="text" id="name"  name="name" /></td></tr>
+                          <tr><td align="right">卡号:</td><td><input type="text" name="cardno" id="cardno"/></td></tr>
                           <tr><td align="right">分类:</td><td>
                               <select id="cateId" name="cateId"><option value='0'>请选择</option>
                                 <?php
@@ -268,6 +271,7 @@ $('.editbtnMember').live('click',function(){
         $('#balance').val(dat['balance']);
         $('#remark').html(dat['remark']);
         $('#introducer').val(dat['introducer']);
+        $('#cardno').val(dat['cardno']);
     }); 
  });
 
@@ -331,8 +335,9 @@ var checkUpScore = function(){
 }
 var checkHasOneToAdd = function(){
     doSearchMember($("#add_phone").val(),function(d){
-        if(d){
+        if(d && d.name){
             $("#add_name").val(d.name);
+            $("#add_cardno").val(d.cardno);
             $("#add_cateId").val(d.cateId);
             $("#add_byear").val(d.byear);
             $("#add_bmonth").val(d.bmonth);

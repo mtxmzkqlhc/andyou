@@ -18,16 +18,17 @@
 						</div>
 					</div>
                     <div class="box-content clearfix">
-                	 <form id="addform" method="post" action="?" onsubmit="return doCheckIpt()">
+                	 <form id="addform" method="post" action="?" onsubmit="return doCheckIpt()" onkeydown="if(event.keyCode==13)return false;">
                          <table class="table table-center table-striped table-bordered" id="addUserTbl">
                         <tbody>
                         
                           <tr><td align="right" style="text-align:right;">单号:</td><td style="font-weight:bold;color:green"><?=$billInfo["bno"]?></td></tr>
                           <tr><td align="right" style="text-align:right;">消费金额:</td><td><?=round($billInfo["price"]/100,2)?> 元</td></tr>
-                          <tr><td align="right" style="text-align:right;">手机号:</td><td><input type="text"  id="phone"   name="phone" /> <span class="btn btn-mini" title="验证是否存在" id="addCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
-                          <tr><td align="right" style="text-align:right;">姓名:</td><td><input type="text" id="name"  name="name" /></td></tr>
+                          <tr><td align="right" style="text-align:right;">手机号:</td><td><input type="text"  id="phone" name="phone" class="entrnext" data-tab-index="1"/> <span class="btn btn-mini" title="验证是否存在" id="addCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
+                          <tr><td align="right" style="text-align:right;">姓名:</td><td><input type="text" id="name"  name="name" class="entrnext" data-tab-index="2"/></td></tr>
+                          <tr><td align="right" style="text-align:right;">卡号:</td><td><input type="text" id="cardno"  name="cardno" class="entrnext" data-tab-index="3"/></td></tr>
                           <tr><td align="right" style="text-align:right;">分类:</td><td>
-                          <select name="cateId" id="cateId"><option value='0'>请选择</option>
+                          <select name="cateId" id="cateId" class="entrnext" data-tab-index="4"><option value='0'>请选择</option>
                                 <?php
                                 if ($memberCate) {
                                        foreach ($memberCate as $k=>$v) {
@@ -37,12 +38,12 @@
                                  ?>
                            </select>    
                           </td></tr>
-                          <tr><td align="right" style="text-align:right;">生日:</td><td><input type="text" name="byear" id="byear"  style="width:60px" /> 年 <input type="text" name="bmonth"  id="bmonth"  style="width:60px" /> 月 <input type="text" name="bday"  id="bday" style="width:60px" /> 日</td></tr>
+                          <tr><td align="right" style="text-align:right;">生日:</td><td><input type="text" name="byear" id="byear"  style="width:60px"  class="entrnext" data-tab-index="5"/> 年 <input type="text" name="bmonth"  id="bmonth"  style="width:60px"  class="entrnext" data-tab-index="6"/> 月 <input type="text" name="bday"  id="bday" style="width:60px"  class="entrnext" data-tab-index="7"/> 日</td></tr>
                           <tr><td align="right" style="text-align:right;">可获积分:</td><td><?=$canGetScore?></td></tr>
                          <!-- <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr> -->
-                          <tr><td align="right" style="text-align:right;">备注:</td><td><textarea  name="remark" id="remark"  style="width:350px;height:50px"></textarea></td></tr>
-                          <tr><td align="right" style="text-align:right;">介绍人手机号:</td><td><input type="text"  name="introducer" id="introducer" value=''/> <span class="btn btn-mini" title="验证是否存在" id="addIntrCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
-                          <tr><td>&nbsp;</td><td><input type="submit" value="消费关联此会员" class="btn btn-primary"/></td></tr>
+                          <tr><td align="right" style="text-align:right;">备注:</td><td><textarea  name="remark" id="remark"  style="width:350px;height:50px"  class="entrnext" data-tab-index="8"></textarea></td></tr>
+                          <tr><td align="right" style="text-align:right;">介绍人手机号:</td><td><input type="text"  name="introducer" id="introducer" value=''  class="entrnext" data-tab-index="9"/> <span class="btn btn-mini" title="验证是否存在" id="addIntrCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
+                          <tr><td>&nbsp;</td><td><input type="submit" value="消费关联此会员" class="btn btn-primary entrnext"  data-tab-index="10"/></td></tr>
                           
 
                          </tbody></table>
@@ -91,6 +92,7 @@ $('.editbtnMember').live('click',function(){
         $('#bday').val(dat['bday']);
         $('#balance').val(dat['balance']);
         $('#remark').html(dat['remark']);
+        $('#cardno').html(dat['cardno']);
     }); 
  });
 
@@ -122,6 +124,7 @@ var checkHasOneToAdd = function(){
     $("#remark").val("").removeAttr("readonly");
     $("#score").val("").removeAttr("readonly");
     $("#introducer").val("").removeAttr("readonly");
+    $("#cardno").val("").removeAttr("readonly");
             
     doSearchMember($("#phone").val(),function(d){
         if(d && d.name){
@@ -134,6 +137,7 @@ var checkHasOneToAdd = function(){
             $("#remark").val(d.remark).attr("readonly",true);
             $("#score").val(d.score).attr("readonly",true);
             $("#introducer").val(d.introducer).attr("readonly",true);
+            $("#cardno").val(d.cardno).attr("readonly",true);
             
         }
     });
@@ -172,6 +176,13 @@ var doSearchMember = function(phone,func){
         return false;;
     }
 }
+//
+
+$("form").keydown(function(e){
+    if(e.which == 13){
+        return false;
+    }
+});
 </script>
 </body>
 </html>

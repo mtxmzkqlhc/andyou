@@ -9,7 +9,7 @@ class Andyou_Page_Ajax_Product extends Andyou_Page_Abstract{
     
     
     /**
-     * 根据电话号码获得会员信息
+     * 根据电话号码获得产品信息
      */
     public function doGetProductByCode(ZOL_Request $input, ZOL_Response $output) {
         $code = $input->get('code');
@@ -17,9 +17,14 @@ class Andyou_Page_Ajax_Product extends Andyou_Page_Abstract{
         if(!$code){
             echo "{}";exit;
         }
-        //获得会员信息
-        $proList = Helper_Product::getProductList(array('code' => $code,'num'=>30,'canByScore'  => $fromScore));
+        $proList = Helper_Product::getProductList(array('code' => $code,'num' => 30,'canByScore'  => $fromScore));
         if($proList){
+            //完善产品的分类信息
+            $catePairs = Helper_Product::getProductCatePairs();
+            foreach($proList as $k => $p){
+                $proList[$k]['cateName'] = $catePairs[$p["cateId"]];
+                
+            }
             $data = array(
                 'num'         => count($proList),
                 'data'        => $proList,

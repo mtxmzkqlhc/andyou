@@ -59,7 +59,7 @@ return array(
                 'ctrl' => 'addUserFb',
                 'target' => '_self',
             ),
-            '会员列表' => array(
+            '会员管理' => array(
                 'url' => '?c=Member&a=Default',
                 'ctrl' => 'Member',
                 'target' => '_self',
@@ -105,6 +105,11 @@ return array(
         'items' => array(
             '消费订单' => array(
                 'url' => '?c=Bills',
+                'ctrl' => 'Bills',
+                'target' => '_self',
+            ),
+            '异常收款' => array(
+                'url' => '?c=Bills&hasChangePrice=1',
                 'ctrl' => 'Bills',
                 'target' => '_self',
             ),

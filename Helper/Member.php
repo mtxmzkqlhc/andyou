@@ -212,24 +212,28 @@ class Helper_Member extends Helper_Abstract {
         $options = array(
             'id'              => false, #ID
             'phone'           => false, 
-            'name'             => false, 
+            'cardno'          => false, #卡号
+            'phoneOrCardno'   => false, #电话号码或者卡号
+            'name'            => false, 
         );
         if(is_array($params)) $options = array_merge($options, $params);
         extract($options);        
             
         $whereSql   = '';
-        if(!$id && !$phone && !$name)return false;
+        if(!$id && !$phone && !$name && !$phoneOrCardno)return false;
         
         if($id)$whereSql .= "and id = '{$id}' " ;
         if($phone)$whereSql .= "and phone = '{$phone}' " ;
+        if($cardno)$whereSql .= "and cardno = '{$cardno}' " ;
+        if($phoneOrCardno)$whereSql .= "and (cardno = '{$phoneOrCardno}' or phone = '{$phoneOrCardno}') " ;
+        
         if($name)$whereSql .= "and name like '%{$name}%' " ;
-
         $data = Helper_Dao::getRow(array(
                 'dbName'        => 'Db_Andyou',    #数据库名
                 'tblName'       => 'member',    #表名
                 'cols'          => '*',   #列名
                 'whereSql'      => $whereSql,    #where条件
-               # 'debug'        => 1,    #调试
+                #'debug'        => 1,    #调试
        ));
         //获得会员类型
        $memberCate = Helper_Member::getMemberCateInfoPairs();
