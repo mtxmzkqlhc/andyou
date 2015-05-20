@@ -33,6 +33,7 @@ return array(
                 'target' => '_self',
             ),
             '商品入库' => array(
+                'permission' => array(1),
                 'url' => '?c=InStorage',
                 'ctrl' => 'InStorage',
                 'target' => '_self',
@@ -44,6 +45,7 @@ return array(
                 'target' => '_self',
             ),
             '商品分类' => array(
+                'permission' => array(1),
                 'url' => '?c=ProductCate&a=Default',
                 'ctrl' => 'ProductCate',
                 'target' => '_self',

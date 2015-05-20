@@ -514,6 +514,12 @@
 //            doSearchMember();
 //        }
 //    }
+
+//定时执行备份
+setTimeout(function(){
+    $.get("?c=Data&a=BackUp");
+},1000*60*5);
+
 </script>
 <script type="text/javascript" src="js/checkout/memeber.js"></script>
 <script type="text/javascript" src="js/checkout/protbl.js"></script>

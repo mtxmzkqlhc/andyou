@@ -94,3 +94,9 @@ alter table `andyou`.`bills` add column `isBuyScore` tinyint (1)   NOT NULL  COM
 
 alter table `andyou`.`staff` add column `ryear` int (4)   NOT NULL  COMMENT '入职年' after `percentage`, add column `rmonth` tinyint (2)   NOT NULL  COMMENT '入职月' after `ryear`, add column `rday` tinyint (2)   NOT NULL  COMMENT '入职日' after `rmonth`,change `bmonth` `bmonth` tinyint (2)   NULL  COMMENT '生日月'
 alter table `andyou`.`membercate` add column `discountStr` varchar (5000)   NOT NULL  COMMENT '折扣字符串' after `discount`
+
+2015-5-20
+alter table `andyou`.`log_cardchange` add column `staffid` int (11)   NOT NULL  COMMENT '员工ID' after `remark`
+
+
+???cardno???字段呢？

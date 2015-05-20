@@ -61,6 +61,8 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         
         $output->memberCate = Helper_Member::getMemberCatePairs();
 		
+		//获得所有的员工
+        $output->staffArr  = Helper_Staff::getStaffPairs();
 		$output->setTemplate('Member');
 	}
 	

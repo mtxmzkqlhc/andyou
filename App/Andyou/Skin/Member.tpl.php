@@ -10,7 +10,13 @@
             <div class="box span12">
                 <div class="box-header" data-original-title>
                 	  <h2><i class="halflings-icon align-justify"></i><span class="break"></span>会员管理</h2>
+                      <?php
+                      if($adminType == 1){
+                      ?>
 				     <button data-toggle="modal" role="button" href="#add-box" class="btn-addArea big-addbtn" type="button"> 添加会员</button>
+                     <?php
+                     }
+                     ?>
                 </div>
                 <div class="box-content">
                 	 <!-- 搜索 -->
@@ -54,11 +60,20 @@ if($data) {
        $outStr.='<td>'.$v['allsum'].'</td>';
        $outStr.='<td>'.date("Y-m-d",$v['addTm']).'</td>';
            
-       $outStr.='<td rel="'.$v['id'].'">
-       <a title="修改" class="btn btn-info editbtnMember"><i class="halflings-icon white edit"></i></a>
-       <a title="修改积分" class="btn btn-info btnUpScore" style="color:#ffffff;" data-mid="'.$v['id'].'" data-score="'.$v['score'].'">积分调整</a>
-       <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">会员充值</a>
-       <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a>　--></td>';
+      
+        if($adminType == 1){//管理员
+            $outStr.='<td rel="'.$v['id'].'">
+            <a title="修改" class="btn btn-info editbtnMember"><i class="halflings-icon white edit"></i></a>
+            <a title="修改积分" class="btn btn-info btnUpScore" style="color:#ffffff;" data-mid="'.$v['id'].'" data-score="'.$v['score'].'">积分调整</a>
+            <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">会员充值</a>
+            <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a>　--></td>';
+        }else{
+            $outStr.='<td rel="'.$v['id'].'">
+            <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">会员充值</a>
+            </td>';
+            
+        }
+                      
        $outStr.='</tr>';
        echo $outStr;
    }
@@ -213,8 +228,18 @@ if($data) {
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
                           <tr><td align="right">用户当前余额:</td><td id="memNowCard" style="font-weight: bold;color:green;line-height:35px;"></td></tr>
-                          <tr><td align="right">增加/减少:</td><td><select name="direction" id="uc_direction"><option value="0">增加</option><option value="1">减少</option></select></td></tr>
+                          <tr><td align="right">增加/减少:</td><td><select name="direction" id="uc_direction"><option value="0">增加</option><!--<option value="1">减少</option>--></select></td></tr>
                           <tr><td align="right">金额:</td><td><input type="text" id="uc_score"  name="card"/></td></tr>
+                          <tr><td align="right">销售员:</td><td>
+                                  <select id="uc_staffid" name="staffid"><option value='0'>请选择</option>
+                                    <?php
+                                    if ($staffArr) {
+                                           foreach ($staffArr as $k=>$v) {
+                                               echo '<option value="' . $k . '">' . $v . '</option>' . "\n";
+                                           } 
+                                       }
+                                     ?>
+                               </select> </td></tr>
                           <tr><td align="right">备注:</td><td><textarea id="uc_remark"  name="remark" style="width:350px;height:50px"></textarea></td></tr>
 
                         </tbody></table></td></tr></tbody></table>
@@ -320,6 +345,14 @@ var checkUpCard = function(){
             alert("用户的余额不足以扣除");
             return false;
         }
+    }
+    if($("#uc_score").val() == 0 || $("#uc_score").val() == ""){
+        alert("请填写完成");
+        return false;
+    }
+    if($("#uc_staffid").val() == 0 ){
+        alert("请选择销售员");
+        return false;
     }
     return true;
 }

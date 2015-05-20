@@ -71,6 +71,8 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $orgSumPrice = 0; //商品总额
         //折扣获得的金额
         $discGetMoney = 0;
+        //记录所有商品的总价格
+        $itemSumPrice = 0;
         if($itemIdArr){
             foreach($itemIdArr as $idx => $pid){
                $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
@@ -78,6 +80,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                $price       = $num * $proInfo["oprice"] * $itemDiscArr[$idx];
                $orgSumPrice += $num * $proInfo["oprice"];
                $sumPrice += $price;
+               $itemSumPrice += $price;
                $proInfoArr[] = array(
                    'proId'      => $pid,
                    'num'        => $num,
@@ -141,9 +144,10 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             'useScore' => $useScore,
             'useScoreAsMoney' => round($scoreMoney/100,2),
             'useCard'  => $billInfo["bill_member_card"],
-            'price'    => $sumPriceAftDisc,
+            'price'    => $sumPriceAftDisc,  //客户需要交纳的金额
+            'itemSumPrice'    => $itemSumPrice, //所有商品折扣后的累计金额
             'discount' => $billDisc,
-            'orgPrice' => $orgSumPrice,
+            'orgPrice' => $orgSumPrice, //所有商品折扣前的金额
             'staffid'  => $staffid,
             'memberId' => $memberId,
             'bno'      => $bno,

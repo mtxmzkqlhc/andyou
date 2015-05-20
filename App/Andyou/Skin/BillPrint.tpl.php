@@ -136,21 +136,25 @@
        
             $txtArr = array(
                 "商品数量："=>$proAllNum,
-                "应收金额："=>"￥".($orgSumPrice/100),
+                //"应收金额："=>"￥".($orgSumPrice/100),
+                "应收金额："=>"￥".($billDetail["itemSumPrice"]/100),
             );
-            $txtArr["实收金额："] = "￥".($billDetail["price"]/100);
+            //$txtArr["实收金额："] = "￥".($billDetail["price"]/100);
             //$txtArr["本次折扣："] =  $billDetail["discount"];
             $tmpflag = false;
             if($isBuyScore){#积分兑换
                 $txtArr["使用积分："] =  $billDetail["useScore"];
+                $tmpflag = true;
             }
             if($memberInfo && $billDetail["useCard"]){
-                $txtArr["卡内支付金额："] =  "￥".$billDetail["useCard"];
+                $txtArr["卡内消费："] =  "￥".$billDetail["useCard"];
+                $tmpflag = true;
             }
-            if($tmpflag || $billDetail["price"] != $billDetail["price"]){
-                //$txtArr["补充金额："] = "￥".($billDetail["price"]/100);
+            if($tmpflag){//如果用了卡或者积分，就叫补充金额
+                $txtArr["补充金额："] = "￥".($billDetail["price"]/100);
+            }else{
+                $txtArr["实收金额："] = "￥".($billDetail["price"]/100);
             }
-            
             if($memberInfo){
                 //$txtArr["获得积分："] = $newScore;
             }
