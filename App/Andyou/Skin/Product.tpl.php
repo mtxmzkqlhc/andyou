@@ -28,7 +28,10 @@
         
     }?>
 </select>
-<button type="submit" class="btn-ser">查看</button></form></div>
+<button type="submit" class="btn-ser">查看</button>
+&nbsp;&nbsp;
+符合条件的商品库存总量：<label class="label label-info" style="font-weight: bold;padding:3px 10px;"><?=$sumstock?></label>
+</form></div>
 				    
 				    <!-- 列表 -->
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
