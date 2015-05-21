@@ -98,10 +98,10 @@ alter table `andyou`.`membercate` add column `discountStr` varchar (5000)   NOT 
 2015-5-20
 alter table `andyou`.`log_cardchange` add column `staffid` int (11)   NOT NULL  COMMENT 'Ô±¹¤ID' after `remark`
 
+2015-5-21
+alter table `andyou`.`bills` add column `isBuyScore` tinyint (1)   NOT NULL  after `priceTrue`
+alter table `andyou`.`bills` add column `getScore` int (1)   NOT NULL  after `isBuyScore`
 
 ???cardno???×Ö¶ÎÄØ£¿
 
 
-
-alter table `andyou`.`bills` add column `isBuyScore` tinyint (1)   NOT NULL  after `priceTrue`
-alter table `andyou`.`bills` add column `getScore` int (1)   NOT NULL  after `isBuyScore`
