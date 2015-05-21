@@ -141,11 +141,11 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //获得订单的信息
         $sumPriceAftDisc = round($sumPriceAftDisc/100)*100; //金额的四舍五入        
         $billDetail = array(
+            //######### 注意如果这里要数据，务必要确认和数据的字段是否一致，否则不能插入到数据库 ########
             'useScore' => $useScore,
             'useScoreAsMoney' => round($scoreMoney/100,2),
             'useCard'  => $billInfo["bill_member_card"],
-            'price'    => $sumPriceAftDisc,  //客户需要交纳的金额
-            'itemSumPrice'    => $itemSumPrice, //所有商品折扣后的累计金额
+            'price'    => $sumPriceAftDisc,  //客户需要交纳的金额            
             'discount' => $billDisc,
             'orgPrice' => $orgSumPrice, //所有商品折扣前的金额
             'staffid'  => $staffid,
@@ -300,6 +300,9 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                 'remark'           => '积分兑换', #
             ));
         }
+        
+        //记录订单的一些额外的信息，但是不记录到数据库
+        $billDetail['itemSumPrice']   = $itemSumPrice; //所有商品折扣后的累计金额
         
          //准备进入打印页面
         $output->bno          = $bno;
