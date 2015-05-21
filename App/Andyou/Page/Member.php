@@ -255,6 +255,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $card     = (int)$input->post("card");
         $direction = (int)$input->post("direction");
         $remark    = $input->post("remark");
+        $staffid   = (int)$input->post('staffid');
         $urlStr = "?c={$output->ctlName}";
         if($mid == 0){
              echo "<script>alert('Error!');document.location='{$urlStr}';</script>";
@@ -287,6 +288,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
             "adminer"    => $output->admin,
             "remark"     => $remark,
             "orgCard"    => $minfo["balance"],
+            "staffid"    => $staffid,
         );
 		$data = Helper_Dao::insertItem(array(
 		        'addItem'       =>  $logItem, #Êý¾ÝÁÐ

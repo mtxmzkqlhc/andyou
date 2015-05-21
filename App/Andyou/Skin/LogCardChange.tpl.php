@@ -22,12 +22,13 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>会员名</th><th>会员手机</th><th>变化余额</th><th>原余额</th><th>时间</th><th>操作人</th><th>备注</th><th>订单号</th>
+<th>会员名</th><th>会员手机</th><th>变化余额</th><th>原余额</th><th>时间</th><th>销售员</th><th>备注</th><th>订单号</th>
 </tr>
 </thead>
 <tbody>
 <?php
 if($data) {
+   $staffArr = Helper_Staff::getStaffPairs();
    foreach($data as $v) {
        $memberId = $v['memberId'];
        $memInfo = Helper_Member::getMemberInfo(array('id'=>$memberId));
@@ -38,7 +39,7 @@ if($data) {
        $outStr.=' '.$v['card'].'</td>';
        $outStr.='<td>'.$v['orgCard'].'</td>';
        $outStr.='<td>'.date("Y-m-d H:i",$v['dateTm']).'</td>';
-       $outStr.='<td>'.$v['adminer'].'</td>';
+       $outStr.='<td>'.(isset($staffArr[$v['staffid']]) ? $staffArr[$v['staffid']] : '-').'</td>';
        $outStr.='<td>'.$v['remark'].'</td>';
        $outStr.='<td>'.$v['bno'].'&nbsp;</td>';
        $outStr.='</tr>';
