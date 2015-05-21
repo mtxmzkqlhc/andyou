@@ -27,11 +27,17 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
         
 	    if(!empty ($wArr)){
 		    foreach($wArr as $k=>$v){
-		        if(gettype($v) == 'string'){
-                     $whereSql .= !empty($v)?' AND '.$k.' like binary "%'.$v.'%" ':'';
-                  }else{
-                     $whereSql .= !empty($v)?' AND '.$k.'='.$v:'';
-                }    
+                if($k == 'cateId' && $v){
+                    $whereSql .= ' AND cateId ='.$v;
+                }elseif($k == 'code' && $v){
+                    $whereSql .= ' AND code =\''.$v."'";
+                }else{
+                    if(gettype($v) == 'string'){
+                         $whereSql .= !empty($v)?' AND '.$k.' like binary "%'.$v.'%" ':'';
+                      }else{
+                         $whereSql .= !empty($v)?' AND '.$k.'='.$v:'';
+                    }
+                }
 		    }
 		}
 		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&name={$wArr['name']}&code={$wArr['code']}&cateId={$wArr['cateId']}";
@@ -51,7 +57,11 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 		    'pageTpl'       =>  9,     #分页模板
 		    #'debug'        =>1
 		));
-		
+        //获得符合条件的库存总量
+        $db = Db_Andyou::instance();
+        $sql = "select sum(stock) sumstock from product where 1 {$whereSql}";
+		$output->sumstock = $db->getOne($sql);
+        
 		if($data){
 		    $output->pageBar = $data['pageBar'];
 		    $output->allCnt  = $data['allCnt'];
