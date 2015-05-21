@@ -100,3 +100,8 @@ alter table `andyou`.`log_cardchange` add column `staffid` int (11)   NOT NULL  
 
 
 ???cardno???×Ö¶ÎÄØ£¿
+
+
+
+alter table `andyou`.`bills` add column `isBuyScore` tinyint (1)   NOT NULL  after `priceTrue`
+alter table `andyou`.`bills` add column `getScore` int (1)   NOT NULL  after `isBuyScore`
