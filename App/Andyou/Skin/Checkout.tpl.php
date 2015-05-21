@@ -24,7 +24,7 @@
 #billContent .memextinfo{display:none}
 #proAddBoxTbody td{padding-bottom:4px;}
 #proAddBoxTbody .btn-info{padding:1px 4px;}
-
+.aui_content{height:400px;overflow-y: scroll}
 </style>
 <div id="content">
 
@@ -172,7 +172,7 @@
 </div>
 
 <div id="add-pro-box" style="display: none;">
-    <table class="table table-striped table-bordered" style="width:660px;margin:5px 0;font-size:12px;">
+    <table class="table table-striped table-bordered" style="width:640px;margin:5px 0;font-size:12px;">
     <thead><tr role="row"><th>商品名称</th><th>分类</th><th  style="width:30px;">库存</th><th>单价</th><th>最低折扣</th><th>操作</th></tr> </thead>
     <tbody id="proAddBoxTbody">
         <tr><td colspan="10" style="text-align: center;color:#666666;padding:20px 0 20px;background:#ffffff;">-- 加载中 --</td></tr>
@@ -241,7 +241,7 @@
           price :   price,
           score :   leftScore,
           allLeftScore : allScore - score + leftScore, 
-          canUseScore :  price * rule ,
+          canUseScore :  price * rule
         };
     }
     //钱换积分
