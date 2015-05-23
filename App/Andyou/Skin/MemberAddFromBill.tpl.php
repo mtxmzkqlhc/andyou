@@ -21,9 +21,14 @@
                 	 <form id="addform" method="post" action="?" onsubmit="return doCheckIpt()" onkeydown="if(event.keyCode==13)return false;">
                          <table class="table table-center table-striped table-bordered" id="addUserTbl">
                         <tbody>
-                        
+                         <?php
+                          if(!$andCard){
+                          ?>
                           <tr><td align="right" style="text-align:right;">单号:</td><td style="font-weight:bold;color:green"><?=$billInfo["bno"]?></td></tr>
                           <tr><td align="right" style="text-align:right;">消费金额:</td><td><?=round($billInfo["price"]/100,2)?> 元</td></tr>
+                          <?php
+                          }
+                          ?>
                           <tr><td align="right" style="text-align:right;">手机号:</td><td><input type="text"  id="phone" name="phone" class="entrnext" data-tab-index="1"/> <span class="btn btn-mini" title="验证是否存在" id="addCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
                           <tr><td align="right" style="text-align:right;">姓名:</td><td><input type="text" id="name"  name="name" class="entrnext" data-tab-index="2"/></td></tr>
                           <tr><td align="right" style="text-align:right;">卡号:</td><td><input type="text" id="cardno"  name="cardno" class="entrnext" data-tab-index="3"/></td></tr>
@@ -39,17 +44,53 @@
                            </select>    
                           </td></tr>
                           <tr><td align="right" style="text-align:right;">生日:</td><td><input type="text" name="byear" id="byear"  style="width:60px"  class="entrnext" data-tab-index="5"/> 年 <input type="text" name="bmonth"  id="bmonth"  style="width:60px"  class="entrnext" data-tab-index="6"/> 月 <input type="text" name="bday"  id="bday" style="width:60px"  class="entrnext" data-tab-index="7"/> 日</td></tr>
-                          <tr><td align="right" style="text-align:right;">可获积分:</td><td><?=$canGetScore?></td></tr>
-                         <!-- <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr> -->
-                          <tr><td align="right" style="text-align:right;">备注:</td><td><textarea  name="remark" id="remark"  style="width:350px;height:50px"  class="entrnext" data-tab-index="8"></textarea></td></tr>
+                          
                           <tr><td align="right" style="text-align:right;">介绍人手机号:</td><td><input type="text"  name="introducer" id="introducer" value=''  class="entrnext" data-tab-index="9"/> <span class="btn btn-mini" title="验证是否存在" id="addIntrCheckExs"><i class="halflings-icon search white"></i></span></td></tr>
-                          <tr><td>&nbsp;</td><td><input type="submit" value="消费关联此会员" class="btn btn-primary entrnext"  data-tab-index="10"/></td></tr>
+                          
+                          <tr><td align="right" style="text-align:right;">会员备注:</td><td><textarea  name="remark" id="remark"  style="width:350px;height:50px"  class="entrnext" data-tab-index="8"></textarea></td></tr>
+                          <?php
+                          if($andCard){
+                          ?>
+                          <tr><td align="right" style="text-align:right;">添加充值卡金额:</td><td><input type="text"  name="balance"/></td></tr>
+                          <tr><td align="right" style="text-align:right;">销售员:</td><td>
+                                  <select name="staffid"><option value='0'>请选择</option>
+                                    <?php
+                                    if ($staffArr) {
+                                           foreach ($staffArr as $k=>$v) {
+                                               echo '<option value="' . $k . '">' . $v . '</option>' . "\n";
+                                           } 
+                                       }
+                                     ?>
+                               </select> </td></tr>
+                          
+                          <tr><td align="right" style="text-align:right;">充值备注:</td><td><textarea  name="remark2" id="remark2"  style="width:350px;height:50px"  class="entrnext" data-tab-index="8"></textarea></td></tr>
+                          <?php
+                          }else{
+                          ?>
+                          <tr><td align="right" style="text-align:right;">可获积分:</td><td><?=$canGetScore?></td></tr>
+                          <?php
+                          }
+                          ?>
+                         <!-- <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr> -->
+                          <tr><td>&nbsp;</td><td><input type="submit" value="<?=$andCard?"确认添加":"消费关联此会员"?>" class="btn btn-primary entrnext"  data-tab-index="10"/></td></tr>
                           
 
                          </tbody></table>
+                         
+                          <?php
+                          if($andCard){
+                          ?>
+                         <input type="hidden" name="a" value="AddUserAndCard">
+                          <?php
+                          }else{
+                          ?>
                          <input type="hidden" name="a" value="AddUserFromBill">
+                          <?php
+                          }
+                          ?>
                          <input type="hidden" name="c" value="Member">
                          <input type="hidden" name="bid" value="<?=$billInfo["id"]?>">
+                         <input type="hidden" name="andCard" value="<?=$andCard?>">
                          <input type="hidden" name="billPrice" value="<?=round($billInfo["price"]/100)?>">
                          
                 </form>

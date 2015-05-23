@@ -99,9 +99,104 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 	public function doToAddUserFromBill(ZOL_Request $input, ZOL_Response $output){
         $output->bno = $input->get("bno");
         $output->bid = $input->get("bid");
-        $this->checkFromBill($input,$output);//验证订单
+        $output->andCard = (int)$input->get("andCard");//是否添加账号并进行充值
+        if(!$output->andCard){
+            $this->checkFromBill($input,$output);//验证订单
+        }
         $output->memberCate = Helper_Member::getMemberCatePairs();
+        
+		//获得所有的员工
+        $output->staffArr  = Helper_Staff::getStaffPairs();
 		$output->setTemplate('MemberAddFromBill');
+        
+    }
+    
+    /**
+     *  添加会员并充值
+     */
+    public function doAddUserAndCard(ZOL_Request $input, ZOL_Response $output){
+        $output->andCard = (int)$input->get("andCard");//是否添加账号并进行充值
+        
+        $Arr = array();        
+		$Arr['name']    = $input->post('name');
+        $Arr['phone']   = $input->post('phone');
+        $Arr['cardno']  = $input->post('cardno');
+        $Arr['cateId']  = $input->post('cateId');
+        $Arr['byear']   = $input->post('byear');
+        $Arr['bmonth']  = $input->post('bmonth');
+        $Arr['bday']    = $input->post('bday');
+        $Arr['addTm']   = SYSTEM_TIME;
+        $Arr['score']   = 0;
+        $Arr['balance'] = $input->post('balance');
+        $Arr['remark']  = $input->post('remark');
+        $remark2        = $input->post('remark2');
+        $Arr['introducer']  = $input->post('introducer');
+        
+        $staffid        = (int)$input->post("staffid");
+        
+        
+        //查看该电话是否注册了
+        $minfo = Helper_Member::getMemberInfo(array(
+            'phone'           => $Arr['phone'], #ID
+        ));
+        
+        if($minfo){            
+            echo "<script>alert('该会员已经存在了，不能再次添加，直接充值就可以了');document.location='?c=Member&phone={$Arr['phone']}';</script>";
+            exit;
+        }
+        $minfo = $Arr;
+        
+        //确认一下介绍人
+        if($Arr['introducer']){ //如果是新添加用户，验证介绍人是否存在
+            $pminfo = Helper_Member::getMemberInfo(array(
+                'phone'           => $Arr['introducer'], #ID
+            ));
+            if(!$pminfo){ #如果没有查到这个会员，清空介绍人字段
+                $Arr['introducer'] = false;
+            }
+        }
+        
+        //添加会员
+        $memberId = Helper_Dao::insertItem(array(
+            'addItem'       =>  $Arr, #数据列
+            'dbName'        =>  'Db_Andyou',    #数据库名
+            'tblName'       =>  'member',    #表名
+        ));
+        
+        $card = $Arr['balance'];
+        //进行充值        
+        $db = Db_Andyou::instance();
+        $sql = "update member set balance = balance + {$Arr['balance']} where id = {$memberId}";
+        $db->query($sql);
+        
+        
+        $output->bno         = Helper_Bill::getCardMaxBno();
+        $logItem = array(
+            "memberId"   => $memberId,
+            "direction"  => 0,
+            "card"       => $Arr['balance'],
+            "dateTm"     => SYSTEM_TIME,
+            "adminer"    => $output->admin,
+            "remark"     => $remark2,
+            "orgCard"    => 0,
+            "staffid"    => $staffid,
+            "bno"        => $output->bno ,
+        );
+		$data = Helper_Dao::insertItem(array(
+		        'addItem'       =>  $logItem, #数据列
+		        'dbName'        =>  'Db_Andyou',    #数据库名
+		        'tblName'       =>  'log_cardchange',    #表名
+		));
+        $memCate = Helper_Member::getMemberCatePairs();
+        //会员类型
+        $minfo["cateName"]   = $memCate[$minfo["cateId"]];
+        $output->money       = $card;  #充值的钱
+        $output->nowBalance  = $card;
+        $output->memberInfo  = $minfo;
+
+        $staffArr             = Helper_Staff::getStaffPairs();
+        $output->staffName    = $staffArr[$staffid];
+        $output->setTemplate("CardPrint");
         
     }
     /**
@@ -263,6 +358,8 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         }
         if($card < 0)$card = -$card;
         
+        //生成一个单号
+        $output->bno         = Helper_Bill::getCardMaxBno();
         #获得会员信息
         $minfo = Helper_Member::getMemberInfo(array("id"=>$mid));
         if(!$minfo){
@@ -289,14 +386,26 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
             "remark"     => $remark,
             "orgCard"    => $minfo["balance"],
             "staffid"    => $staffid,
+            "bno"        => $output->bno ,
         );
 		$data = Helper_Dao::insertItem(array(
 		        'addItem'       =>  $logItem, #数据列
 		        'dbName'        =>  'Db_Andyou',    #数据库名
 		        'tblName'       =>  'log_cardchange',    #表名
 		));
-        echo "<script>document.location='{$urlStr}';</script>";
-        exit;
+        if($direction != 1){//充值大小票
+            
+            $output->money       = $card;  #充值的钱
+            $output->nowBalance  = $card + $minfo["balance"];
+            $output->memberInfo  = $minfo;
+            
+            $staffArr             = Helper_Staff::getStaffPairs();
+            $output->staffName    = $staffArr[$staffid];
+            $output->setTemplate("CardPrint");
+        }else{
+            echo "<script>document.location='{$urlStr}';</script>";
+            exit;        
+        }
         
     }
     /**

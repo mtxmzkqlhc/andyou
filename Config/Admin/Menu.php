@@ -61,6 +61,11 @@ return array(
                 'ctrl' => 'addUserFb',
                 'target' => '_self',
             ),
+            '充值办会员' => array(
+                'url' => '?c=Member&a=ToAddUserFromBill&andCard=1',
+                'ctrl' => 'ToAddUserFromBill',
+                'target' => '_self',
+            ),
             '会员管理' => array(
                 'url' => '?c=Member&a=Default',
                 'ctrl' => 'Member',

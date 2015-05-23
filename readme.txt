@@ -111,3 +111,4 @@ alter table `andyou`.`bills` add column `getScore` int (1)   NOT NULL  after `is
 ???cardno???字段呢？
 
 
+会员卡号取自上次新增加的卡号  怎么取号？？
