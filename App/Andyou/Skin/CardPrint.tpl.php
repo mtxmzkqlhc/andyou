@@ -34,8 +34,8 @@
             createContent(1);
         }
 		LODOP.SET_PRINT_PAGESIZE(3,580,45,"");//这里3表示纵向打印且纸高“按内容的高度”；1385表示纸宽138.5mm；45表示页底空白4.5mm
-		LODOP.PREVIEW();	
-		//LODOP.PRINT();	
+		//LODOP.PREVIEW();	
+		LODOP.PRINT();	
 	};
     
     
