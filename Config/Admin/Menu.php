@@ -7,7 +7,7 @@
 return array(
     
     '常用操作' => array(
-        'icon' => 'print',
+        'icon' => 'donate.png',
         'class' => 'open2',
         'items' => array(
             '前台收银' => array(
@@ -23,7 +23,7 @@ return array(
         ),
     ),
     '商品管理' => array(
-        'icon' => 'barcode',
+        'icon' => 'menu-item.png',
         'class' => 'open2',
         'items' => array(
             '查看商品' => array(
@@ -53,7 +53,7 @@ return array(
         ),
     ),
     '会员管理' => array(
-        'icon' => 'group',
+        'icon' => 'users.png',
         'class' => 'open2',
         'items' => array(
             '添加会员' => array(
@@ -81,7 +81,7 @@ return array(
     ),
     '员工管理' => array(
         'permission' => array(1),
-        'icon' => 'sitemap',
+        'icon' => 'user.png',
         'items' => array(
             '员工列表' => array(
                 'url' => '?c=Staff&a=Default',
@@ -97,7 +97,7 @@ return array(
     ),
     '消费记录' => array(
         'permission' => array(0),
-        'icon' => 'inbox',
+        'icon' => 'menu.png',
         'items' => array(
             '消费订单' => array(
                 'url' => '?c=Bills',
@@ -108,7 +108,7 @@ return array(
     ),
     '查询统计' => array(
         'permission' => array(1),
-        'icon' => 'inbox',
+        'icon' => 'menu.png',
         'items' => array(
             '消费订单' => array(
                 'url' => '?c=Bills',
@@ -139,7 +139,7 @@ return array(
     ),
     '系统管理' => array(
         'permission' => array(1),
-        'icon' => 'user-md',
+        'icon' => 'run.png',
         'items' => array(
             '管理员' => array(
                 'url' => '?c=AdminUser',

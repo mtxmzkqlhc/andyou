@@ -32,7 +32,8 @@
                         }
                         $cls = isset($menu['class']) ? $menu['class'] : '';
                         echo '<li class="sel '.$cls.'">
-                                <a href="javascript:;"><i class="icon-'.$menu["icon"].'"></i><span class="title">'.$name.'</span><span class="arrow "></span></a>
+                                <a href="javascript:;">
+                                <img src="icons/'.$menu["icon"].'" align="absmiddle" width="20" height="20" style="width:20px;vertical-align:middle;"/> <span class="title">'.$name.'</span><span class="arrow "></span></a>
                                 <ul class="sub-menu">
                             ';
                         
