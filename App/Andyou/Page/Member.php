@@ -165,9 +165,9 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         
         $card = $Arr['balance'];
         //½øÐÐ³äÖµ        
-        $db = Db_Andyou::instance();
-        $sql = "update member set balance = balance + {$Arr['balance']} where id = {$memberId}";
-        $db->query($sql);
+//        $db = Db_Andyou::instance();
+//        $sql = "update member set balance = balance + {$Arr['balance']} where id = {$memberId}";
+//        $db->query($sql);
         
         
         $output->bno         = Helper_Bill::getCardMaxBno();
