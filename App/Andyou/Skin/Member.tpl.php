@@ -54,7 +54,7 @@ if($data) {
        $outStr.='<td>'.$v['name'].'</td>';
        $outStr.='<td>'.$v['phone'].'</td>';
        $outStr.='<td>'.(isset($memberCate[$v['cateId']]) ? $memberCate[$v['cateId']] : '').'</td>';
-       $outStr.='<td>'.$v['byear'].'/'.$v['bmonth'].'/'.$v['bday'].'</td>';
+       $outStr.='<td>'.$v['byear'].'-'.$v['bmonth'].'-'.$v['bday'].'</td>';
        $outStr.='<td>'.$v['score'].'</td>';
        $outStr.='<td>'.$v['balance'].'</td>';
        $outStr.='<td>'.$v['allsum'].'</td>';
@@ -228,7 +228,12 @@ if($data) {
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
                           <tr><td align="right">用户当前余额:</td><td id="memNowCard" style="font-weight: bold;color:green;line-height:35px;"></td></tr>
-                          <tr><td align="right">增加/减少:</td><td><select name="direction" id="uc_direction"><option value="0">增加</option><!--<option value="1">减少</option>--></select></td></tr>
+                          <tr><td align="right">增加/减少:</td><td><select name="direction" id="uc_direction"><option value="0">增加</option>
+                                     <?php  if($adminType == 1){
+                                       echo '<option value="1">减少</option>';
+                                     }
+                                   ?>
+                                  </select></td></tr>
                           <tr><td align="right">金额:</td><td><input type="text" id="uc_score"  name="card"/></td></tr>
                           <tr><td align="right">销售员:</td><td>
                                   <select id="uc_staffid" name="staffid"><option value='0'>请选择</option>
