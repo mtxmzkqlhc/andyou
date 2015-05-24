@@ -20,7 +20,7 @@ class  Andyou_Page_Data  extends Andyou_Page_Abstract {
         
         $db = Db_Andyou::instance();
         //需要备份的数据库
-        $tablesArr = array("adminuser","bills","billsitem","member","membercate","options","product","productcate","staff","staffcate");
+        $tablesArr = array("adminuser","bills","billsitem","member","membercate","options","product","productcate","staff","staffcate","log_backup","log_cardchange","log_productinstorage","log_scorechange");
         $sqlTxt    = "";
         foreach($tablesArr as $tbl){
             $sql = "select * from {$tbl} order by id desc limit 10000";
