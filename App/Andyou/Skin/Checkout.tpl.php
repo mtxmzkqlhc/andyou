@@ -201,7 +201,7 @@
         <td align="center"><span class="btn btn-small btn-info"  onclick="proTblDelNum(${rowIdx})"><i class="halflings-icon minus white"></i></span>
         <input type='text' value='1' id='item_num_${rowIdx}' name='item_num[${rowIdx}]' class='tblProNum' onblur="proTblCalPrice(${rowIdx})">
         <span class="btn btn-small btn-info" onclick="proTblAddNum(${rowIdx})"><i class="halflings-icon plus white "></i></span></td>
-        <td><input type='text' value='${memberDisc}' data-rel='${pro.discut}' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}" readonly="true"></td>
+        <td><input type='text' value='${memberDisc}' data-rel='${pro.discut}' data-cate='${pro.cateId}' id='item_disc_${rowIdx}' name='item_disc[${rowIdx}]' onblur="proTblCalPrice(${rowIdx})" class='tblProDisc' data-idx="${rowIdx}" readonly="true"></td>
         <td id="item_price_${rowIdx}" >${pro.price}</td>  
         <td id="item_stafftd_${rowIdx}"><span style="color:#999999">同左边</span></td>
         <td><button class="btn btn-small btn-info" onclick="proTblDel(${rowIdx})"><i class="halflings-icon remove white "></i></button>
@@ -475,10 +475,21 @@
     //------------------------------------
     //左侧区域重新计算
     var refreshRightTbl = function(){
-        var v = $("#bill_disc").val() - 0;
+        var v = $("#bill_disc").val() - 0
+        
+        //alert("v:"+v);
         $(".tblProDisc").each(function(){
             var proDisc = $(this).attr("data-rel") - 0;//产品设置的最低折扣
-           if(proDisc == "0.00" || proDisc < v){//如果有设置最低折扣，就能按照总折扣进行计算
+            var proCateId = $(this).attr("data-cate"); //产品的分类
+            v = 1;
+            //获得产品所在分类的折扣
+            if(memberDiscArr){
+                if(proCateId in memberDiscArr){
+                    v = memberDiscArr[proCateId];
+                }
+            }
+           // alert(proDisc);
+           if(proDisc == "0.00" || proDisc == 0 || proDisc < v){//如果有设置最低折扣，就能按照总折扣进行计算
               $(this).val(v);
            }else if(proDisc > v){
                $(this).val(proDisc);
