@@ -103,7 +103,7 @@ if($data) {
        }
        $outStr.='<td rel="'.$v['id'].'" align="left" style="text-align:left;">';
        if(empty($v['memberId']) && $isAddUser){
-            $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" target="_blank" style="color:#ffffff">添加会员</a>';
+            $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" style="color:#ffffff">添加会员</a>';
        }
        
         if($adminType == 1){//管理员
