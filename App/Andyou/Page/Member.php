@@ -207,8 +207,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $output->bid = $input->post("bid");
         
         $this->checkFromBill($input,$output);//验证订单
-        
-        
+               
         
         $price = $output->billInfo["price"];
         
@@ -281,13 +280,13 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $db->query($sql);
         
         //给介绍人添加积分
-        if(!emtpy($Arr['introducer'])){
+        if(!empty($Arr['introducer'])){
             
         }
         
                 
         $urlStr = "?c={$output->ctlName}";
-	    echo "<script>document.location='?c=Member&phone={$Arr['phone']}';</script>";
+	    echo "<script>alert('添加成功');document.location='?c=Bills&isAddUser=1';</script>";
 		exit;
         
     }
