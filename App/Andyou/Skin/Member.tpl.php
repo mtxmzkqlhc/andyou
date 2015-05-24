@@ -352,7 +352,7 @@ var checkUpCard = function(){
         }
     }
     if($("#uc_score").val() == 0 || $("#uc_score").val() == ""){
-        alert("ÇëÌîĞ´Íê³É");
+        alert("ÇëÌîĞ´½ğ¶î");
         return false;
     }
     if($("#uc_staffid").val() == 0 ){
