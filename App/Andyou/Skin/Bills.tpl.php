@@ -105,9 +105,17 @@ if($data) {
        if(empty($v['memberId']) && $isAddUser){
             $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" target="_blank" style="color:#ffffff">添加会员</a>';
        }
-       $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
-       <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
-       <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a> --></td>';
+       
+        if($adminType == 1){//管理员
+            $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
+            <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
+            <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a></td>';
+            
+        }else{
+            $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
+            <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
+            </td>';
+        }
        $outStr.='</tr>';
        echo $outStr;
    }
@@ -216,7 +224,7 @@ if($data) {
         </div>
         <input type="hidden" id="deldataid" name="dataid" value="">
         <input type="hidden" value="DelItem" name="a"/>
-        <input type="hidden" value="Bills" name="c"/>
+        <input type="hidden" value="Bills" name="c"/>        
 		<input type="hidden" name="pageUrl" value="<?=$pageUrl?>">
     </form>
 </div>

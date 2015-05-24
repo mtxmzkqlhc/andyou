@@ -54,7 +54,7 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
         if($output->isAddUser){
             $whereSql .= " AND memberId = 0 ";
         }
-		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&bno={$wArr['bno']}&staffid={$wArr['staffid']}&memberPhone=$output->sermemberPhone&hasChangePrice=$output->hasChangePrice";
+		$pageUrl  = "?c={$output->ctlName}&a={$output->actName}&page={$page}&bno={$wArr['bno']}&isAddUser={$output->isAddUser}&staffid={$wArr['staffid']}&memberPhone=$output->sermemberPhone&hasChangePrice=$output->hasChangePrice";
 		$pageSize = 30;
 		$orderSql = "order by id desc";
 		
@@ -80,6 +80,7 @@ class  Andyou_Page_Bills  extends Andyou_Page_Abstract {
 		}
 		
         $output->staffInfo = Helper_Staff::getStaffPairs();
+        
 		$output->setTemplate('Bills');
 	}
 	

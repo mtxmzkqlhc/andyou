@@ -66,7 +66,7 @@ if($data) {
             <a title="修改" class="btn btn-info editbtnMember"><i class="halflings-icon white edit"></i></a>
             <a title="修改积分" class="btn btn-info btnUpScore" style="color:#ffffff;" data-mid="'.$v['id'].'" data-score="'.$v['score'].'">积分调整</a>
             <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">会员充值</a>
-            <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a>　--></td>';
+            <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a></td>';
         }else{
             $outStr.='<td rel="'.$v['id'].'">
             <a title="修改余额" class="btn btn-info btnUpCard" style="color:#ffffff;" data-mid="'.$v['id'].'" data-card="'.$v['balance'].'">会员充值</a>
