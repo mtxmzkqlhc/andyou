@@ -82,7 +82,7 @@
                                 <dd><input type="text" value="<?=Helper_Bill::getMaxBno()?>" id="memberPhone" disabled="true" ></dd>
                             </dl>
                             <dl class="clearfix memextinfo">
-                                <dt>总金额</dt>
+                                <dt>应收金额</dt>
                                 <dd><input type="text" value="0" id="bill_sum_price" name="bill[bill_sum_price]" readonly="true" trueprice="0" /></dd>
                             </dl>
                             <dl class="clearfix" style="display:none;">
@@ -104,7 +104,7 @@
                                 <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/></dd>
                             </dl>
                             <dl class="clearfix">
-                                <dt>应收款</dt>
+                                <dt>非卡支付</dt>
                                 <dd><input type="text" value="0.00" id="bill_end_sum" name="bill[bill_end_sum]" style="font-weight:bold;color:#EB3C00"></dd>
                             </dl>
                             <dl class="clearfix">
