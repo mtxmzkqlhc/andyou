@@ -110,12 +110,16 @@ var doCheckIpt = function(){
         alert("请选择分类");
         return false;
     }
-    if($("#name").val() == "" || $("#phone").val() == ""){        
-        alert("请填写完整！");
+    if($("#name").val() == ""){
+         alert("请填写姓名！");
+         return false;
+    }
+    if($("#phone").val() == ""){  
+        alert("请填写手机号！");
         return false;
     }
     //验证用户
-    $.ajaxSettings.async = false;
+    //$.ajaxSettings.async = false;
     
     return true;
     
