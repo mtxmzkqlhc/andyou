@@ -269,6 +269,18 @@
             return false;
         }
         
+        //如果会员有卡内余额，但是销售员没有数据，就提示一下 
+        if($("#memtbl_card").html() != "" && $("#memtbl_card").html() != "0"){
+            var memcard = parseInt($("#memtbl_card").html(),10); 
+            var billcard = $("#bill_member_card").val();
+            if((billcard == "" || billcard == "0") &&  memcard > 0){
+                 if(!confirm("顾客卡内还有余额，是否先从卡内扣款？")){
+                     return false;
+                 }
+            }
+        }
+       
+        
         //验证销售员是否已经选择
         var staffid = parseInt($("#staffid").val(),10);
         if(staffid == 0){
@@ -361,7 +373,7 @@
             */
         });
         $("#bill_sum_price").attr("trueprice",sum);
-        $("#bill_sum_price").val((sum/100).toFixed(2));
+        $("#bill_sum_price").val(Math.round((sum/100).toFixed(2)));
     }
     //计算商品合计
     var calcProNum = function(){
