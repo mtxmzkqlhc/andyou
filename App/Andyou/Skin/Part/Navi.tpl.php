@@ -18,7 +18,7 @@
         <div class="page-sidebar nav-collapse"  id="page-sidebar">
             <!-- BEGIN SIDEBAR MENU -->        
             <ul class="page-sidebar-menu">
-                <li><div class="sidebar-toggler hidden-phone"></div></li> 
+                <!-- <li><div class="sidebar-toggler hidden-phone"></div></li> -->
                 <?php
                 $menuArr = ZOL_Config::get("Admin_Menu");
                 

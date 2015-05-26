@@ -104,7 +104,7 @@
                                 <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/></dd>
                             </dl>
                             <dl class="clearfix">
-                                <dt>非卡支付</dt>
+                                <dt>现金支付</dt>
                                 <dd><input type="text" value="0.00" id="bill_end_sum" name="bill[bill_end_sum]" style="font-weight:bold;color:#EB3C00"></dd>
                             </dl>
                             <dl class="clearfix">
@@ -274,7 +274,7 @@
             var memcard = parseInt($("#memtbl_card").html(),10); 
             var billcard = $("#bill_member_card").val();
             if((billcard == "" || billcard == "0") &&  memcard > 0){
-                 if(!confirm("顾客卡内还有余额，是否先从卡内扣款？")){
+                 if(!confirm("顾客卡内还有余额，确认不从卡内扣款吗？")){
                      return false;
                  }
             }
@@ -288,7 +288,17 @@
             return false;
         }
         
-         if(!confirm("是否确认收费")){
+        var cardV = $("#bill_member_card").val() - 0;
+        var cashV = $("#bill_end_sum").val() - 0;
+        var all = cardV + cashV;
+        var cfmStr = "";
+        if(cardV > 0){//有卡内消费
+            cfmStr = "是否确定收费 "+all+" 元，其中卡内扣款 "+cardV+" 元，现金支付 "+cashV+" 元？";        
+        }else{
+            cfmStr = "是否确定收费 "+cashV+" 元";
+        }         
+         
+        if(!confirm(cfmStr)){
             return false;
         }
         

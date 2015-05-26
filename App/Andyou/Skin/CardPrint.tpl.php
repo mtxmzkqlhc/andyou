@@ -108,6 +108,11 @@
 		LODOP.SET_PRINT_STYLEA(0,'FontSize',8);
 		LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
         
+        iTop += txtLineHeight;
+		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,"本店充值金额不予退还！");
+		LODOP.SET_PRINT_STYLEA(0,'FontSize',8);
+		LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
+        
         
 	};	
     MyPreview();

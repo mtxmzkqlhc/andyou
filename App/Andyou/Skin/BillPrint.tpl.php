@@ -151,7 +151,7 @@
                 $tmpflag = true;
             }
             if($tmpflag){//如果用了卡或者积分，就叫补充金额
-                $txtArr["非卡支付："] = "￥".round($billDetail["price"]/100);
+                $txtArr["现金支付："] = "￥".round($billDetail["price"]/100);
             }else{
                 $txtArr["实收金额："] = "￥".round($billDetail["price"]/100);
             }

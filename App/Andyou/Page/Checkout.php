@@ -178,7 +178,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             $memLeftInfo['balance'] = $leftCard;
         }
         //计算用户的总消费额
-        $memLeftInfo['allsum'] = $memberInfo['allsum'] + round($sumPriceAftDisc/100) + $billInfo["bill_member_card"];
+        $memLeftInfo['allsum'] = $memberInfo['allsum'] + $endBillPrice + $billInfo["bill_member_card"];
         //记入订单库
         
         $output->newScore       = (int)(($billDetail['useCard'] + ($billDetail['price']/100)) * $scoreRatio);//获得的积分
