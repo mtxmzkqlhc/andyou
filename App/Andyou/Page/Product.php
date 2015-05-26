@@ -59,8 +59,10 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 		));
         //获得符合条件的库存总量
         $db = Db_Andyou::instance();
-        $sql = "select sum(stock) sumstock from product where 1 {$whereSql}";
-		$output->sumstock = $db->getOne($sql);
+        $sql = "select sum(stock) sumstock,sum(stock*price) sumprice from product where 1 {$whereSql}";
+		$tmp              = $db->getRow($sql);
+        $output->sumstock = $tmp["sumstock"];
+        $output->sumprice = $tmp["sumprice"];
         
 		if($data){
 		    $output->pageBar = $data['pageBar'];
