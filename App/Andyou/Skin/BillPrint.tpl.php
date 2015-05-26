@@ -36,18 +36,18 @@
 	function MyPreview() {	
 		LODOP=getLodop();  
 		LODOP.PRINT_INIT("打印");
-		createContent();
+		createContent(1);
         var pnum = $("#pnum").val();
         if(pnum != 1){
             iTop += 50;
-            createContent();
+            createContent(2);
         }
 		LODOP.SET_PRINT_PAGESIZE(3,580,45,"");//这里3表示纵向打印且纸高“按内容的高度”；1385表示纸宽138.5mm；45表示页底空白4.5mm
 		//LODOP.PREVIEW();	
 		LODOP.PRINT();	
 	};
     
-	function createContent(){	
+	function createContent(iii){	
         
         //顶部
 		LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,20,"<?=$sysName?>");
@@ -164,6 +164,24 @@
                 . "LODOP.ADD_PRINT_TEXT(iTop,100,70,txtLineHeight,'{$txt}');LODOP.SET_PRINT_STYLEA(0,'Alignment',3);LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
                 
             }
+            
+            //如果使用了卡内扣款，就让用户签字            
+                
+            if($memberInfo && $billDetail["useCard"]){
+                echo "if(iii == 2){
+                        iTop += txtLineHeight;
+                        LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,'<第一联>商户留存');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);
+                        iTop += txtLineHeight;
+                        LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,'请顾客在下方签字：');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);
+
+                        iTop += txtLineHeight*3;   
+                     }else{
+                        iTop += txtLineHeight;
+                        LODOP.ADD_PRINT_TEXT(iTop,0,pageWidth,txtLineHeight,'<第二联>顾客留存');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);               
+                
+                    }";
+            }
+            
          ?>
                  
         iTop += txtLineHeight;
