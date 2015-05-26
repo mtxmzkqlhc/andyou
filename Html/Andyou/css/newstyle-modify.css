@@ -1,6 +1,6 @@
     .table{margin-bottom:0;width:100%;}
 #content{background:none repeat scroll 0 0 #FFFFFF;filter:none;min-height:100%;position:relative;width:100%;}
-.box{background:none repeat scroll 0 0 #FFFFFF !important;border:1px solid #EEEEEE;margin-bottom:28px;}
+.box{background:none repeat scroll 0 0 #FFFFFF !important;border:1px solid #bbb;margin-bottom:28px;}
 .box-header{background:none repeat scroll 0 0 #EEEEEE;box-shadow:none;font-size:16px;height:16px;line-height:16px;overflow:hidden;padding:10px;}
 .box-header h2{float:left;font-weight:300;margin-top:0;}
 h2{font-size:13px;line-height:16px;}
