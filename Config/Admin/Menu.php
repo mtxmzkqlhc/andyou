@@ -135,6 +135,11 @@ return array(
                 'ctrl' => 'LogCardChange',
                 'target' => '_self',
             ),
+            '入库统计' => array(
+                'url' => '?c=LogInStorage',
+                'ctrl' => 'LogInStorage',
+                'target' => '_self',
+            ),
         ),
     ),
     '系统管理' => array(

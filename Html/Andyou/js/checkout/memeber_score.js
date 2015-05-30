@@ -19,14 +19,15 @@ var doSearchMember = function(){
         var t = Date.parse(new Date()); 
         var url = "?c=Ajax_Member&a=GetMemberByPhone&phonecard=" + phone+"&t="+t;
         $.getJSON(url,{},function(data){
-            if(data){
+            if(data && data.name){
                 var bls = data.balance ? data.balance : 0;
                 $("#memtbl_name").show().html(data.name);
+                $("#bill_end_membernm").val(data.name);
                 $("#memtbl_score").html(data.score);
                 memberAllScore = data.score;
                 $("#memtbl_card").html(bls);
                 $("#memtbl_cate").html(data.cateName);
-                $("#memtbl_disc").html(data.discount);
+                $("#memtbl_disc").html('<a href="javascript:;" target="_self" onclick="showMemDis()">查看具体折扣&gt;&gt;</a>');
                 $("#memtbl_remark").html(data.remark);
                 $("#memtbl_allsum").html(data.allsum);
                 
@@ -50,14 +51,19 @@ var doSearchMember = function(){
 
                 memberDisc = data.discount;//会员折扣
                 if(memberDisc > 1)memberDisc = 1;
+                memberDiscArr = data.discountArr;   
                     
                  $("#bill_disc").val(memberDisc);
                 //先关按钮的显示
                 $("#removeMemInfo").show();
+                $("#proBarCode").focus();
                 
                 //计算一下金额
                 refreshRightTbl();
                 calcBillSumInfo();
+            }else{
+                alert("该会员不存在");
+                removeMemInfo();
             }
         });
     }else{
@@ -86,6 +92,7 @@ var removeMemInfo = function(){
 
     //先关按钮的隐藏
     $("#removeMemInfo").hide();
+    memberDiscArr = {};
     //计算一下金额
     refreshRightTbl();
     calcBillSumInfo();

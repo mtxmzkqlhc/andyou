@@ -48,8 +48,8 @@
 <tr>
 <th>单号</th><th>商品总价</th><th>折扣</th>
 <?php if(!$isAddUser){?>
- <th>使用余额</th>
  <th>使用积分</th>
+ <th>卡内扣款</th>
 <?php }?>
 <th>收取金额</th>
 <?php if($hasChangePrice){?>
@@ -78,8 +78,8 @@ if($data) {
        $outStr.='<td>'.round($v['orgPrice']/100,2).'</td>';
        $outStr.='<td>'.$v['discount'].'</td>';
       if(!$isAddUser){
-            $outStr.='<td>'.$v['useCard'].'</td>';
             $outStr.='<td>'.$v['useScore'].'</td>';
+            $outStr.='<td>'.$v['useCard'].'</td>';
       }
        if($v['priceTrue']){//如果销售员修改了价格，记录
            $outStr.='<td style="color:red;font-weight:bold" title="销售员修改了价格，原价：'.round($v['priceTrue']/100).'">'.round($v['price']/100).'</td>';

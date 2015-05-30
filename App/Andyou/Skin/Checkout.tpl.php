@@ -101,7 +101,7 @@
                             </dl>
                             <dl class="clearfix memextinfo">
                                 <dt>卡内扣款</dt>
-                                <dd><input type="text" value="0" id="bill_member_card" class="billIptChg" readonly="true" name="bill[bill_member_card]" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/></dd>
+                                <dd><input type="text" value="0" id="bill_member_card" data-org="0" class="billIptChg" readonly="true" name="bill[bill_member_card]" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/></dd>
                             </dl>
                             <dl class="clearfix">
                                 <dt>现金支付</dt>
@@ -229,6 +229,7 @@
     var scoreRatio = <?=$scoreRatio?>;
     var memberDisc = 1;//会员折扣价
     var memberDiscArr = {};//会员折扣的全部数组
+    var memCardChange = false;//销售员是否修改了卡内支付的金额
     $("#memberPhone").focus(); 
     //积分转换价格
     var scoreToMoney = function(score){
@@ -408,7 +409,6 @@
         
         var billSumPrice         = parseInt($("#bill_sum_price").attr("trueprice"),10);//parseFloat($("#bill_sum_price").val());//应收金额
         var billDisc             = parseFloat($("#bill_disc").val());//折扣
-        var billMemCard          = Math.floor($("#bill_member_card").val());//卡上金额
         var billMemScore         = parseInt($("#bill_member_score").val(),10);//使用积分
         if(billMemScore){
             var scoreToMoneyObj      = scoreToMoney(billMemScore);
@@ -418,6 +418,24 @@
          
         
         var endPrice = billSumPrice;// * billDisc;//折扣后的价格  因为每行价格都记录了，就不需要最后在计算折扣了
+        
+        //会员的卡内支付  当卡内余额>0时，左侧卡内消费栏自动显示相应扣款额（如余额100，本次商品80则此栏显示80，本次商品120则此栏为100），
+        if(memberId && !memCardChange){//如果销售员修改过卡内支付的金额，就不调整数字了
+            //客户当前剩余的钱
+            var memNowCard = $("#memtbl_card").html() - 0;
+            var showEndPrice = Math.round((billSumPrice/100).toFixed(2));
+            if(memNowCard > showEndPrice){//如果当前会员卡内余额大于总额
+                 $("#bill_member_card").val(showEndPrice);
+                 $("#bill_member_card").attr("data-org",showEndPrice)
+            }else{
+                 $("#bill_member_card").val(memNowCard);
+                 $("#bill_member_card").attr("data-org",memNowCard)
+            }
+        }
+        
+        var billMemCard = $("#bill_member_card").val();
+        
+        
         $("#bill_aftdisc_price").val((endPrice/100).toFixed(2));
         if(billMemCard){//如果用户卡里还有余额
             if(billMemCard * 100 > endPrice){//卡内还有前
@@ -462,6 +480,10 @@
                 $(this).val($("#memtbl_card").html());
             }
             if(!$(this).val()||$(this).val() == "")$(this).val(0);
+            //判断销售员是否手动修改过
+            if(($("#bill_member_card").attr("data-org") - 0) != ($(this).val() - 0)){
+                memCardChange = true;
+            }
         }
         //积分
         if($(this).attr("id") == "bill_member_score"){ //判断设置的金额不能过大
@@ -497,9 +519,7 @@
     //------------------------------------
     //左侧区域重新计算
     var refreshRightTbl = function(){
-        var v = $("#bill_disc").val() - 0
-        
-        //alert("v:"+v);
+        var v = $("#bill_disc").val() - 0;
         $(".tblProDisc").each(function(){
             var proDisc = $(this).attr("data-rel") - 0;//产品设置的最低折扣
             var proCateId = $(this).attr("data-cate"); //产品的分类
@@ -510,7 +530,6 @@
                     v = memberDiscArr[proCateId];
                 }
             }
-           // alert(proDisc);
            if(proDisc == "0.00" || proDisc == 0 || proDisc < v){//如果有设置最低折扣，就能按照总折扣进行计算
               $(this).val(v);
            }else if(proDisc > v){

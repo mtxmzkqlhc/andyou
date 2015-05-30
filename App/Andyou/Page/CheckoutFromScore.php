@@ -29,6 +29,13 @@ class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
         $output->sysOptions = Helper_Option::getAllOptions();        
         $output->scoreRatio = !empty($output->sysOptions["DuihuanRatio"]) ? $output->sysOptions["DuihuanRatio"]["value"] : 0;
         $output->minCheckoutScore = !empty($output->sysOptions["MinCheckoutScore"]) ? $output->sysOptions["MinCheckoutScore"]["value"] : 100;
+        
+        
+        
+        //获得商品的所有分类
+        $output->productCateArr = Helper_Product::getProductCatePairs();
+        $output->productCateJson = api_json_encode($output->productCateArr);
+        
 		$output->setTemplate('CheckoutFromScore');
 	}
 	
@@ -41,7 +48,7 @@ class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
         $remark      = $input->post("remark");//填写的备注
         $endSumModifyFlag = (int)$input->post("endSumModifyFlag");//是否手工调整了最总价格
         $endBillPrice = $billInfo["bill_end_sum"]; //最终的价格，这个价格是可以修改的
-        
+        $db = Db_Andyou::instance();
         //----------------------
         //获得会员信息
         //----------------------
@@ -65,6 +72,8 @@ class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
         $orgSumPrice = 0; //商品总额
         //折扣获得的金额
         $discGetMoney = 0;
+        //记录所有商品的总价格
+        $itemSumPrice = 0;
         if($itemIdArr){
             foreach($itemIdArr as $idx => $pid){
                $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
@@ -72,6 +81,7 @@ class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
                $price       = $num * $proInfo["oprice"] * $itemDiscArr[$idx];
                $orgSumPrice += $num * $proInfo["oprice"];
                $sumPrice += $price;
+               $itemSumPrice += $price;
                $proInfoArr[] = array(
                    'proId'      => $pid,
                    'num'        => $num,

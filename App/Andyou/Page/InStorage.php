@@ -38,6 +38,9 @@ class  Andyou_Page_InStorage  extends Andyou_Page_Abstract {
                     $sql = "update product set stock = stock + {$num} where id = {$pid} ";
                     $db->query($sql);
                     
+                    //获得当前产品的信息
+                    $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
+                    
                     //记录日志 log_productInStorage
                     $item = array(
                         'proId'    => $pid,
@@ -45,6 +48,9 @@ class  Andyou_Page_InStorage  extends Andyou_Page_Abstract {
                         'dateTm'   => SYSTEM_TIME,
                         'orgNum'   => $orgNum,
                         'addNum'   => $num,
+                        'cateId'   => $proInfo["cateId"],
+                        'name'     => $proInfo["name"],
+                        'code'     => $proInfo["code"],
                     );
                     
                     Helper_Dao::insertItem(array(

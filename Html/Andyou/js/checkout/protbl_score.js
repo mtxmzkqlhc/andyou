@@ -8,8 +8,14 @@ var proTableTr = document.getElementById('proTableTr').innerHTML;
 var proJuicer  = juicer(proTableTr);
 var proTrIdx   = 0; //记录插入了第几行了
 var appendProTable = function(proInfo){
-    var disc = memberDisc;
-    if(proInfo.discut && proInfo.discut > memberDisc){
+    var disc = 1;//memberDisc;
+    //获得产品所在分类的折扣
+    if(memberDiscArr){
+        if(proInfo.cateId in memberDiscArr){
+            disc = memberDiscArr[proInfo.cateId];
+        }
+    }
+    if(proInfo.discut && proInfo.discut > disc){
         disc = proInfo.discut;
     }
     //检查该产品是否在表格中已经在存在了，如果已经存在了，只要完成数量+1就可以了
@@ -116,7 +122,7 @@ var doSearchPro = function(){
                     //$("#proAddBoxTbody").html('<tr><td colspan="10" style="text-align: center;color:#666666;padding:20px 0 20px;background:#ffffff;">-- 加载中 --</td></tr>');
                     selectProBoxData = data.data;
                     appendSelectProTable(data.data,data.num)
-                    selectProBoxDlg = art.dialog({title: '请选择商品',width:"600px",content: $("#add-pro-box").html()});
+                    selectProBoxDlg = art.dialog({title: '请选择商品',width:"680px",content: $("#add-pro-box").html()});
                 }else{
                     alert("该商品不能进行积分兑换");
                 }
