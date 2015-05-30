@@ -112,3 +112,10 @@ alter table `andyou`.`bills` add column `getScore` int (1)   NOT NULL  after `is
 
 
 会员卡号取自上次新增加的卡号  怎么取号？？
+
+
+
+2015-5-30
+
+alter table `log_productinstorage` add column `cateId` int (4)   NOT NULL  COMMENT '产品子类' after `addNum`
+alter table `log_productinstorage` add column `name` varchar (200)   NOT NULL  COMMENT '产品名' after `cateId`, add column `code` varchar (50)   NOT NULL  COMMENT '产品条码' after `name`
