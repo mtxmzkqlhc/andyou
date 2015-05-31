@@ -20,6 +20,11 @@ return array(
                 'ctrl' => 'CheckoutFromScore',
                 'target' => '_self',
             ),
+            '次卡消费' => array(
+                'url' => '?c=CheckoutOtherPro&ctype=2',
+                'ctrl' => 'CheckoutOtherPro',
+                'target' => '_self',
+            ),
         ),
     ),
     '商品管理' => array(
