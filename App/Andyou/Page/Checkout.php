@@ -332,7 +332,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                       'memberId'      => $memberId,
                       'otherproId'    => $info["id"],
                       'name'          => $info["othername"],
-                      'direction'     => 1,
+                      'direction'     => 0,
                       'cvalue'        => $info["num"],
                       'orgcvalue'     => 0,
                       'ctype'         => $info["ctype"],

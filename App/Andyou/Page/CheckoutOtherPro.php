@@ -67,7 +67,7 @@ class  Andyou_Page_CheckoutOtherPro  extends Andyou_Page_Abstract {
            }
         }
         //生成一个单号
-        $bno = Helper_Bill::getMaxBno();
+        $bno = Helper_Bill::getOtherProMaxBno();
         
         $db = Db_Andyou::instance();
         if($proInfoArr){

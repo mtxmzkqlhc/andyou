@@ -112,7 +112,7 @@ if($data) {
                                 </select> </td></tr>
                           <tr><td align="right">商品名:</td><td><input type="text"   name="name" /></td></tr>
                           <tr><td align="right">条码号:</td><td><input type="text"   name="code" /></td></tr>
-                          <tr class="item_btwn item_ctype_1"><td align="right">分类:</td><td>
+                          <tr class=""><td align="right">分类:</td><td>
                                 <select name="cateId"><option value='0'>请选择</option>
                                 <?php
                                 if ($cateInfo) {
@@ -122,14 +122,14 @@ if($data) {
                                    }
                                  ?>
                           </select> </td></tr>
-                          <tr class="item_btwn item_ctype_2"><td align="right">名称:</td><td><input type="text"   name="othername" /> 比如：次卡中的修眉</td></tr>
-                          <tr class="item_btwn item_ctype_2"><td align="right">对应数目:</td><td><input type="text"   name="num" /> 比如：次卡中的修眉次数</td></tr>
                           <tr><td align="right">售价:</td><td><input type="text"   name="price" /></td></tr>
-                          <tr class="item_btwn item_ctype_1"><td align="right">进货价:</td><td><input type="text"   name="inPrice" /></td></tr>
+                          <tr class="i"><td align="right">进货价:</td><td><input type="text"   name="inPrice" /></td></tr>
                           
-                          <tr class="item_btwn item_ctype_1"><td align="right">库存数量:</td><td><input type="text"   name="stock" /></td></tr>
+                          <tr class=""><td align="right">库存数量:</td><td><input type="text"   name="stock" /></td></tr>
                           <tr><td align="right">最低折扣:</td><td><input type="text" value='0'  name="discut"  /> 0无最低折扣，1无折扣，0.9表示9折 </td></tr> 
                           <tr><td align="right">积分兑换:</td><td><select name="canByScore"><option value='0'>否</option><option value='1'>是</option></select></td></tr>
+                          <tr class="item_btwn item_ctype_2"><td align="right">次卡名称:</td><td><input type="text"   name="othername" /> 比如：次卡中的修眉</td></tr>
+                          <tr class="item_btwn item_ctype_2"><td align="right">服务次数:</td><td><input type="text"   name="num" /> 比如：次卡中的修眉次数</td></tr>
 
                          </tbody></table></td></tr></tbody></table>
                          <input type="hidden" name="a" value="AddItem">
@@ -157,7 +157,7 @@ if($data) {
                     <table>
                         <tbody><tr><td> <table class="item_edit_table"><tbody>
                         <tr><td align="right">种类:</td><td>
-                                <select name="ctype" id="ctype" ><option value='0'>请选择</option>
+                                <select name="ctype" id="ctype"  onchange="ctypechg(this.value)"><option value='0'>请选择</option>
                                 <?php
                                 if ($proCtype) {
                                        foreach ($proCtype as $k=>$v) {
@@ -168,7 +168,7 @@ if($data) {
                            </select> </td></tr>
                           <tr><td align="right">商品名:</td><td><input type="text" id="name"  name="name" /></td></tr>
                           <tr><td align="right">条码:</td><td><input type="text" id="code"  name="code" /></td></tr>
-                          <tr class="item_btwn item_ctype_1"><td align="right">分类:</td><td>
+                          <tr class=""><td align="right">分类:</td><td>
                               <select id="cateId" name="cateId"><option value='0'>请选择</option>
                                 <?php
                                 if ($cateInfo) {
@@ -179,14 +179,14 @@ if($data) {
                                  ?>
                                 </select>   
                               </td></tr>
-                          <tr class="item_btwn item_ctype_2"><td align="right">名称:</td><td><input type="text" id="othername"  name="othername" /> 比如：次卡中的修眉</td></tr>
-                          <tr class="item_btwn item_ctype_2"><td align="right">对应数目:</td><td><input type="text" id="num"   name="num" /> 比如：次卡中的修眉次数</td></tr>
                           <tr><td align="right">售价:</td><td><input type="text" id="price"  name="price" /></td></tr>
-                          <tr class="item_btwn item_ctype_1"><td align="right">进货价:</td><td><input type="text" id="inPrice"  name="inPrice" /></td></tr>
-                          <tr class="item_btwn item_ctype_1"><td align="right">库存数量:</td><td><input type="text" id="stock"  name="stock" /></td></tr>
+                          <tr class=""><td align="right">进货价:</td><td><input type="text" id="inPrice"  name="inPrice" /></td></tr>
+                          <tr class=""><td align="right">库存数量:</td><td><input type="text" id="stock"  name="stock" /></td></tr>
                           <!-- <tr><td align="right">积分比例:</td><td><input type="text" id="score"  name="score" /> <span style="color:#666666">1表示一元积一分</span></td></tr>-->
                           <tr><td align="right">最低折扣:</td><td><input type="text" id="discut"  name="discut" /> 0无最低折扣，1无折扣，0.9表示9折</td></tr>  
                           <tr><td align="right">积分兑换:</td><td><select id="canByScore" name="canByScore"><option value='0'>否</option><option value='1'>是</option></select></td></tr>
+                          <tr class="item_btwn item_ctype_2"><td align="right">次卡名称:</td><td><input type="text" id="othername"  name="othername" /> 比如：次卡中的修眉</td></tr>
+                          <tr class="item_btwn item_ctype_2"><td align="right">服务次数:</td><td><input type="text" id="num"   name="num" /> 比如：次卡中的修眉次数</td></tr>
 
                         </tbody></table></td></tr></tbody></table>
 				    <input type="hidden" id="dataid" name="dataid" value="">

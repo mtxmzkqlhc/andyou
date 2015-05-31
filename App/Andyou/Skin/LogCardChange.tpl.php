@@ -14,8 +14,8 @@
 				     <div class="row-fluid">
 <form id="serform" method="get">
 <input type="hidden" value="LogCardChange" name="c">
-会员电话：<input style="width:120px;" class="spanmalt10" type="text" value="<?=$memberPhone?>" name="memberPhone" placeholder="">
-会员姓名：<input style="width:120px;" class="spanmalt10" type="text" value="<?=$memberNm?>" name="memberNm" placeholder="">
+会员电话：<input style="width:120px;" type="text" value="<?=$memberPhone?>" name="memberPhone" >
+会员姓名：<input style="width:120px;" type="text" value="<?=$memberNm?>" name="memberNm" >
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    
 				    <!-- 列表 -->

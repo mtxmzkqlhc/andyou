@@ -25,10 +25,10 @@
         
     }?>
 </select>
-产品名：<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sername?>" name="name" placeholder="产品名">
-条码：<input style="width:120px;" class="spanmalt10" type="text" value="<?=$sercode?>" name="code" placeholder="产品条码">
- 时间：<input style="width:90px;" class="spanmalt10 datePlugin" type="text" value="<?=$startTime?>" name="startTime" >                           
- 至：<input style="width:90px;" class="spanmalt10 datePlugin" type="text" value="<?=$endTime?>" name="endTime" > 
+产品名：<input style="width:120px;"  type="text" value="<?=$sername?>" name="name">
+条码：<input style="width:120px;"  type="text" value="<?=$sercode?>" name="code">
+ 时间：<input style="width:90px;" class="datePlugin" type="text" value="<?=$startTime?>" name="startTime" >                           
+ 至：<input style="width:90px;" class="datePlugin" type="text" value="<?=$endTime?>" name="endTime" > 
 
 <button type="submit" class="btn-ser">查看</button></form></div>
 				    

@@ -141,7 +141,7 @@ return array(
                 'ctrl' => 'LogScoreChange',
                 'target' => '_self',
             ),
-            '充值统计' => array(
+            '卡内消费统计' => array(
                 'url' => '?c=LogCardChange',
                 'ctrl' => 'LogCardChange',
                 'target' => '_self',
@@ -149,6 +149,11 @@ return array(
             '入库统计' => array(
                 'url' => '?c=LogInStorage',
                 'ctrl' => 'LogInStorage',
+                'target' => '_self',
+            ),
+            '次卡消费' => array(
+                'url' => '?c=LogUseOtherPro&ctype=2',
+                'ctrl' => 'LogUseOtherPro',
                 'target' => '_self',
             ),
         ),
