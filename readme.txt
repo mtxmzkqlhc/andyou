@@ -119,3 +119,10 @@ alter table `andyou`.`bills` add column `getScore` int (1)   NOT NULL  after `is
 
 alter table `log_productinstorage` add column `cateId` int (4)   NOT NULL  COMMENT '产品子类' after `addNum`
 alter table `log_productinstorage` add column `name` varchar (200)   NOT NULL  COMMENT '产品名' after `cateId`, add column `code` varchar (50)   NOT NULL  COMMENT '产品条码' after `name`
+alter table `product` add column `ctype` tinyint (1)  DEFAULT '1' NOT NULL  COMMENT '类型 1: 正常商品 2：此卡' after `canByScore`, add column `othername` varchar (50)   NOT NULL  COMMENT '其他商品用的另外名字' after `ctype`, add column `num` int (4)  DEFAULT '0' NOT NULL  COMMENT '其他商品用的一个数量' after `othername`
+create table `memeberotherpro` (    `id` int (11)   NOT NULL AUTO_INCREMENT ,  `memberId` int (11)   NOT NULL  COMMENT '会员ID',  `proId` int (11)   NOT NULL  COMMENT '对应的商品名',  `name` varchar (50)   NOT NULL  COMMENT '对应的服务名',  `num` int (4)   NOT NULL  COMMENT '数量',  `buytm` int (11)   NOT NULL  COMMENT '购买时间',  `ctype` tinyint (1)   NOT NULL  COMMENT '对应商品的类型' , PRIMARY KEY ( `id` )  )
+create table `log_useotherpro` (    `int` int (11)   NOT NULL AUTO_INCREMENT ,  `memberId` int (11)   NOT NULL  COMMENT '会员ID',  `otherproId` int (11)   NOT NULL  COMMENT '其他商品的ID',  `direction` tinyint (1)   NOT NULL  COMMENT '方向 1 减少 0 加',  `cvalue` int (11)   NOT NULL  COMMENT '变化的数量',  `orgcvalue` int (11)   NOT NULL  COMMENT '改变之前的数值',  `dateTm` int (11)   NULL  COMMENT '时间',  `ctype` tinyint (1)   NOT NULL  COMMENT '商品类型',  `name` varchar (50)   NOT NULL  COMMENT '名称',  `staffid` int (11)   NOT NULL  COMMENT '销售员ID',  `bno` varchar (20)   NOT NULL  COMMENT '订单ID' , PRIMARY KEY ( `int` )  )
+ alter table `memeberotherpro` add column `proName` varchar (50)   NOT NULL  COMMENT '所属的商品名' after `name`
+alter table `memeberotherpro` add index `memberId` ( `memberId` )
+alter table `log_useotherpro` add index `memberId` ( `memberId` )
+alter table `log_useotherpro` add column `remark` varchar (2000)   NOT NULL  COMMENT '备注' after `bno`

@@ -327,4 +327,30 @@ class Helper_Member extends Helper_Abstract {
         return true;
     }
     
+    /**
+     *  记录会员获得会员卡余额历史
+     */
+    public static function getOtherPros($params){
+        $options = array(
+            'id'              => false, #ID
+            'phone'           => false, 
+            'cardno'          => false, #卡号
+        );
+        if(is_array($params)) $options = array_merge($options, $params);
+        extract($options);
+        
+        $whereSql   = '';
+        if(!$id && !$phone && !$name && !$phoneOrCardno)return false;
+        
+        if($id)$whereSql .= "and m.id = '{$id}' " ;
+        if($phone)$whereSql .= "and m.phone = '{$phone}' " ;
+        if($cardno)$whereSql .= "and m.cardno = '{$cardno}' " ;
+        if($phoneOrCardno)$whereSql .= "and (m.cardno = '{$phoneOrCardno}' or m.phone = '{$phoneOrCardno}') " ;
+        
+        $db  = Db_Andyou::instance();
+        $sql = "select p.id,p.proId,p.name,p.proName,p.num,p.ctype,p.buytm from member m left join memeberotherpro p on m.id = p.memberId where p.num > 0  ".$whereSql;
+        $data = $db->getAll($sql);
+        
+        return $data;
+    }
 }

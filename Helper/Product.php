@@ -95,7 +95,33 @@ class Helper_Product extends Helper_Abstract {
     }
 
 
+    public static  function getMemberOtherPro($params){
+        $options = array(
+            'memberId'        => false, #会员ID
+            'id'              => false, #ID
+            'proId'           => false, #商品ID
+        );
+        if(is_array($params)) $options = array_merge($options, $params);
+        extract($options);        
+            
+        $whereSql   = '';
 
+        if($id)$whereSql .= "and id = '{$id}' " ;
+        if($proId)$whereSql .= "and proId = {$proId} " ;
+        if($memberId)$whereSql .= "and memberId = {$memberId} " ;
+
+        $data = Helper_Dao::getRow(array(
+                    'dbName'        => 'Db_Andyou',    #数据库名
+                    'tblName'       => 'memeberotherpro',    #表名
+                    'cols'          => '*',   #列名
+                    'whereSql'      => $whereSql,    #where条件
+                    #'debug'        => 1,    #调试
+       ));
+        
+        return $data;
+        
+        
+    }
     
     
     

@@ -27,6 +27,23 @@ class Andyou_Page_Ajax_Member extends Andyou_Page_Abstract{
         exit;
     }
     
+    //获得会员的所有商品
+    public function doGetMemberOtherPro(ZOL_Request $input, ZOL_Response $output) {
+        $phone     = $input->get('phone');
+        $phonecard = $input->get('phonecard');
+        if( (!$phone || !is_numeric($phone)) && (!$phonecard || !is_numeric($phonecard))  ){
+            echo "{}";exit;
+        }
+        
+        $list = Helper_Member::getOtherPros(array('phone' => $phone,'phoneOrCardno'=>$phonecard));
+        if($list){
+            echo api_json_encode($list);
+        }else{
+            echo "{}";
+        }
+        exit;
+    }
+    
 }
 
 

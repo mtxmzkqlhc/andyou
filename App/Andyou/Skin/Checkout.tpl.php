@@ -79,7 +79,7 @@
                         <div class="box-l clearfix">
                             <dl class="clearfix">
                                 <dt>单号</dt>
-                                <dd><input type="text" value="<?=Helper_Bill::getMaxBno()?>" id="memberPhone" disabled="true" ></dd>
+                                <dd><input type="text" value="<?=Helper_Bill::getMaxBno()?>"  disabled="true" ></dd>
                             </dl>
                             <dl class="clearfix memextinfo">
                                 <dt>应收金额</dt>
@@ -120,6 +120,7 @@
                                         ?>
                                   </select>  
                                 </dd>
+                                </dl>
                                 <dl class="clearfix" style="display:none;">
                                     <dt>会员</dt>
                                     <dd><input type="text" value="" id="bill_end_membernm"  disabled="true"></dd>

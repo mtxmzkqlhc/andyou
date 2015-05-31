@@ -59,7 +59,7 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 		));
         //获得符合条件的库存总量
         $db = Db_Andyou::instance();
-        $sql = "select sum(stock) sumstock,sum(stock*price) sumprice from product where 1 {$whereSql}";
+        $sql = "select sum(stock) sumstock,sum(stock*price) sumprice from product where ctype = 1 {$whereSql}";
 		$tmp              = $db->getRow($sql);
         $output->sumstock = $tmp["sumstock"];
         $output->sumprice = $tmp["sumprice"];
@@ -72,6 +72,10 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 		}
 		
         $output->cateInfo = Helper_Product::getProductCatePairs();
+        
+        //获得所有的种类
+        $output->proCtype = ZOL_Config::get("GLOBAL","PRO_CTYPE");
+        
         
 		$output->setTemplate('Product');
 	}
@@ -91,7 +95,10 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
         $Arr['score']   = $input->post('score');
         $Arr['discut']  = $input->post('discut');
         $Arr['canByScore']  = (int)$input->post('canByScore');
-        $Arr['addtm']  = SYSTEM_TIME;
+        $Arr['addtm']   = SYSTEM_TIME;
+        $Arr['ctype']   = (int)$input->post('ctype');
+        $Arr['othername']  = $input->post('othername');
+        $Arr['num']     = (int)$input->post('num');
         
         //产品报价，保存以分为单位的价格
         $Arr['price']   = $Arr['price']   * 100;
@@ -124,6 +131,9 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
         $input->request('score')!=''?$Arr['score'] = $input->request('score'):'';
         $input->request('discut')!=''?$Arr['discut'] = $input->request('discut'):'';
         $input->request('canByScore')!=''?$Arr['canByScore'] = $input->request('canByScore'):'';
+        $input->request('ctype')!=''?$Arr['ctype'] = (int)$input->request('ctype'):1;
+        $input->request('othername')!=''?$Arr['othername'] = $input->request('othername'):'';
+        $input->request('num')!=''?$Arr['num'] = (int)$input->request('num'): 0;
         
         //产品报价，保存以分为单位的价格
         if(isset($Arr['price']))  $Arr['price']   = $Arr['price']   * 100;

@@ -73,6 +73,9 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $discGetMoney = 0;
         //记录所有商品的总价格
         $itemSumPrice = 0;
+        //判断是否购买了其他的服务，如次卡
+        $hasBuyOtherPro  = false;
+        $otherProItemArr = array();
         if($itemIdArr){
             foreach($itemIdArr as $idx => $pid){
                $proInfo = Helper_Product::getProductInfo(array('id'=>$pid));
@@ -88,6 +91,13 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                    'price'      => $price,
                    'staffid'    => $staffid,
                );
+               if($proInfo["ctype"]!=1){//购买非商品类的服务
+                   $hasBuyOtherPro = true;
+                   $otherProItemArr[] = array(
+                       'info' => $proInfo,
+                       'num'  => $num,
+                   );
+               }
             }
         }
         //生成一个单号
@@ -303,6 +313,52 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         
         //记录订单的一些额外的信息，但是不记录到数据库
         $billDetail['itemSumPrice']   = $itemSumPrice; //所有商品折扣后的累计金额
+        
+        //购买了其他商品的服务，如次卡
+        if($hasBuyOtherPro && $memberId){
+            foreach($otherProItemArr as $re){
+                $info = $re["info"];
+                $num  = (int)$re["num"];
+                $tmpRow = array(
+                      'memberId' => $memberId,
+                      'proId'    => $info["id"],
+                      'name'     => $info["othername"],
+                      'proName'  => $info["name"],
+                      'num'      => $info["num"],
+                      'ctype'    => $info["ctype"],
+                      'buytm'    => SYSTEM_TIME,
+                );
+                $tmpLogRow = array(
+                      'memberId'      => $memberId,
+                      'otherproId'    => $info["id"],
+                      'name'          => $info["othername"],
+                      'direction'     => 1,
+                      'cvalue'        => $info["num"],
+                      'orgcvalue'     => 0,
+                      'ctype'         => $info["ctype"],
+                      'dateTm'        => SYSTEM_TIME,
+                      'staffid'       => $staffid,
+                      'bno'           => $bno,
+                );
+                //记录用户的所有服务
+                for($i=0;$i<$num;$i++){                    
+                    Helper_Dao::insertItem(array(
+                           'addItem'       =>  $tmpRow,
+                           'dbName'        =>  'Db_Andyou',
+                           'tblName'       =>  'memeberotherpro',
+                   ));
+                   //数据变化日志 
+                   Helper_Dao::insertItem(array(
+                           'addItem'       =>  $tmpLogRow,
+                           'dbName'        =>  'Db_Andyou',
+                           'tblName'       =>  'log_useotherpro',
+                   ));
+                }
+            }
+        }
+        
+        
+        
         
          //准备进入打印页面
         $output->bno          = $bno;

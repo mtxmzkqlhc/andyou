@@ -279,6 +279,53 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $sql = "update billsitem set memberId = {$memberId} where bid = {$bid}";
         $db->query($sql);
         
+        //查看用户本次消费是否购买了其他商品的服务
+        $sql = "select bid,bno,i.proId,i.num bnum,i.staffid,p.* from billsitem i left join product p on i.proId = p.id where bid = {$bid} and p.ctype > 1";
+        $res = $db->getAll($sql);
+        //购买了其他商品的服务，如次卡
+        if($res){
+            foreach($res as $re){
+                $num  = (int)$re["bnum"];
+                //商品用
+                $tmpRow = array(
+                      'memberId' => $memberId,
+                      'proId'    => $re["proId"],
+                      'name'     => $re["othername"],
+                      'proName'  => $re["name"],
+                      'num'      => $re["num"],
+                      'ctype'    => $re["ctype"],
+                      'buytm'    => SYSTEM_TIME,
+                );
+                //日志用
+                $tmpLogRow = array(
+                      'memberId'      => $memberId,
+                      'otherproId'    => $re["proId"],
+                      'name'          => $re["othername"],
+                      'direction'     => 1,
+                      'cvalue'        => $re["num"],
+                      'orgcvalue'     => 0,
+                      'ctype'         => $re["ctype"],
+                      'dateTm'        => SYSTEM_TIME,
+                      'staffid'       => $re["staffid"],
+                      'bno'           => $bno,
+                );
+                //记录用户的所有服务
+                for($i=0;$i<$num;$i++){                    
+                    Helper_Dao::insertItem(array(
+                           'addItem'       =>  $tmpRow,
+                           'dbName'        =>  'Db_Andyou',
+                           'tblName'       =>  'memeberotherpro',
+                   ));
+                   //数据变化日志 
+                   Helper_Dao::insertItem(array(
+                           'addItem'       =>  $tmpLogRow,
+                           'dbName'        =>  'Db_Andyou',
+                           'tblName'       =>  'log_useotherpro',
+                   ));
+                }
+            }
+        }
+        
         //给介绍人添加积分
         if(!empty($Arr['introducer'])){
             
