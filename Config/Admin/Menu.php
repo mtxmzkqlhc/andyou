@@ -55,6 +55,12 @@ return array(
                 'ctrl' => 'ProductCate',
                 'target' => '_self',
             ),
+            '次卡管理' => array(
+                'permission' => array(1),
+                'url' => '?c=MemeberOtherPro&ctype=2',
+                'ctrl' => 'MemeberOtherPro',
+                'target' => '_self',
+            ),
         ),
     ),
     '会员管理' => array(
