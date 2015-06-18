@@ -126,3 +126,9 @@ create table `log_useotherpro` (    `int` int (11)   NOT NULL AUTO_INCREMENT ,  
 alter table `memeberotherpro` add index `memberId` ( `memberId` )
 alter table `log_useotherpro` add index `memberId` ( `memberId` )
 alter table `log_useotherpro` add column `remark` varchar (2000)   NOT NULL  COMMENT '±¸×¢' after `bno`
+
+
+
+2015-6-18
+create table `bno` (`id` int (11)   NOT NULL AUTO_INCREMENT  COMMENT 'ID',  `tm` int (11)   NOT NULL  COMMENT 'ÈÕÆÚ' , PRIMARY KEY ( `id` )  )
+alter table `bno` add index `tm` ( `tm` )

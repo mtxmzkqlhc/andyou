@@ -42,7 +42,7 @@ class  Andyou_Page_CheckoutOtherPro  extends Andyou_Page_Abstract {
     
 	
     public function doDone(ZOL_Request $input, ZOL_Response $output){
-                
+        
         $otherProIdArr  = $input->post("otherProId");//所有商品
         $staffid        = (int)$input->post("staffid");//员工
         $remark         = $input->post("remark");//填写的备注
@@ -67,7 +67,7 @@ class  Andyou_Page_CheckoutOtherPro  extends Andyou_Page_Abstract {
            }
         }
         //生成一个单号
-        $bno = Helper_Bill::getOtherProMaxBno();
+        $bno = Helper_Bill::getCommonMaxBno();
         
         $db = Db_Andyou::instance();
         if($proInfoArr){
@@ -109,7 +109,7 @@ class  Andyou_Page_CheckoutOtherPro  extends Andyou_Page_Abstract {
         $output->memberInfo   = $memberInfo;//会员信息
         $output->staffid      = $staffid;
         $output->staffName    = $staffArr[$staffid];
-        
+        Helper_Bill::createOneCommonBno();//生成一个通用订单号
 		$output->setTemplate('OtherProPrint');        
     }
 }

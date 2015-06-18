@@ -85,7 +85,7 @@
                         <div class="box-l clearfix">
                             <dl class="clearfix">
                                 <dt>µ¥ºÅ</dt>
-                                <dd><input type="text" value="S<?=Helper_Bill::getMaxBno()?>" id="memberPhone" disabled="true" ></dd>
+                                <dd><input type="text" value="S<?=Helper_Bill::getCommonMaxBno()?>" id="memberPhone" disabled="true" ></dd>
                             </dl>
                             <dl class="clearfix memextinfo">
                                 <dt>×Ü½ð¶î</dt>

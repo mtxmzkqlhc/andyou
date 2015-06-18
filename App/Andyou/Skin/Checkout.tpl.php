@@ -79,7 +79,7 @@
                         <div class="box-l clearfix">
                             <dl class="clearfix">
                                 <dt>单号</dt>
-                                <dd><input type="text" value="<?=Helper_Bill::getMaxBno()?>"  disabled="true" ></dd>
+                                <dd><input type="text" value="<?=Helper_Bill::getCommonMaxBno()?>"  disabled="true" ></dd>
                             </dl>
                             <dl class="clearfix memextinfo">
                                 <dt>应收金额</dt>

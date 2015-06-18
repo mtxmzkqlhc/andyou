@@ -34,7 +34,28 @@ class Helper_Bill extends Helper_Abstract {
         }
         return $row;
     }
+    /**
+     * 产生一个订单号
+     */
+    public static function createOneCommonBno(){
+        
+        $db = Db_Andyou::instance();
+        $date = date("Ymd ",SYSTEM_TIME);
+        $db->query("insert into bno(tm) values({$date})");
+    }
     
+    /**
+     * 获得一个单号
+     */
+    public static function getCommonMaxBno(){
+        $db = Db_Andyou::instance();
+        //获得今天订单个数
+        $date = date("Ymd",SYSTEM_TIME);
+        $sql = "select count(*) from bno where tm =".$date;
+        $num = $db->getOne($sql);
+        
+        return date("Ymd",SYSTEM_TIME) . sprintf("%06d",($num+1));
+    }
     /**
      * 获得一个单号
      */

@@ -92,7 +92,8 @@ class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
             }
         }
         //生成一个单号
-        $bno = Helper_Bill::getMaxBno();
+        #$bno = Helper_Bill::getMaxBno();
+        $bno = Helper_Bill::getCommonMaxBno();
         
         //----------------------
         //计算总金额
@@ -294,6 +295,7 @@ class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
         
         $output->discGetMoney = $discGetMoney; //折扣省下的钱
         $output->orgSumPrice  = $orgSumPrice; //原始总价
+        Helper_Bill::createOneCommonBno();//生成一个通用订单号
               
 		$output->setTemplate('BillPrint3');
         

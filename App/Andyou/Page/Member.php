@@ -170,7 +170,8 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 //        $db->query($sql);
         
         
-        $output->bno         = Helper_Bill::getCardMaxBno();
+//        $output->bno         = Helper_Bill::getCardMaxBno();
+        $output->bno         = Helper_Bill::getCommonMaxBno();
         $logItem = array(
             "memberId"   => $memberId,
             "direction"  => 0,
@@ -196,6 +197,8 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
 
         $staffArr             = Helper_Staff::getStaffPairs();
         $output->staffName    = $staffArr[$staffid];
+        
+        Helper_Bill::createOneCommonBno();//生成一个通用订单号
         $output->setTemplate("CardPrint");
         
     }
@@ -405,7 +408,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         if($card < 0)$card = -$card;
         
         //生成一个单号
-        $output->bno         = Helper_Bill::getCardMaxBno();
+        $output->bno         = Helper_Bill::getCommonMaxBno();
         #获得会员信息
         $minfo = Helper_Member::getMemberInfo(array("id"=>$mid));
         if(!$minfo){
@@ -447,6 +450,8 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
             
             $staffArr             = Helper_Staff::getStaffPairs();
             $output->staffName    = $staffArr[$staffid];
+            
+            Helper_Bill::createOneCommonBno();//生成一个通用订单号
             $output->setTemplate("CardPrint");
         }else{
             echo "<script>document.location='{$urlStr}';</script>";
