@@ -80,6 +80,70 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 		$output->setTemplate('Product');
 	}
 	
+    
+    /**
+     * 获得数据列表
+     */
+	public function doSendTable(ZOL_Request $input, ZOL_Response $output){
+        header ("Pragma: no-cache");     
+        header ('Content-type: application/x-msexcel;charset=utf-8'); 
+        header ("Content-Disposition: attachment; filename=商品数据_".date('Y-m-d H:i:s').".xls" );  
+		$wArr     = array();#搜索字段
+		$whereSql = "";
+		$output->sername = $wArr['name'] = $input->get('name');
+        $output->sercode = $wArr['code'] = $input->get('code');
+        $output->sercateId = $wArr['cateId'] = $input->get('cateId');
+        
+	    if(!empty ($wArr)){
+		    foreach($wArr as $k=>$v){
+                if($k == 'cateId' && $v){
+                    $whereSql .= ' AND cateId ='.$v;
+                }elseif($k == 'code' && $v){
+                    $whereSql .= ' AND code =\''.$v."'";
+                }else{
+                    if(gettype($v) == 'string'){
+                         $whereSql .= !empty($v)?' AND '.$k.' like binary "%'.$v.'%" ':'';
+                      }else{
+                         $whereSql .= !empty($v)?' AND '.$k.'='.$v:'';
+                    }
+                }
+		    }
+		}
+		$pageSize = 100000;
+		$orderSql = "order by id desc";
+		
+		$data = Helper_Dao::getList(array(
+			'dbName'        => "Db_Andyou",  #数据库名
+			'tblName'       => "product",       #表名
+			'cols'          => "*",            #列名
+			'pageSize'      => $pageSize,      #每页数量
+			'page'          => 1,          #当前页
+			'pageUrl'       => $pageUrl,       #页面URL规则
+			'whereSql'      => $whereSql,       #where条件
+			'orderSql'      => $orderSql,
+		    'iswrite'       =>  true,
+		    'pageTpl'       =>  9,     #分页模板
+		    #'debug'        =>1
+		));
+        
+        
+		if($data){
+		    $output->pageBar = $data['pageBar'];
+		    $output->allCnt  = $data['allCnt'];
+		    $output->data    = $data['data'];
+			$output->pageUrl= $pageUrl;
+		}
+		
+        $output->cateInfo = Helper_Product::getProductCatePairs();
+        
+        //获得所有的种类
+        $output->proCtype = ZOL_Config::get("GLOBAL","PRO_CTYPE");
+        
+        
+		$html = $output->fetchCol('ProductToExcel');
+        echo mb_convert_encoding($html, "utf-8","gbk");
+        exit;
+	}
     /**
      * 添加记录
      */

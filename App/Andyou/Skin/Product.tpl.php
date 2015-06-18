@@ -32,6 +32,7 @@
     }?>
 </select>
 <button type="submit" class="btn-ser">查看</button>
+<button type="button"  id="sendTable" class="btn btn-lan" >导出表格</button>
 &nbsp;&nbsp;
 符合条件的商品库存总量：<label class="label label-info" style="font-weight: bold;padding:3px 10px;"><?=$sumstock?></label>
 &nbsp;库存金额：<label class="label label-success" style="font-weight: bold;padding:3px 10px;"><?=round($sumprice/100)?></label>
@@ -275,7 +276,10 @@ var setDataValue = function(id,col,val){
         }
    });
 }
-
+ $('#sendTable').click(function(){
+            var url  = document.URL;
+            window.open(url+'&a=SendTable'); 
+        });
 </script>
 </body>
 </html>
