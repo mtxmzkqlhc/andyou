@@ -268,22 +268,24 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             if($sysOptions && !empty($sysOptions["MemberParentRatio"])&& !empty($sysOptions["MemberParentRatio"]["value"])){
                 $introducerId = $memberInfo["introducerId"];
                 $introducer   = $memberInfo["introducer"];
-                if(!$introducerId || !$introducer){#如果没有ID,就尝试活儿
+                if(empty($memberInfo["allsum"])){//如果用户从来没有消费过，也就是第一次消费才给介绍人增加积分
+                    if(!$introducerId || !$introducer){#如果没有ID,就尝试活儿
 
-                    $introInfo = Helper_Member::getMemberInfo(array('phone'=>$introducer,'id'=>$introducerId));
-                    $introducerId = $introInfo["id"];
-                    $iscore = $output->newScore * $sysOptions["MemberParentRatio"]["value"];
-                    
-                    //记录积分
-                    Helper_Member::addScoreLog(array(
-                        'memberId'         => $introducerId, #ID
-                        'direction'        => 0, #1 减 0 加
-                        'score'            => $iscore, #积分
-                        'orgScore'         => $memberInfo["score"], #原始积分
-                        'bno'              => $bno, #订单号
-                        'remark'           => '下线【'.$memberInfo["phone"]."-".$memberInfo["name"].'】消费得积分' . $output->newScore, #
-                    ));
-                    
+                        $introInfo = Helper_Member::getMemberInfo(array('phone'=>$introducer,'id'=>$introducerId));
+                        $introducerId = $introInfo["id"];
+                        $iscore = $output->newScore * $sysOptions["MemberParentRatio"]["value"];
+
+                        //记录积分
+                        Helper_Member::addScoreLog(array(
+                            'memberId'         => $introducerId, #ID
+                            'direction'        => 0, #1 减 0 加
+                            'score'            => $iscore, #积分
+                            'orgScore'         => $memberInfo["score"], #原始积分
+                            'bno'              => $bno, #订单号
+                            'remark'           => '下线【'.$memberInfo["phone"]."-".$memberInfo["name"].'】消费得积分' . $output->newScore, #
+                        ));
+
+                    }
                 }
             }
         }
