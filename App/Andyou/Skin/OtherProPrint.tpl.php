@@ -79,14 +79,22 @@
         echo 'iTop += 10;';
         if($proInfoArr){
              echo "iTop += txtLineHeight;"
-                     . "LODOP.ADD_PRINT_TEXT(iTop,0,150,txtLineHeight,'服务');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
-                     . "LODOP.ADD_PRINT_TEXT(iTop,140,60,txtLineHeight,'次数');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
+                     . "LODOP.ADD_PRINT_TEXT(iTop,0,70,txtLineHeight,'服务');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                     . "LODOP.ADD_PRINT_TEXT(iTop,70,55,txtLineHeight,'使用次数');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                     . "LODOP.ADD_PRINT_TEXT(iTop,125,60,txtLineHeight,'剩余次数');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
             $proArr = array();
+            $leftNumArr = array();
             foreach($proInfoArr as $proInfo){
-
+                if(isset($leftNumArr[$proInfo["id"]])){
+                    $leftNum = $leftNumArr[$proInfo["id"]] - 1;
+                }else{
+                    $leftNum = $proInfo["num"] - 1;
+                }
+                $leftNumArr[$proInfo["id"]] = $leftNum;
                 echo "iTop += txtLineHeight;"
-                     . "LODOP.ADD_PRINT_TEXT(iTop,0,150,txtLineHeight,'{$proInfo["name"]}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
-                     . "LODOP.ADD_PRINT_TEXT(iTop,150,60,txtLineHeight,'1');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
+                     . "LODOP.ADD_PRINT_TEXT(iTop,0,80,txtLineHeight,'{$proInfo["name"]}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                     . "LODOP.ADD_PRINT_TEXT(iTop,90,50,txtLineHeight,'1');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);"
+                     . "LODOP.ADD_PRINT_TEXT(iTop,140,60,txtLineHeight,'{$leftNum}');LODOP.SET_PRINT_STYLEA(0,'FontSize',8);";
             }
         }
         
