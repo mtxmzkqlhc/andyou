@@ -275,14 +275,18 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                         $introducerId = $introInfo["id"];
                         $iscore = $output->newScore * $sysOptions["MemberParentRatio"]["value"];
 
+                        //更新积分
+                        $sql = "update member set score = score + {$iscore}  where id = {$introducerId}";
+                        $db->query($sql);
+                    
                         //记录积分
                         Helper_Member::addScoreLog(array(
                             'memberId'         => $introducerId, #ID
                             'direction'        => 0, #1 减 0 加
                             'score'            => $iscore, #积分
-                            'orgScore'         => $memberInfo["score"], #原始积分
+                            'orgScore'         => $introInfo["score"], #原始积分
                             'bno'              => $bno, #订单号
-                            'remark'           => '下线【'.$memberInfo["phone"]."-".$memberInfo["name"].'】消费得积分' . $output->newScore, #
+                            'remark'           => '介绍【'.$memberInfo["phone"]."-".$memberInfo["name"].'】消费得积分'.$output->newScore.'*' .$sysOptions["MemberParentRatio"]["value"], #
                         ));
 
                     }

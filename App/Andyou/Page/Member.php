@@ -342,7 +342,11 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
                     $introInfo = Helper_Member::getMemberInfo(array('phone'=>$introducer));
                     $introducerId = $introInfo["id"];
                     $iscore = $output->canGetScore * $sysOptions["MemberParentRatio"]["value"];
-
+                    
+                    //更新积分
+                    $sql = "update member set score = score + {$iscore}  where id = {$introducerId}";
+                    $db->query($sql);
+                    
                     //记录积分
                     Helper_Member::addScoreLog(array(
                         'memberId'         => $introducerId, #ID
@@ -350,8 +354,8 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
                         'score'            => $iscore, #积分
                         'orgScore'         => $introInfo["score"], #原始积分
                         'bno'              => $bno, #订单号
-                        'remark'           => $minfo ? '下线【'.$minfo["phone"]."-".$minfo["name"].'】消费得积分' . $output->canGetScore
-                                                     : '下线【'.$Arr['phone'].'】消费得积分' . $output->canGetScore, #
+                        'remark'           => $minfo ? '介绍【'.$minfo["phone"]."-".$minfo["name"].'】消费得积分' . $output->canGetScore."*".$sysOptions["MemberParentRatio"]["value"]
+                                                     : '介绍【'.$Arr['phone'].'】消费得积分' . $output->canGetScore."*".$sysOptions["MemberParentRatio"]["value"], #
                     ));
 
                     

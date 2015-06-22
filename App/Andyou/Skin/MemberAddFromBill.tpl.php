@@ -72,7 +72,7 @@
                           }
                           ?>
                          <!-- <tr><td align="right">卡余额:</td><td><input type="text"   name="balance" value='0'/></td></tr> -->
-                          <tr><td>&nbsp;</td><td><input type="submit" value="<?=$andCard?"确认添加":"消费关联此会员"?>" class="btn btn-primary entrnext"  data-tab-index="10"/></td></tr>
+                          <tr><td>&nbsp;</td><td><input type="submit" id="submitbtn" value="<?=$andCard?"确认添加":"消费关联此会员"?>" class="btn btn-primary entrnext"  data-tab-index="10"/></td></tr>
                           
 
                          </tbody></table>
@@ -201,6 +201,22 @@ $("#addIntrCheckExs").click(function(){
             alert("介绍人手机号不存在");
             $("#introducer").val("");
             
+        }
+    });
+});
+$("#introducer").blur(function(){
+    if($("#introducer").val() == ""){
+        $("#submitbtn").val("确认提交").attr("disabled",false);
+        return true;
+    }
+    $("#submitbtn").val("验证介绍人是否存在中...").attr("disabled",true);
+    doSearchMember($("#introducer").val(),function(d){
+        if(!d || !d.name){
+            alert("介绍人手机号不存在");
+            $("#introducer").val("");
+            $("#submitbtn").val("确认提交").attr("disabled",false);
+        }else{
+           $("#submitbtn").val("确认提交").attr("disabled",false);
         }
     });
 });
