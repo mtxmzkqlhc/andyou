@@ -52,6 +52,13 @@ class  Andyou_Page_ProductSm  extends Andyou_Page_Abstract {
 		    #'debug'        =>1
 		));
 		
+        //获得符合条件的库存总量
+        $db = Db_Andyou::instance();
+        $sql = "select sum(stock) sumstock,sum(stock*price) sumprice from product where ctype = 1 {$whereSql}";
+		$tmp              = $db->getRow($sql);
+        $output->sumstock = $tmp["sumstock"];
+        $output->sumprice = $tmp["sumprice"];
+        
 		if($data){
 		    $output->pageBar = $data['pageBar'];
 		    $output->allCnt  = $data['allCnt'];

@@ -379,8 +379,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         $output->memberInfo   = $memberInfo;//会员信息
         
         $output->discGetMoney = $discGetMoney; //折扣省下的钱
-        $output->orgSumPrice  = $orgSumPrice; //原始总价
-        
+        $output->orgSumPrice  = $orgSumPrice; //原始总价        
         $output->isBuyScore   = $isBuyScore;
         Helper_Bill::createOneCommonBno();//生成一个通用订单号
 		$output->setTemplate('BillPrint');
