@@ -209,6 +209,7 @@ $("#introducer").blur(function(){
         $("#submitbtn").val("确认提交").attr("disabled",false);
         return true;
     }
+    
     $("#submitbtn").val("验证介绍人是否存在中...").attr("disabled",true);
     doSearchMember($("#introducer").val(),function(d){
         if(!d || !d.name){
