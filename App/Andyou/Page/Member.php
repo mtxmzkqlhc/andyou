@@ -332,6 +332,31 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         //给介绍人添加积分
         if(!empty($Arr['introducer'])){
             
+            $sysOptions = Helper_Option::getAllOptions(); 
+            //给介绍人增加积分
+            if($sysOptions && !empty($sysOptions["MemberParentRatio"])&& !empty($sysOptions["MemberParentRatio"]["value"])){
+                $introducer = $Arr['introducer'];
+                if(empty($minfo) || empty($minfo["allsum"])){//如果用户从来没有消费过，也就是第一次消费才给介绍人增加积分
+                   
+
+                    $introInfo = Helper_Member::getMemberInfo(array('phone'=>$introducer));
+                    $introducerId = $introInfo["id"];
+                    $iscore = $output->canGetScore * $sysOptions["MemberParentRatio"]["value"];
+
+                    //记录积分
+                    Helper_Member::addScoreLog(array(
+                        'memberId'         => $introducerId, #ID
+                        'direction'        => 0, #1 减 0 加
+                        'score'            => $iscore, #积分
+                        'orgScore'         => $introInfo["score"], #原始积分
+                        'bno'              => $bno, #订单号
+                        'remark'           => $minfo ? '下线【'.$minfo["phone"]."-".$minfo["name"].'】消费得积分' . $output->canGetScore
+                                                     : '下线【'.$Arr['phone'].'】消费得积分' . $output->canGetScore, #
+                    ));
+
+                    
+                }
+            }
         }
         
                 
