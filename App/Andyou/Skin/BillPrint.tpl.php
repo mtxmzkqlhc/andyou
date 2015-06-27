@@ -81,7 +81,7 @@
             if(!empty($memLeftInfo["score"])){
                 $txtArr[] = "会员积分：". $memLeftInfo["score"];
             }
-            if(!empty($memLeftInfo["balance"])){
+            if(!empty($memLeftInfo["balance"]) || $billDetail["useCard"]){//($memberInfo && $billDetail["useCard"])
                 $txtArr[] = "卡内余额：￥". $memLeftInfo["balance"];
             }
             $i = 4;
