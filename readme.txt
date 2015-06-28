@@ -132,3 +132,10 @@ alter table `log_useotherpro` add column `remark` varchar (2000)   NOT NULL  COM
 2015-6-18
 create table `bno` (`id` int (11)   NOT NULL AUTO_INCREMENT  COMMENT 'ID',  `tm` int (11)   NOT NULL  COMMENT '日期' , PRIMARY KEY ( `id` )  )
 alter table `bno` add index `tm` ( `tm` )
+
+
+
+
+==== 同步部分需要注意几个点 ====
+1. 配置的SysId设置了
+2. 会员分类都是一致吗？

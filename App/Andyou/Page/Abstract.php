@@ -7,7 +7,7 @@ abstract class Andyou_Page_Abstract extends ZOL_Abstract_Page{
 	 */
 	public function baseValidate(ZOL_Request $input, ZOL_Response $output){
         
-
+        $output->yunUrl     = "http://182.92.5.73/andyou/Html/Yun/index.php";
 		$output->execName   = $input->execName    = $input->getExecName();
 		$output->actName    = $input->actName     = $input->getActionName();
 		$output->ctlName    = $input->ctlName     = $input->getControllerName();

@@ -238,7 +238,7 @@ class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
             //记录自己的积分历史
             Helper_Member::addScoreLog(array(
                 'memberId'         => $memberId, #ID
-                'direction'        => 0, #1 减 0 加
+                'direction'        => 1, #1 减 0 加
                 'score'            => $output->newScore, #积分
                 'orgScore'         => $memberInfo["score"], #原始积分
                 'bno'              => $bno, #订单号

@@ -174,6 +174,10 @@ return array(
                 'url' => '?c=Data&a=BackUp',
                 'ctrl' => 'BackUp'
             ),
+            'ÔÆ¶ËÍ¬²½' => array(
+                'url' => '?c=Rsync_Default',
+                'ctrl' => 'RsyncYun'
+            ),
         ),
     ),
 );

@@ -297,7 +297,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
         //记录会员会员卡使用记录 
         if($memberId && $billDetail["useCard"]){
             Helper_Member::addCardLog(array(
-                'memberId'         => $introducerId, #ID
+                'memberId'         => $memberId, #ID
                 'direction'        => 1, #1 减 0 加
                 'card'             => $billDetail["useCard"], #
                 'orgCard'          => $memberInfo["balance"], 
