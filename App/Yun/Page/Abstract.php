@@ -1,7 +1,7 @@
 <?php
 
 abstract class Yun_Page_Abstract extends ZOL_Abstract_Page{
-	
+
 	/**
 	 * ¸¸ÀàµÄValidate
 	 */
@@ -11,7 +11,7 @@ abstract class Yun_Page_Abstract extends ZOL_Abstract_Page{
 		$output->execName   = $input->execName    = $input->getExecName();
 		$output->actName    = $input->actName     = $input->getActionName();
 		$output->ctlName    = $input->ctlName     = $input->getControllerName();
-        
+
         return true;
 	}
     
