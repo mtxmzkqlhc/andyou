@@ -24,7 +24,10 @@ class  Andyou_Page_Update extends Andyou_Page_Abstract {
             "alter table `log_cardchange` add column `rsync` tinyint (1)  DEFAULT '0' NOT NULL  COMMENT '表示该记录是否同步到云端'",
             "update log_cardchange set rsync = 1",
             "alter table `member` add column `upTm` int (11)   NOT NULL  COMMENT '信息修改时间'",
+            "alter table `member` add column `rsync` tinyint (11)   NOT NULL  COMMENT '表示该记录是否同步到云端'",
             "create table `log_yunrsync` (    `id` int (11)   NOT NULL AUTO_INCREMENT ,  `name` varchar (20)   NOT NULL  COMMENT '同步实例名称',  `tm` int (20)   NOT NULL  COMMENT '同步时间' , PRIMARY KEY ( `id` )  )",
+            "alter table `member` add column `site` varchar (11)   NOT NULL  COMMENT '来自哪个站点'",
+            "alter table `member` add column `siteObjId` int (11)   NOT NULL  COMMENT '在那个站点的ID'",
         );
         $db = Db_Andyou::instance();
         if($sqlArr){
