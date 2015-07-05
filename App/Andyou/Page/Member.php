@@ -544,6 +544,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $input->request('introducer')?$Arr['introducer'] = $input->request('introducer'):'';
         
 	    $pageUrl = $input->request('pageUrl');
+        $Arr["upTm"] = SYSTEM_TIME;
 	    $data = Helper_Dao::updateItem(array(
 	            'editItem'       =>  $Arr, #数据列
 	            'dbName'         =>  'Db_Andyou',    #数据库名
