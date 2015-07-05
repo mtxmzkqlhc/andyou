@@ -35,14 +35,21 @@ class  Yun_Page_Rsync_Member  extends Yun_Page_Abstract {
             $data = api_json_decode($data);
             
             if($data){
-                if(in_array($table, array("log_scorechange","log_cardchange"))){//log_cardchange
+                if(in_array($table, array("log_scorechange","log_cardchange","bills"))){//log_cardchange
                     $okIdArr = array();
                     foreach($data as $d){
                         $bno    = $d["bno"];
                         $phone  = $d["phone"];
-                        $dateTm = $d["dateTm"];
                         
-                        $sql = "select 'x' from {$table} where phone = '{$phone}' and bno = '{$bno}' and dateTm = '{$dateTm}' limit 1 ";
+                        if($table == "bills"){
+                            $dateTm = $d["tm"];                        
+                            $sql = "select 'x' from {$table} where phone = '{$phone}' and bno = '{$bno}' and tm = '{$dateTm}' limit 1 ";
+                            #echo $sql."<br/>";
+                        }else{    
+                            $dateTm = $d["dateTm"];                        
+                            $sql = "select 'x' from {$table} where phone = '{$phone}' and bno = '{$bno}' and dateTm = '{$dateTm}' limit 1 ";
+                        }
+                        
                         $has = $db->getOne($sql);
                         $orgId = $d['id'];
                         if(!$has){//如果不存在就插入到本地
@@ -59,11 +66,15 @@ class  Yun_Page_Rsync_Member  extends Yun_Page_Abstract {
                                 $mhas = $db->getOne("select 'x' from member where phone = '{$phone}' limit 1");
                                 if($mhas){
                                     //更新会员的数据
-                                    $dstr = $item["direction"] ? "-":"+";
                                     if("log_scorechange" == $table){//积分
+                                        $dstr = $item["direction"] ? "-":"+";
                                         $sql  = "update member set score = score {$dstr} {$item["score"]},upTm=".SYSTEM_TIME." where phone = '{$phone}'";
                                     }else if("log_cardchange" == $table){//会员卡
+                                        $dstr = $item["direction"] ? "-":"+";
                                         $sql  = "update member set balance = balance {$dstr} {$item["card"]},upTm=".SYSTEM_TIME." where phone = '{$phone}'";
+                                    }else if("bills" == $table){//消费记录
+                                        $sum  = round($item["price"]/100,2) + $item["useCard"];
+                                        $sql  = "update member set allsum = allsum + {$sum},upTm=".SYSTEM_TIME." where phone = '{$phone}'";
                                     }
                                     $db->query($sql);
                                     $okIdArr[] =  $orgId;
@@ -107,7 +118,7 @@ class  Yun_Page_Rsync_Member  extends Yun_Page_Abstract {
                     $sql = "select 'x' from member where phone = '{$phone}' limit 1 ";
                     $has = $db->getOne($sql);
                     if(!$has){//如果不存在就插入到本地
-                        $okIdArr[] = $d["id"];
+                        $okIdArr[] = $d["siteObjId"];
                         unset($d["id"]);
                         unset($d["rsync"]);
                         $item = $d;
@@ -125,7 +136,6 @@ class  Yun_Page_Rsync_Member  extends Yun_Page_Abstract {
             }
         }
         
-        echo 1;
         exit;
     }
     

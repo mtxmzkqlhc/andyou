@@ -177,6 +177,9 @@ class  Andyou_Page_CheckoutFromScore  extends Andyou_Page_Abstract {
         $memLeftInfo['allsum'] = $memberInfo['allsum'] + round($sumPriceAftDisc/100) + $billInfo["bill_member_card"];
         //记入订单库
         
+        if($memberInfo){
+            $billDetail["phone"] = $memberInfo["phone"];
+        }
         $output->newScore       = (int)(($billDetail['useCard'] + ($billDetail['price']/100)) * $scoreRatio);//获得的积分
         $billDetail["getScore"] = $output->newScore;
         $bid = Helper_Dao::insertItem(array(

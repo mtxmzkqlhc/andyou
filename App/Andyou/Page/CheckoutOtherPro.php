@@ -80,6 +80,7 @@ class  Andyou_Page_CheckoutOtherPro  extends Andyou_Page_Abstract {
                 //记录消费日志
                 $tmpLogRow = array(
                     'memberId'      => $memberId,
+                    'phone'         => $memberInfo["phone"],
                     'otherproId'    => $info["id"],
                     'name'          => $info["name"],
                     'direction'     => 1,
@@ -91,6 +92,7 @@ class  Andyou_Page_CheckoutOtherPro  extends Andyou_Page_Abstract {
                     'bno'           => $bno,
                     'remark'        => $remark,
                 );
+                
                 Helper_Dao::insertItem(array(
                         'addItem'       =>  $tmpLogRow,
                         'dbName'        =>  'Db_Andyou',

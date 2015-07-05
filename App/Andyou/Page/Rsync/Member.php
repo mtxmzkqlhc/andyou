@@ -28,8 +28,11 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
         $db = Db_Andyou::instance();
         $pageSize = 100;
         //获得总数
-        $allSum = $db->getOne("select count(*) from member");
-        for($i=0;$i<=$allSum;$i++){
+        $allSum  = $db->getOne("select count(*) from member");
+        $loopCnt = ceil($allSum/$pageSize);
+       
+        for($i=0;$i<$loopCnt;$i++){
+            echo "==LOOP:{$i}==<br/>";
             $s = $i * $pageSize;
             //获得本地的会员
             $sql = "select * from member order by id desc limit {$s},{$pageSize}";
@@ -41,22 +44,24 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
                     $re["siteObjId"] = $re["id"];
                     $re["site"]      = $output->sysName;
                     unset($re['upTm']);
+                    unset($re['rsync']);
                     $data[] = $re;
                 }
-            }
-            $jsonstr = base64_encode(api_json_encode($data));
-            $token   = md5("c=Rsync_Member&a=UpAll"."AAFDFDF&RE3");
-            $rtnJson = ZOL_Http::curlPost(array(                
-                'url'      => $output->yunUrl . "?c=Rsync_Member&a=UpAll&token={$token}", #要请求的URL数组
-                'postdata' => "data=$jsonstr", #POST的数据
-                'timeout'  => 3,#超时时间 s
-            ));  
                 
-            #设置同步状态
-            $okIdArr = json_decode($rtnJson);
-            if($okIdArr && is_array($okIdArr)){
-                foreach($okIdArr as $id){
-                    $db->query("update member set rsync = 1 where id = {$id} ");
+                $jsonstr = base64_encode(api_json_encode($data));
+                $token   = md5("c=Rsync_Member&a=UpAll"."AAFDFDF&RE3");
+                $rtnJson = ZOL_Http::curlPost(array(                
+                    'url'      => $output->yunUrl . "?c=Rsync_Member&a=UpAll&token={$token}", #要请求的URL数组
+                    'postdata' => "data=$jsonstr", #POST的数据
+                    'timeout'  => 3,#超时时间 s
+                ));  
+                #设置同步状态
+                $okIdArr = json_decode($rtnJson);
+                if($okIdArr && is_array($okIdArr)){
+                    foreach($okIdArr as $id){
+                        echo "{$id} OK<br/>";
+                        $db->query("update member set rsync = 1 where id = {$id} ");
+                    }
                 }
             }
         }
@@ -113,6 +118,7 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
             $okIdArr = json_decode($rtnJson);
             if($okIdArr && is_array($okIdArr)){
                 foreach($okIdArr as $id){
+                    echo "{$id} OK<br/>";
                     $db->query("update member set rsync = 1 where id = {$id} ");
                 }
             }
@@ -193,7 +199,7 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
         //---------------------------
         //积分、会员卡 更改历史
         //---------------------------
-        $tableArr = array("log_scorechange","log_cardchange");
+        $tableArr = array("log_scorechange","log_cardchange","bills");
         if($tableArr){
             foreach($tableArr as $table){
                 $sql = "select * from {$table} where rsync = 0";
@@ -203,6 +209,7 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
                     $output->table = $table;
                     $rtnJson = $this->doPost($input,$output);
                     echo "<hr/>";
+                    echo $rtnJson;
                     $okIdArr = json_decode($rtnJson);
                     
                     if($okIdArr && is_array($okIdArr)){
@@ -216,11 +223,23 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
         }
         
         
+        //---------------------------
+        //同步次卡，otherpro
+        //---------------------------
+        #首先完善会员电话
+        
+        
+        //---------------------------
+        //同步订单bills
+        //---------------------------
+        
+        
         echo "OK";
         exit;
     }
     
     private function doPost(ZOL_Request $input, ZOL_Response $output){
+        $db = Db_Andyou::instance();
         $res = $output->data;
         if($res){
             $data = array();
@@ -230,6 +249,13 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
                 if(in_array($output->table,array("log_scorechange","log_cardchange"))){
                     $minfo = Helper_Member::getMemberInfo(array("id"=>$re["memberId"]));
                     $re["phone"] = $minfo["phone"];
+                }
+                if(in_array($output->table,array("bills"))){
+                    if(empty($re["phone"])){
+                        $minfo = Helper_Member::getMemberInfo(array("id"=>$re["memberId"]));
+                        $re["phone"] = $minfo["phone"];
+                        $db->query("update {$output->table} set phone = '{$minfo["phone"]}' where memberId = {$re["memberId"]}");
+                    }
                 }
                 $data[] = $re;
                 
