@@ -169,7 +169,9 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
             'remark'          => $remark,
             'isBuyScore'      => $isBuyScore, //是否是积分兑换
         );
-        
+        if($memberInfo){
+            $billDetail["phone"] = $memberInfo["phone"];
+        }
         //如果销售眼前台修改了应收款，不是计算出来的，就记录
         if($endSumModifyFlag){
            if($sumPriceAftDisc != $endBillPrice){
@@ -328,6 +330,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                 $num  = (int)$re["num"];
                 $tmpRow = array(
                       'memberId' => $memberId,
+                      'phone'    => $memberInfo["phone"], 
                       'proId'    => $info["id"],
                       'name'     => $info["othername"],
                       'proName'  => $info["name"],
@@ -337,6 +340,7 @@ class  Andyou_Page_Checkout  extends Andyou_Page_Abstract {
                 );
                 $tmpLogRow = array(
                       'memberId'      => $memberId,
+                      'phone'         => $memberInfo["phone"], 
                       'otherproId'    => $info["id"],
                       'name'          => $info["othername"],
                       'direction'     => 0,
