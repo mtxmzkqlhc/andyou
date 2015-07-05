@@ -16,6 +16,8 @@
                 <table class="table table-bordered" id="dayInfoTbl">
                     <tr><td>+ <a href="?c=Rsync_Member&a=UpAll" target="_blank">将会员同步到云端</a></td></tr>
                     <tr><td>+ <a href="?c=Rsync_Member&a=UpLog" target="_blank">将会员操作消费同步到云端</a></td></tr>
+                    <tr><td>+ <a href="?c=Rsync_Member&a=UpNew" target="_blank">跟云端交换最新会员数据</a></td></tr>
+                    <tr><td>+ <a href="?c=Rsync_Member&a=UpNew&onlyGetFromYun=1&allData=1" target="_blank">获得云端所有会员信息</a></td></tr>
                 </table>
             </div>
         </div>
