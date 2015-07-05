@@ -31,6 +31,7 @@ class  Andyou_Page_Update extends Andyou_Page_Abstract {
             "alter table `memeberotherpro` add column `phone` varchar (20)   NOT NULL  COMMENT '电话' after `memberId`, add column `upTm` int (11)   NOT NULL  COMMENT '更新时间' after `ctype`, add column `site` varchar (20)   NOT NULL  COMMENT '站点' after `upTm`, add column `siteObjId` int (11)   NOT NULL  COMMENT '在那个站点的ID' after `site`",
             "alter table `log_useotherpro` add column `phone` varchar (20)   NOT NULL  COMMENT '电话' after `memberId`",
             "alter table `bills` add column `phone` varchar (20)   NOT NULL  COMMENT '会员电话' after `memberId`, add column `rsync` tinyint (1)   NOT NULL  COMMENT '是否同步' after `isBuyScore`",
+            "alter table `memeberotherpro` add column `rsync` tinyint (1)   NOT NULL  COMMENT '是否同步'",
         );
         $db = Db_Andyou::instance();
         if($sqlArr){

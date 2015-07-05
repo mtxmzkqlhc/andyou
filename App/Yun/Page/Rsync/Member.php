@@ -139,6 +139,53 @@ class  Yun_Page_Rsync_Member  extends Yun_Page_Abstract {
         exit;
     }
     
+    /** 
+     * 同步所有的会员其他产品数据
+     * 是将单机上的所有数据都同步到云端，一般情况下不需要都执行
+     */
+    public function doUpAllOtherPro(ZOL_Request $input, ZOL_Response $output){
+        
+        $token = $input->get("token");
+        //token的验证
+        //
+        if($token != md5("c=Rsync_Member&a=UpAllOtherPro"."AAFDFDF&RE3")){
+            echo "001";
+            exit;
+        }
+        $db = Db_AndyouYun::instance();
+        
+        //获得本地的会员
+        $data = $input->post("data");
+        if($data){
+            $data = base64_decode($data);
+            $data = api_json_decode($data);
+            if($data){
+                $okIdArr = array();
+                foreach($data as $d){
+                    $phone = $d["phone"];
+                    $sql = "select 'x' from memeberotherpro where phone = '{$phone}' limit 1 ";
+                    $has = $db->getOne($sql);
+                    if(!$has){//如果不存在就插入到本地
+                        $okIdArr[] = $d["siteObjId"];
+                        unset($d["id"]);
+                        unset($d["rsync"]);
+                        $item = $d;
+                        $item["upTm"] = SYSTEM_TIME;
+                        Helper_Dao::insertItem(array(                            
+                            'addItem'       =>  $item, #数据列
+                            'dbName'        =>  "Db_AndyouYun",    #数据库名
+                            'tblName'       =>  "memeberotherpro",   #表名
+                        ));
+                    }
+                }
+                
+                echo json_encode($okIdArr);
+                exit;
+            }
+        }
+        
+        exit;
+    }
     
     /** 
      * 同步最新数据

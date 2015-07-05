@@ -27,7 +27,7 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
         set_time_limit(0);
         $db = Db_Andyou::instance();
         $pageSize = 100;
-        //获得总数
+        //获得会员总数
         $allSum  = $db->getOne("select count(*) from member");
         $loopCnt = ceil($allSum/$pageSize);
        
@@ -61,6 +61,49 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
                     foreach($okIdArr as $id){
                         echo "{$id} OK<br/>";
                         $db->query("update member set rsync = 1 where id = {$id} ");
+                    }
+                }
+            }
+        }
+        
+        //获得会员其他商品总数
+        $allSum  = $db->getOne("select count(*) from memeberotherpro");
+        $loopCnt = ceil($allSum/$pageSize);
+       
+        for($i=0;$i<$loopCnt;$i++){
+            echo "==LOOP:{$i}==<br/>";
+            $s = $i * $pageSize;
+            //获得本地的会员
+            $sql = "select * from memeberotherpro order by id desc limit {$s},{$pageSize}";
+            $res = $db->getAll($sql);
+            
+            $data = array();
+            if($res){
+                foreach($res as $re){
+                    $re["siteObjId"] = $re["id"];
+                    $re["site"]      = $output->sysName;
+                    if(empty($re['phone'])){
+                        $minfo      = Helper_Member::getMemberInfo(array('id'=>$re["id"]));
+                        $re['phone'] = $minfo["phone"];
+                    }
+                    unset($re['upTm']);
+                    unset($re['rsync']);
+                    $data[] = $re;
+                }
+                
+                $jsonstr = base64_encode(api_json_encode($data));
+                $token   = md5("c=Rsync_Member&a=UpAllOtherPro"."AAFDFDF&RE3");
+                $rtnJson = ZOL_Http::curlPost(array(                
+                    'url'      => $output->yunUrl . "?c=Rsync_Member&a=UpAllOtherPro&token={$token}", #要请求的URL数组
+                    'postdata' => "data=$jsonstr", #POST的数据
+                    'timeout'  => 3,#超时时间 s
+                ));  
+                #设置同步状态
+                $okIdArr = json_decode($rtnJson);
+                if($okIdArr && is_array($okIdArr)){
+                    foreach($okIdArr as $id){
+                        echo "{$id} OK<br/>";
+                        $db->query("update memeberotherpro set rsync = 1 where id = {$id} ");
                     }
                 }
             }
