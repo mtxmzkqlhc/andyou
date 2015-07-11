@@ -3,7 +3,7 @@
  * 会员信息的同步
  *
  */
-class  Yun_Page_Rsync_Member  extends Yun_Page_Abstract {
+class  Yun_Page_Rsync_Member  extends Yun_Page_RsyncAbstract {
     /**
      * 验证
      */

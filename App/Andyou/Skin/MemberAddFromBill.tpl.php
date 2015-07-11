@@ -245,6 +245,9 @@ $("form").keydown(function(e){
         return false;
     }
 });
+setTimeout(function(){
+    $.get("?c=Rsync_Member&a=UpNew");//同步会员信息
+},100);
 </script>
 </body>
 </html>
