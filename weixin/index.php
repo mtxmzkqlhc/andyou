@@ -1,12 +1,8 @@
 <?php
 
-defined('ZOL_API_ISFW') || define('ZOL_API_ISFW', false);//是否使用ZOL新框架，true为使用
-$path = dirname(dirname(__FILE__)) . "/cloud/";
-require_once($path . 'Api.php'); //引入私有云入口文件
 
-#微信用的
-define("TOKEN", "547381");
-define("ZOLSTEPKEY", "1f7QGGgjuzZ7Ykc0u3Njy7F0jayVM4cl3HehZ29myPF");
+$path = dirname(__FILE__);
+require($path . 'config.php'); //引入私有云入口文件
 
 $openId = ""; #与咱们聊天的网友是谁
 $zolUid = ""; #与咱们聊天的网友是谁 ZOL USERID

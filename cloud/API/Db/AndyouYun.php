@@ -2,7 +2,7 @@
 /**
  * ÔÆ¶Ë·þÎñÆ÷
  */
-class Db_AndyouYun extends ZOL_Abstract_Pdo 
+class API_Db_AndyouYun extends API_Db_Abstract_Pdo 
 {
 	protected $servers   = array(
         'username' => 'luobo525',

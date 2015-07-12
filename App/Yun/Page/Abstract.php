@@ -14,7 +14,7 @@ abstract class Yun_Page_Abstract extends ZOL_Abstract_Page{
         $output->userId     = $input->cookie(Helper_Yun_Member::$strUid); #用户名
         $cipher             = $input->cookie(Helper_Yun_Member::$strCipher);
         $output->sysCfg     = Helper_Yun_Option::getAllOptions();
-        $output->sysName    = $output->sysCfg['SysName']["value"] ;
+        $output->sysName    = empty($output->sysCfg['SysName']) ? "" : $output->sysCfg['SysName']["value"] ;
         
         if(!$output->noLoginCheck){
             #验证登录

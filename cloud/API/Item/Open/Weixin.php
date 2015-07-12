@@ -300,8 +300,7 @@ class API_Item_Open_Weixin
      * 
      */
     
-    public  static    function  getAccessToken($paramArr){
-        
+    public  static    function  getAccessToken($paramArr){        
         $options = array(
             'appId'        => '',    #服务号的 appId
             'appSecret'    => '',    #服务号的 appSecret
@@ -313,31 +312,29 @@ class API_Item_Open_Weixin
         if(empty($appId)  || empty($appSecret)){
             return  false;
         }
+        $kvKey = "WeixinAccessToken_".$appId;
         
-        #先检查redis  有没有缓存  正常 微信access_token 有效期为 7200秒
-        #获得  redis 对象
-        $redis        = API_Redis::getLink('ZCloud1');
-        $accessToken  = $redis->get($appId);
-        if($accessToken){
-            return array('state'=>1,'data'=>$accessToken);     
-        }
+        //首先尝试在KV中过得数据
+        $token = API_Item_Kv_Db::get(array('key'=> $kvKey ));
+        #var_dump($token);
+        if($token)return $token;
         
-        $jsonStr   =   "";
+        //请求接口获得
         $jsonStr   =   ZOL_Http::curlPage(array(
-                'url'   =>"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appId}&secret={$appSecret}"
+            'url'   =>"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appId}&secret={$appSecret}"
         ));
         $jsonArr        = array();
         if($jsonStr){
-              $jsonArr  = json_decode($jsonStr,true);
+             $jsonArr  = json_decode($jsonStr,true);
         }
         
         if(!empty($jsonArr['access_token'])){
-               $exp  = $exp ? $exp : $jsonArr['expires_in']-100;
-               #设置redis 缓存，如果redis有就直接 读取redis，因为 access_token接口 访问次数有限制
-               $redis->setex($appId,$exp,$jsonArr['access_token']);
-               return array('state'=>1,'data'=>$jsonArr['access_token']);
+               $exp   = $exp ? $exp : $jsonArr['expires_in']-100;
+               $token = $jsonArr['access_token'];
+               API_Item_Kv_Db::set(array('key'=>$kvKey,'val'=>$token,'life'=>$exp));
+               return $token;
         }else{
-               return array('state'=>0,'data'=>$jsonArr['errcode']);
+               return false;
         }  
     }
     
@@ -476,22 +473,20 @@ class API_Item_Open_Weixin
             return false;
         }
         #获得access_token
-        $dataArr = self::getAccessToken(array(
+        $accessToken = self::getAccessToken(array(
                 'appId'        => $appId,    #服务号的 appId
                 'appSecret'    => $appSecret,    #服务号的 appSecret
         ));
         #获得 access_token
-        $accessToken  = "";
-        if(!empty($dataArr['state'])){
-            $accessToken  =  $dataArr['data'];
-        }else{
-            return false;
+        if(!$accessToken){            
+            return array('state'=>0,'data'=>'access token error!!');
         }
-        $jsonStr   =   "";
+        
         $jsonStr   =   API_Http::curlPost(array(
                             'url'       =>'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$accessToken,
                             'postdata'  => !empty($data) ? ($data):''
                        ));
+        var_dump($jsonStr);
         $jsonArr  = json_decode($jsonStr,true);
         if(empty($jsonArr['errcode'])){
                 return array('state'=>1,'data'=>$jsonArr['errmsg']);

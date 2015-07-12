@@ -35,7 +35,8 @@ class Yun_Page_Login extends Yun_Page_Abstract{
                                                 'password'     => $passWd,
                                              ));
          if($rtnFlag == 1){#登录OK
-             Helper_Front::JumpToHome();             
+             header("Location:?c=Member");
+             exit;       
          }else{#登录失败
              Helper_Front::JumpToLogin(array(
                 'msg'     => '用户名或密码错误', #消息内容
