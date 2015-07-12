@@ -59,7 +59,7 @@
 <?php if(!$isAddUser){?>
 <th>会员ID</th>
 <?php }?>
-<th>备注</th><th>操作</th>
+<th>备注</th><th>站点</th>
 </tr>
 </thead>
 <tbody>
@@ -101,21 +101,22 @@ if($data) {
        }else{
             $outStr.='<td>&nbsp;</td>';
        }
-       $outStr.='<td rel="'.$v['id'].'" align="left" style="text-align:left;">';
-       if(empty($v['memberId']) && $isAddUser){
-            $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" style="color:#ffffff">添加会员</a>';
-       }
-       
-        if($adminType == 1){//管理员
-            $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
-            <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
-            <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a></td>';
-            
-        }else{
-            $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
-            <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
-            </td>';
-        }
+       $outStr.='<td>'.(isset($siteNames[$v['site']]) ? $siteNames[$v['site']] : $v['site']).'</td>';
+//       $outStr.='<td rel="'.$v['id'].'" align="left" style="text-align:left;">';
+//       if(empty($v['memberId']) && $isAddUser){
+//            $outStr.='<a title="添加用户" class="btn btn-info" href="?c=Member&a=ToAddUserFromBill&bid='.$v['id'].'&bno='.$v['bno'].'" style="color:#ffffff">添加会员</a>';
+//       }
+//       
+//        if($adminType == 1){//管理员
+//            $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
+//            <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
+//            <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a></td>';
+//            
+//        }else{
+//            $outStr.='<!-- <a title="修改" class="btn btn-info editbtnBills"><i class="halflings-icon white edit"></i></a> -->
+//            <a title="订单明细" class="btn btn-info" href="?c=BillsItem&bno='.$v['bno'].'" target="_blank"><i class="halflings-icon white  th-list"></i></a>
+//            </td>';
+//        }
        $outStr.='</tr>';
        echo $outStr;
    }

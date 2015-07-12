@@ -35,7 +35,7 @@ class  Yun_Page_Rsync_Item  extends Yun_Page_RsyncAbstract {
             $data = api_json_decode($data);
             
             if($data){
-                if(in_array($table, array("staff","product"))){//log_cardchange
+                if(in_array($table, array("staff","product","membercate","productcate","staffcate","options","billsitem"))){//log_cardchange
                     $okIdArr = array();
                     foreach($data as $d){
                         

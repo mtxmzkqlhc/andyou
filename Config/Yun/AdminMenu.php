@@ -20,6 +20,16 @@ return array(
                 'ctrl' => 'Bills',
                 'target' => '_self',
             ),
+            '商品管理' => array(
+                'url' => '?c=Product&a=Default',
+                'ctrl' => 'Product',
+                'target' => '_self',
+            ),
+            '员工管理' => array(
+                'url' => '?c=Staff&a=Default',
+                'ctrl' => 'Staff',
+                'target' => '_self',
+            ),
         ),
     ),
 );

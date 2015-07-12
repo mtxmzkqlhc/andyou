@@ -30,13 +30,16 @@ class  Andyou_Page_Rsync_Item  extends Andyou_Page_Abstract {
             //获取一个同步的时间
             $sql = "select tm from log_yunrsync where name = 'itemtimestamp_up'";
             $lastUpTm = (int)$db->getOne($sql);
+            
             if($lastUpTm > 0)$lastUpTm = $lastUpTm - 1;
             else $lastUpTm = SYSTEM_TIME;
+            
             
             $whereSql .= " and rowTm > '".date("Y-m-d H:i:s",$lastUpTm)."'";
         }
         
-        $tableArr = array("staff","product");
+        $tableArr = array("staff","product","membercate","productcate","staffcate","options","billsitem");
+        $hasFlag = false;
         if($tableArr){
             foreach($tableArr as $table){
                 
@@ -48,14 +51,18 @@ class  Andyou_Page_Rsync_Item  extends Andyou_Page_Abstract {
                     $rtnJson = $this->doPost($input,$output);
                     echo "<hr/>";
                     echo $rtnJson;
+                    
+                    $hasFlag = true; 
                    
                 }
                 
             }
         }
+        if($hasFlag){
+            $db->query("delete from log_yunrsync where name = 'itemtimestamp_up'");
+            $db->query("insert into log_yunrsync(name,tm) values('itemtimestamp_up',". SYSTEM_TIME .")");            
+        }
         
-        $db->query("delete from log_yunrsync where name = 'itemtimestamp_up'");
-        $db->query("insert into log_yunrsync(name,tm) values('itemtimestamp_up',". SYSTEM_TIME .")");
         echo "OK";
         exit;
     }

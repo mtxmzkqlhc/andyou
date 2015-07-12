@@ -574,6 +574,7 @@
 //定时执行备份
 setTimeout(function(){
     $.get("?c=Data&a=BackUp");
+    $.get("?c=Rsync_Item&a=UpData");
 },1000*60*5);
 
 //云端同步

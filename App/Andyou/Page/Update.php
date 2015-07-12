@@ -34,6 +34,11 @@ class  Andyou_Page_Update extends Andyou_Page_Abstract {
             "alter table `memeberotherpro` add column `rsync` tinyint (1)   NOT NULL  COMMENT '是否同步'",
             "alter table `product` add column `rowTm` timestamp   NOT NULL  COMMENT '更新时间戳'",
             "alter table `staff` add column `rowTm` timestamp   NOT NULL  COMMENT '更新时间戳'",
+            "alter table `membercate` add column `rowTm` timestamp   NOT NULL  COMMENT '更新时间戳'",
+            "alter table `productcate` add column `rowTm` timestamp   NOT NULL  COMMENT '更新时间戳'",
+            "alter table `staffcate` add column `rowTm` timestamp   NOT NULL  COMMENT '更新时间戳'",
+            "alter table `options` add column `rowTm` timestamp   NOT NULL  COMMENT '更新时间戳'",
+            "alter table `billsitem` add column `rowTm` timestamp   NOT NULL  COMMENT '更新时间戳'",
         );
         $db = Db_Andyou::instance();
         if($sqlArr){

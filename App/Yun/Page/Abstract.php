@@ -37,6 +37,8 @@ abstract class Yun_Page_Abstract extends ZOL_Abstract_Page{
             echo "Permission denied";
             exit;
         }
+        //所有站点的名字
+        $output->siteNames = ZOL_Config::get("Yun_Sites","NAMES");
         #头尾html
 		$output->header     = $output->fetchCol("Part/Header");
          //左侧

@@ -43,7 +43,7 @@
                     <table class="table table-center table-striped table-bordered bootstrap-datatable ">
                      <thead>
 <tr>
-<th>姓名</th><th>手机号</th><th>分类</th><th>生日</th><th>积分</th><th>余额</th><th>总消费</th><th>添加时间</th>
+<th>姓名</th><th>手机号</th><th>分类</th><th>生日</th><th>积分</th><th>余额</th><th>总消费</th><th>添加时间</th><th>站点</th>
 </tr>
 </thead>
 <tbody>
@@ -59,6 +59,7 @@ if($data) {
        $outStr.='<td>'.$v['balance'].'</td>';
        $outStr.='<td>'.$v['allsum'].'</td>';
        $outStr.='<td>'.date("Y-m-d",$v['addTm']).'</td>';
+       $outStr.='<td>'.(isset($siteNames[$v['site']]) ? $siteNames[$v['site']] : $v['site']).'</td>';
            
       
 //        if($adminType == 1){//管理员
