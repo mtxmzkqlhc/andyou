@@ -223,7 +223,8 @@ class  Andyou_Page_Rsync_Member  extends Andyou_Page_Abstract {
                 }
             }
             if(!$onlyGetFromYun){//是否仅仅获得远端数据
-                $db->query("update log_yunrsync set tm = ". SYSTEM_TIME ."  where name = 'memberinfo_up'");
+                $db->query("delete from log_yunrsync where name = 'memberinfo_up'");
+                $db->query("insert into log_yunrsync(name,tm) values('memberinfo_up',". SYSTEM_TIME .")");
             }
         }
         

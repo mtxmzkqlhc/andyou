@@ -238,7 +238,7 @@ class Helper_Yun_Member extends Helper_Abstract {
                 #'debug'        => 1,    #调试
        ));
         //获得会员类型
-       $memberCate = Helper_Member::getMemberCateInfoPairs();
+       $memberCate = Helper_Yun_Member::getMemberCateInfoPairs();
        if($data){
            if(isset( $memberCate[ $data["cateId"] ])){
                $data['cateName'] = $memberCate[$data["cateId"]]["name"];

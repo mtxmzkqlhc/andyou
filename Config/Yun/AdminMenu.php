@@ -15,6 +15,11 @@ return array(
                 'ctrl' => 'Member',
                 'target' => '_self',
             ),
+            '¶©µ¥¹ÜÀí' => array(
+                'url' => '?c=Bills&a=Default',
+                'ctrl' => 'Bills',
+                'target' => '_self',
+            ),
         ),
     ),
 );
