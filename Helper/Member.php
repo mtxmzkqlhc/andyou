@@ -320,9 +320,10 @@ class Helper_Member extends Helper_Abstract {
         
 		Helper_Dao::insertItem(array(
             'addItem'       =>  $arr, #数据列
-            'dbName'        =>  'Db_Andyou',    #数据库名
-            'tblName'       =>  'log_cardchange',    #表名
+            'dbName'        =>  'Db_AndyouYun',    #数据库名
+            'tblName'       =>  'member_login',    #表名
 		));
+        
         
         return true;
     }

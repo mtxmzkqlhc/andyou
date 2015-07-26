@@ -26,6 +26,23 @@ class Helper_Yun_Staff extends Helper_Abstract {
     }
 
     
+    /**
+     * 根据不同的站点获得员工
+     */
+    public static function getSiteStaffPairs(){
+        
+        $db = Db_AndyouYun::instance();
+        $res = $db->getAll("select id,name,site,objId from staff");
+        $outArr = array();
+        if($res){
+            foreach($res as $re){
+                $outArr[$re["site"]][$re["objId"]] = $re["name"];
+            }
+        }
+        return $outArr;
+            
+    }
+
     
     /**
      * 获得员工管理列表

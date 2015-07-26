@@ -33,10 +33,8 @@ class  Yun_Page_Bills  extends Yun_Page_Abstract {
         
         //如果传入了会员电话
         if($output->sermemberPhone){
-            $memInfo = Helper_Yun_Member::getMemberInfo(array('phone'=>$output->sermemberPhone));
-            if($memInfo){
-                $output->sermemberId = $wArr['memberId'] = (int)$memInfo["id"];
-            }
+            $wArr['phone'] = $output->sermemberPhone;
+            
         }
         if($output->isBuyScore == 1)$whereSql .= " and  isBuyScore = 1";
         if($output->isBuyScore == 2)$whereSql .= " and  isBuyScore = 0";
@@ -47,7 +45,11 @@ class  Yun_Page_Bills  extends Yun_Page_Abstract {
 	    if(!empty ($wArr)){
 		    foreach($wArr as $k=>$v){
 		        if(gettype($v) == 'string'){
-                     $whereSql .= !empty($v)?' AND '.$k.' like binary "%'.$v.'%" ':'';
+                    if($k == "phone"){
+                        $whereSql .= !empty($v)?' AND '.$k.'='.$v:'';
+                    }else{
+                         $whereSql .= !empty($v)?' AND '.$k.' like binary "%'.$v.'%" ':'';
+                    }
                   }else{
                      $whereSql .= !empty($v)?' AND '.$k.'='.$v:'';
                 }    
@@ -81,8 +83,7 @@ class  Yun_Page_Bills  extends Yun_Page_Abstract {
 			$output->pageUrl= $pageUrl;
 		}
 		
-        $output->staffInfo = Helper_Yun_Staff::getStaffPairs();
-        
+        $output->staffInfo = Helper_Yun_Staff::getSiteStaffPairs();
 		$output->setTemplate('Bills');
 	}
 	

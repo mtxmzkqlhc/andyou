@@ -26,12 +26,9 @@ define('IS_DEBUGGING' , $_SERVER['SERVER_NAME'] != SYSTEM_HOST);
 // 生产状态
 define('IS_PRODUCTION', $_SERVER['SERVER_NAME'] == SYSTEM_HOST);
 
-if(IS_DEBUGGING){
-    error_reporting(E_ALL);
-    ini_set("display_errors", 1);
-}
+
 error_reporting(0);
-ini_set("display_errors", 0);
+ini_set("display_errors", "off");
 /**
  * json的相关处理
  */

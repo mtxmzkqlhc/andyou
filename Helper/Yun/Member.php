@@ -6,6 +6,35 @@ class Helper_Yun_Member extends Helper_Abstract {
    
     public static $strCipher = "yun_admin_cipher";
     public static $strUid    = "yun_admin_uid";
+    /**
+     * 会员登录相关
+     */
+    public static function mkLoginPasswd($paramArr) {
+		$options = array(
+            'passwd'     => '',     
+            'salt'       => '',                           
+		);
+		if (is_array($paramArr)) $options = array_merge($options, $paramArr);
+		extract($options);
+        
+        return  substr(md5($passwd . $salt . "IJFEW*EJREiu12"),2,12);
+        
+    }
+    /**
+     * 获得会员的登录信息
+     */
+    public static function getLoginInfo($paramArr) {
+		$options = array(
+            'phone'     => '',     #手机号             
+		);
+		if (is_array($paramArr)) $options = array_merge($options, $paramArr);
+		extract($options);
+        
+        
+        $db = Db_AndyouYun::instance();
+        return $db->getRow("select * from member_login where phone = '{$phone}'");
+        
+    }
     
     //退出登录
     public static function loginOut(){        

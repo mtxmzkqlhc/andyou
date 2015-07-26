@@ -28,7 +28,7 @@
         
     }?>
 </select>
-会员ID:<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sermemberPhone?>" name="memberPhone" placeholder="会员ID">
+会员电话:<input style="width:100px;height:25px;" class="spanmalt10" type="text" value="<?=$sermemberPhone?>" name="memberPhone" placeholder="会员ID">
 <select name="isBuyScore">
     <option value="0">所有消费</option>
     <?php
@@ -57,7 +57,7 @@
 <?php }?>
 <th>销售员</th><th>消费时间</th>
 <?php if(!$isAddUser){?>
-<th>会员ID</th>
+<th>会员</th>
 <?php }?>
 <th>备注</th><th>站点</th>
 </tr>
@@ -67,7 +67,7 @@
 if($data) {
    foreach($data as $v) {
        $memName = "-";
-       if($v['memberId']){
+       if($v['phone']){
            $memInfo = Helper_Yun_Member::getMemberInfo(array("phone"=>$v['phone']));
            $memName = $memInfo["name"];
        }
@@ -90,10 +90,10 @@ if($data) {
         if($hasChangePrice){
              $outStr.='<td>'.round($v['priceTrue']/100).'</td>';
         }
-       $outStr.='<td>'.(isset($staffInfo[$v['staffid']]) ? $staffInfo[$v['staffid']] : '-').'</td>';
+       $outStr.='<td>'.(isset($staffInfo[$v['site']][$v['staffid']]) ? $staffInfo[$v['site']][$v['staffid']] : '-').'</td>';
        $outStr.='<td>'.date("m-d H:i",$v['tm']).'</td>';
        if(!$isAddUser){
-            $outStr.='<td>'.$memName.'</td>';
+            $outStr.='<td>'.$memName."<br/>{$v['phone']}".'</td>';
        }
        if($v['remark']){
          $remark = str_replace(array("'",'"'), "", $v['remark']);
