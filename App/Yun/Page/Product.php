@@ -222,16 +222,20 @@ class  Yun_Page_Product  extends Yun_Page_Abstract {
      */
 	 public function doDelItem(ZOL_Request $input, ZOL_Response $output) {
 
+         /*
 		Helper_Dao::delItem(array(
                 'dbName'=> 'Db_AndyouYun',#数据库名
                 'tblName' => 'product',#表名
                 'where'=> 'id='.$input->post('dataid'),#更新条件
         ));
 		$pageUrl = $input->request('pageUrl');
+          * 
+          */
 		/*backUrl*/
         $urlStr = $pageUrl ? $pageUrl : "?c={$output->ctlName}&t={$output->rnd}";
 	    echo "<script>document.location='{$urlStr}';</script>";
 		exit;
+        
 	 }
 
 	

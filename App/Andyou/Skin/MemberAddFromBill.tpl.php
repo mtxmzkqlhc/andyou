@@ -51,7 +51,7 @@
                           <?php
                           if($andCard){
                           ?>
-                          <tr><td align="right" style="text-align:right;">添加充值卡金额:</td><td><input type="text"  name="balance"/></td></tr>
+                          <tr><td align="right" style="text-align:right;">充值卡金额:</td><td><input type="text" id="ipt_balance"  name="balance" value=""/></td></tr>
                           <tr><td align="right" style="text-align:right;">销售员:</td><td>
                                   <select name="staffid"><option value='0'>请选择</option>
                                     <?php
@@ -105,22 +105,34 @@
 <?= $footer ?>
 <script>
 var doCheckIpt = function(){
-    var cid = $("#cateId").val();
-    if(cid == 0){
-        alert("请选择分类");
+    if($("#phone").val() == ""){  
+        alert("请填写手机号！");
         return false;
     }
     if($("#name").val() == ""){
          alert("请填写姓名！");
          return false;
     }
-    if($("#phone").val() == ""){  
-        alert("请填写手机号！");
+    
+    var cid = $("#cateId").val();
+    if(cid == 0){
+        alert("请选择分类");
         return false;
     }
+    <?php
+    if($andCard){
+    ?>
+    if($("#ipt_balance").val() == ""){  
+        alert("请填写充值卡金额！");
+        return false;
+    }
+    <?php
+    }
+    ?>
+    
     //验证用户
     //$.ajaxSettings.async = false;
-    
+    $("#submitbtn").val("提交中...").attr("disabled",true);
     return true;
     
 }

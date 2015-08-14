@@ -127,6 +127,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         $Arr['bday']    = $input->post('bday');
         $Arr['addTm']   = SYSTEM_TIME;
         $Arr['score']   = 0;
+        $balance        =
         $Arr['balance'] = $input->post('balance');
         $Arr['remark']  = $input->post('remark');
         $remark2        = $input->post('remark2');
@@ -134,6 +135,11 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
         
         $staffid        = (int)$input->post("staffid");
         
+        
+        if(!$balance){            
+            echo "<script>alert('请填写充值卡金额');document.location='?c=Member&a=ToAddUserFromBill&andCard=1';</script>";
+            exit;
+        }
         
         //查看该电话是否注册了
         $minfo = Helper_Member::getMemberInfo(array(
@@ -163,7 +169,7 @@ class  Andyou_Page_Member extends Andyou_Page_Abstract {
             'tblName'       =>  'member',    #表名
         ));
         
-        $card = $Arr['balance'];
+        $card = $balance;
         //进行充值        
 //        $db = Db_Andyou::instance();
 //        $sql = "update member set balance = balance + {$Arr['balance']} where id = {$memberId}";
