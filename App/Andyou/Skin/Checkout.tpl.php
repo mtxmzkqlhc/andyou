@@ -574,15 +574,15 @@
 //定时执行备份
 setTimeout(function(){
     $.get("?c=Data&a=BackUp");
-    $.get("?c=Rsync_Item&a=UpData");
+    //$.get("?c=Rsync_Item&a=UpData");
 },1000*60*5);
 
 //云端同步
 setTimeout(function(){
-    $.get("?c=Rsync_Member&a=UpLog");//同步操作日志
+    //$.get("?c=Rsync_Member&a=UpLog");//同步操作日志
 },1000*60);
 setTimeout(function(){
-    $.get("?c=Rsync_Member&a=UpNew");//同步会员信息
+    //$.get("?c=Rsync_Member&a=UpNew");//同步会员信息
 },1000*63);
 </script>
 <script type="text/javascript" src="js/checkout/memeber.js"></script>

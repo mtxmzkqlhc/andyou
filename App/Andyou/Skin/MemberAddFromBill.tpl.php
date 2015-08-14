@@ -246,7 +246,7 @@ $("form").keydown(function(e){
     }
 });
 setTimeout(function(){
-    $.get("?c=Rsync_Member&a=UpNew");//同步会员信息
+   // $.get("?c=Rsync_Member&a=UpNew");//同步会员信息
 },100);
 </script>
 </body>

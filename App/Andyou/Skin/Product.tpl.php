@@ -64,7 +64,7 @@ if($data) {
        $outStr.='<td>'.($v['canByScore']?"<font color='green'>是</font>":"否").'</td>';
        $outStr.='<td rel="'.$v['id'].'">
        <a title="修改" class="btn btn-info editbtnProduct"><i class="halflings-icon white edit"></i></a>
-        <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a> 
+       <!-- <a title="删除" class="btn btn-danger delbtn"><i class="halflings-icon white trash"></i></a> -->
        </td>';
        $outStr.='</tr>';
        echo $outStr;
@@ -226,7 +226,10 @@ if($data) {
 
 <?= $footer ?>
 <script>
-
+$("#addbtn").click(function(){
+    $("#addbtn").html("提交中...");
+   // $("#addbtn").attr('disabled',true);
+});
 var bkUrl = '<?=$pageUrl?>';
 //控制哪些字段的显示和隐藏
 var ctypechg = function(v){

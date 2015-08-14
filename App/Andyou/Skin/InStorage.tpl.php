@@ -68,7 +68,7 @@
                             
                             <tbody id="doInStoreRow" style="display:none">
                                 <tr><td colspan="10" style="text-align: center;background:#ffffff;padding: 20px 0">
-                                        <input type="submit" value=" 确认入库 " class="btn btn-primary"/>
+                                        <input type="submit" value=" 确认入库 " class="btn btn-primary" id="doinbtn"/>
                                     </td></tr>
                             </tbody>
                             
@@ -286,7 +286,8 @@ var proTblDel = function(i){
             return false;
         }
         
-        
+        $("#doinbtn").val("提交中...");
+        $("#doinbtn").attr('disabled',true)
         return true;
     }
     

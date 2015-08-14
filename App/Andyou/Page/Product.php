@@ -150,7 +150,9 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
 	public function doAddItem(ZOL_Request $input, ZOL_Response $output){
 	       
         $Arr = array();
+        $name           =
 		$Arr['name']    = $input->post('name');
+        $code           =
         $Arr['code']    = $input->post('code');
         $Arr['cateId']  = $input->post('cateId');
         $Arr['price']   = $input->post('price');
@@ -169,13 +171,59 @@ class  Andyou_Page_Product  extends Andyou_Page_Abstract {
         $Arr['inPrice'] = $Arr['inPrice'] * 100;
         
 		$pageUrl = $input->request('pageUrl');
-		$data = Helper_Dao::insertItem(array(
+        
+        $urlStr = $pageUrl ? $pageUrl : "?c={$output->ctlName}&t={$output->rnd}";
+        
+        if(!$name || !$code){
+            echo "<script>alert('请填写完整，数据不能为空！')</script>";
+            echo "<script>document.location='{$urlStr}';</script>";
+            exit;
+        }
+        
+        
+        //查看是否已经入库了
+        $db = Db_Andyou::instance();
+        $sql = "select 'x' from product where name = '{$name}' and code = '{$code}' limit 1";
+        $has = $db->getOne($sql);
+        
+        if($has){//是否存在
+            echo "<script>alert('该商品已经存在了，不能重复添加！')</script>";
+            echo "<script>document.location='{$urlStr}';</script>";
+            exit;
+            
+        }
+        
+		$pid = Helper_Dao::insertItem(array(
 		        'addItem'       =>  $Arr, #数据列
 		        'dbName'        =>  'Db_Andyou',    #数据库名
 		        'tblName'       =>  'product',    #表名
 		));
+        
+        //记录入库日志
+        if( $Arr['ctype'] == 1){//次卡不记录日志了
+            //记录日志 log_productInStorage
+            $item = array(
+                'proId'    => $pid,
+                'adminer'  => $output->admin,
+                'dateTm'   => SYSTEM_TIME,
+                'orgNum'   => 0,
+                'addNum'   => $Arr['stock'],
+                'cateId'   => $Arr["cateId"],
+                'name'     => $Arr["name"],
+                'code'     => $Arr["code"],
+            );
+            Helper_Dao::insertItem(array(
+                    'addItem'       =>  $item, #数据列
+                    'dbName'        =>  'Db_Andyou',    #数据库名
+                    'tblName'       =>  'log_productInStorage',    #表名
+            ));
+        }        
+        if(!$pid){
+            echo "<script>alert('添加失败，请重新添加！')</script>";
+        }
+        
+        
 		/*backUrl*/
-        $urlStr = $pageUrl ? $pageUrl : "?c={$output->ctlName}&t={$output->rnd}";
 	    echo "<script>document.location='{$urlStr}';</script>";
 		exit;
 	}
