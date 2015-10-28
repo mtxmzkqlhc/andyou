@@ -1,25 +1,25 @@
 <?php
 /**
- * ª·‘±œ‡πÿ
+ * ‰ºöÂëòÁõ∏ÂÖ≥
  */
 class Helper_Member extends Helper_Abstract {
    
     public static $strCipher = "admin_cipher";
     public static $strUid    = "admin_uid";
     
-    //ÕÀ≥ˆµ«¬º
+    //ÈÄÄÂá∫ÁôªÂΩï
     public static function loginOut(){        
         setcookie(self::$strCipher,'xxx',1,"/","");
         setcookie(self::$strCipher,"xxx", null, "/", "", null, true);
     }
     
     /**
-     * Ω¯––µ«¬º—È÷§≈–∂œ
+     * ËøõË°åÁôªÂΩïÈ™åËØÅÂà§Êñ≠
      */
     public static function checkLogin($paramArr) {
 		$options = array(
-            'userid'       => '',      #”√ªßID
-            'cipher'       => '',      #∞≤»´¥Æ
+            'userid'       => '',      #Áî®Êà∑ID
+            'cipher'       => '',      #ÂÆâÂÖ®‰∏≤
 		);
 		if (is_array($paramArr)) $options = array_merge($options, $paramArr);
 		extract($options);
@@ -36,42 +36,42 @@ class Helper_Member extends Helper_Abstract {
     }
     
     /**
-     * …˙≥…”√ªßµƒº”√‹¥Æ
+     * ÁîüÊàêÁî®Êà∑ÁöÑÂä†ÂØÜ‰∏≤
      */
     public static function createCipher($paramArr) {
 		$options = array(
-            'userid'       => '',      #”√ªßID
+            'userid'       => '',      #Áî®Êà∑ID
 		);
 		if (is_array($paramArr)) $options = array_merge($options, $paramArr);
 		extract($options);
         if(!$userid)return false;
         
-        $salt     = "L0veZ0L&Y0U-";  #º”√‹”√salt
-        #$ip       = ZOL_Api::run("Service.Area.getClientIp" , array()); #µ±«∞”√ªßµƒcookie
-        $ip       = $_SERVER["REMOTE_ADDR"];#∏¸ªªIPµÿ÷∑ªÚ∑Ω∑®£¨∑¢œ÷”––©øÕªßŒﬁ∑®µ«¬º
-        #Œ™¡ÀºÊ»›e.test.zol.com.cn e.zol.com.cn≤ªƒ‹Õ¨ ±µ«¬º◊¥Ã¨
+        $salt     = "L0veZ0L&Y0U-";  #Âä†ÂØÜÁî®salt
+        #$ip       = ZOL_Api::run("Service.Area.getClientIp" , array()); #ÂΩìÂâçÁî®Êà∑ÁöÑcookie
+        $ip       = $_SERVER["REMOTE_ADDR"];#Êõ¥Êç¢IPÂú∞ÂùÄÊàñÊñπÊ≥ïÔºåÂèëÁé∞Êúâ‰∫õÂÆ¢Êà∑Êó†Ê≥ïÁôªÂΩï
+        #‰∏∫‰∫ÜÂÖºÂÆπe.test.zol.com.cn e.zol.com.cn‰∏çËÉΩÂêåÊó∂ÁôªÂΩïÁä∂ÊÄÅ
         if($ip == "10.15.184.14") $ip = "10.19.12.122";
         $dateStr1 = date("ymd",SYSTEM_TIME); 
-        $dateStr2 = date("ymd",SYSTEM_TIME-3600); #…œ∏ˆ–° ±µƒ ±º‰–≈œ¢
+        $dateStr2 = date("ymd",SYSTEM_TIME-3600); #‰∏ä‰∏™Â∞èÊó∂ÁöÑÊó∂Èó¥‰ø°ÊÅØ
         $string   = $userid . $ip . $salt;// . $_SERVER['HTTP_USER_AGENT'];
         $thisCf   = substr(md5($string . $dateStr1),2,12);
         $lastCf   = substr(md5($string . $dateStr2),2,12);
         
         return array(
-            'THIS' => $thisCf, #’‚∏ˆ–° ±µƒº”√‹¥Æ
-            'LAST' => $lastCf, #…œ∏ˆ–° ±µƒº”√‹¥Æ
+            'THIS' => $thisCf, #Ëøô‰∏™Â∞èÊó∂ÁöÑÂä†ÂØÜ‰∏≤
+            'LAST' => $lastCf, #‰∏ä‰∏™Â∞èÊó∂ÁöÑÂä†ÂØÜ‰∏≤
             'ARR'  => array($thisCf,$lastCf),
         );
     }
     /**
-     * ”√ªß√˚∫Õ√‹¬Îµƒ—È÷§
+     * Áî®Êà∑ÂêçÂíåÂØÜÁ†ÅÁöÑÈ™åËØÅ
      */
     public static function checkPasswd($paramArr) {
 		$options = array(
-            'userId'       => '',      #”√ªßID
-            'password'     => '',      #”√ªß√‹¬Î
-            'backUrl'      => '',      #µ«¬º≥…π¶∫ÛÃ¯◊™“≥√Ê
-            'logFlag'      => false    # «∑Òº«¬º”√ªßµ«¬º»’÷æ
+            'userId'       => '',      #Áî®Êà∑ID
+            'password'     => '',      #Áî®Êà∑ÂØÜÁ†Å
+            'backUrl'      => '',      #ÁôªÂΩïÊàêÂäüÂêéË∑≥ËΩ¨È°µÈù¢
+            'logFlag'      => false    #ÊòØÂê¶ËÆ∞ÂΩïÁî®Êà∑ÁôªÂΩïÊó•Âøó
 		);
 		if (is_array($paramArr)) $options = array_merge($options, $paramArr);
 		extract($options);
@@ -81,38 +81,38 @@ class Helper_Member extends Helper_Abstract {
          $rtnFlag = 0;
          if($userInfo){
              if($password == $userInfo["passwd"]){
-                 $rtnFlag = 1;//µ«¬º≥…π¶
+                 $rtnFlag = 1;//ÁôªÂΩïÊàêÂäü
              }else{
-                 $rtnFlag = 2;//√‹¬Î¥ÌŒÛ
+                 $rtnFlag = 2;//ÂØÜÁ†ÅÈîôËØØ
              }
          }else{
-             $rtnFlag = 3;//Œﬁ∏√”√ªß
+             $rtnFlag = 3;//Êó†ËØ•Áî®Êà∑
          }
          return $rtnFlag;
     }
     
     /**
-     * µ«¬º
+     * ÁôªÂΩï
      */
     public static function login($paramArr) {
 		$options = array(
-            'userId'       => '',      #”√ªßID
-            'password'     => '',      #”√ªß√‹¬Î
+            'userId'       => '',      #Áî®Êà∑ID
+            'password'     => '',      #Áî®Êà∑ÂØÜÁ†Å
 		);
 		if (is_array($paramArr)) $options = array_merge($options, $paramArr);
 		extract($options);
         
-        //—È÷§”√ªß∫Õ√‹¬Î
+        //È™åËØÅÁî®Êà∑ÂíåÂØÜÁ†Å
         $checkFlag = self::checkPasswd(array('userId'=>$userId,'password'=>$password));
         
-        if ($checkFlag === 1) {#µ«¬º≥…π¶
+        if ($checkFlag === 1) {#ÁôªÂΩïÊàêÂäü
             
             $ckCipher            = self::createCipher(array('userid' => $userId));
                 
             setcookie(self::$strUid, $userId,SYSTEM_TIME + 31536000, "/", "");
             setcookie(self::$strCipher, $ckCipher['THIS'], SYSTEM_TIME + 86400, "/", "", null, true);
             
-        } else {#µ«¬º ß∞‹
+        } else {#ÁôªÂΩïÂ§±Ë¥•
         
         }
         
@@ -124,7 +124,7 @@ class Helper_Member extends Helper_Abstract {
     
     
     /**
-     * ªÒµ√ª·‘±∑÷¿‡π‹¿Ì¡–±Ì
+     * Ëé∑Âæó‰ºöÂëòÂàÜÁ±ªÁÆ°ÁêÜÂàóË°®
      */
     public static function getMemberCatePairs(){
         
@@ -135,7 +135,7 @@ class Helper_Member extends Helper_Abstract {
 
 
     /**
-     * ªÒµ√ª·‘±∑÷¿‡π‹¿Ì¡–±Ì
+     * Ëé∑Âæó‰ºöÂëòÂàÜÁ±ªÁÆ°ÁêÜÂàóË°®
      */
     public static function getMemberCateInfoPairs(){
         
@@ -152,12 +152,12 @@ class Helper_Member extends Helper_Abstract {
     }
     
     /**
-     * ªÒµ√ª·‘±∑÷¿‡π‹¿Ì¡–±Ì
+     * Ëé∑Âæó‰ºöÂëòÂàÜÁ±ªÁÆ°ÁêÜÂàóË°®
      */
     public static function getMemberCateList($params){
         $options = array(
-            'num'             => 10,    # ˝¡ø
-            'name'            => false, #∑÷¿‡√˚
+            'num'             => 10,    #Êï∞Èáè
+            'name'            => false, #ÂàÜÁ±ªÂêç
         );
         if(is_array($params)) $options = array_merge($options, $params);
         extract($options);
@@ -167,12 +167,12 @@ class Helper_Member extends Helper_Abstract {
         if($name)$whereSql .= "and name = '{$name}' " ;
         
         $data = Helper_Dao::getRows(array(
-                    'dbName'        => 'Db_Andyou',    # ˝æ›ø‚√˚
-                    'tblName'       => 'membercate',    #±Ì√˚
-                    'cols'          => '*',   #¡–√˚
-                    'limit'         => $num,    #Ãı ˝
-                    'whereSql'      => $whereSql,    #whereÃıº˛
-                    #'debug'        => 1,    #µ˜ ‘
+                    'dbName'        => 'Db_Andyou',    #Êï∞ÊçÆÂ∫ìÂêç
+                    'tblName'       => 'membercate',    #Ë°®Âêç
+                    'cols'          => '*',   #ÂàóÂêç
+                    'limit'         => $num,    #Êù°Êï∞
+                    'whereSql'      => $whereSql,    #whereÊù°‰ª∂
+                    #'debug'        => 1,    #Ë∞ÉËØï
        ));
        
        return $data;
@@ -181,7 +181,7 @@ class Helper_Member extends Helper_Abstract {
 
 
     /**
-     * ªÒµ√“ªÃıª·‘±∑÷¿‡π‹¿Ì–≈œ¢
+     * Ëé∑Âæó‰∏ÄÊù°‰ºöÂëòÂàÜÁ±ªÁÆ°ÁêÜ‰ø°ÊÅØ
      */
     public static function getMemberCateInfo($params){
         $options = array(
@@ -195,25 +195,25 @@ class Helper_Member extends Helper_Abstract {
         if($id)$whereSql .= "and id = '{$id}' " ;
 
         $data = Helper_Dao::getRow(array(
-                'dbName'        => 'Db_Andyou',    # ˝æ›ø‚√˚
-                'tblName'       => 'membercate',    #±Ì√˚
-                'cols'          => 'id id,name name',   #¡–√˚
-                'whereSql'      => $whereSql,    #whereÃıº˛
-                #'debug'        => 1,    #µ˜ ‘
+                'dbName'        => 'Db_Andyou',    #Êï∞ÊçÆÂ∫ìÂêç
+                'tblName'       => 'membercate',    #Ë°®Âêç
+                'cols'          => 'id id,name name',   #ÂàóÂêç
+                'whereSql'      => $whereSql,    #whereÊù°‰ª∂
+                #'debug'        => 1,    #Ë∞ÉËØï
        ));
        
        return $data;
     }
 
   /**
-     * ªÒµ√“ªÃıª·‘±–≈œ¢
+     * Ëé∑Âæó‰∏ÄÊù°‰ºöÂëò‰ø°ÊÅØ
      */
     public static function getMemberInfo($params){
         $options = array(
             'id'              => false, #ID
             'phone'           => false, 
-            'cardno'          => false, #ø®∫≈
-            'phoneOrCardno'   => false, #µÁª∞∫≈¬ÎªÚ’ﬂø®∫≈
+            'cardno'          => false, #Âç°Âè∑
+            'phoneOrCardno'   => false, #ÁîµËØùÂè∑Á†ÅÊàñËÄÖÂç°Âè∑
             'name'            => false, 
         );
         if(is_array($params)) $options = array_merge($options, $params);
@@ -229,24 +229,24 @@ class Helper_Member extends Helper_Abstract {
         
         if($name)$whereSql .= "and name like '%{$name}%' " ;
         $data = Helper_Dao::getRow(array(
-                'dbName'        => 'Db_Andyou',    # ˝æ›ø‚√˚
-                'tblName'       => 'member',    #±Ì√˚
-                'cols'          => '*',   #¡–√˚
-                'whereSql'      => $whereSql,    #whereÃıº˛
-                #'debug'        => 1,    #µ˜ ‘
+                'dbName'        => 'Db_Andyou',    #Êï∞ÊçÆÂ∫ìÂêç
+                'tblName'       => 'member',    #Ë°®Âêç
+                'cols'          => '*',   #ÂàóÂêç
+                'whereSql'      => $whereSql,    #whereÊù°‰ª∂
+                #'debug'        => 1,    #Ë∞ÉËØï
        ));
-        //ªÒµ√ª·‘±¿‡–Õ
+        //Ëé∑Âæó‰ºöÂëòÁ±ªÂûã
        $memberCate = Helper_Member::getMemberCateInfoPairs();
        if($data){
            if(isset( $memberCate[ $data["cateId"] ])){
                $data['cateName'] = $memberCate[$data["cateId"]]["name"];
                $data['discount'] = $memberCate[$data["cateId"]]["discount"];
-               if($memberCate[$data["cateId"]]['discountStr']){//’€ø€µƒ∑÷¿‡
+               if($memberCate[$data["cateId"]]['discountStr']){//ÊäòÊâ£ÁöÑÂàÜÁ±ª
                    $data['discountArr'] = json_decode($memberCate[$data["cateId"]]['discountStr'], true);
                }
                
            }else{
-               $data['cateName'] = "Œ¥∑÷¿‡";
+               $data['cateName'] = "Êú™ÂàÜÁ±ª";
                $data['discount'] = 1;
            }
        }
@@ -254,15 +254,15 @@ class Helper_Member extends Helper_Abstract {
     }
 
     /**
-     *  º«¬ºª·‘±ªÒµ√ª˝∑÷¿˙ ∑
+     *  ËÆ∞ÂΩï‰ºöÂëòËé∑ÂæóÁßØÂàÜÂéÜÂè≤
      */
     public static function addScoreLog($params){
         $options = array(
             'memberId'         => false, #ID
-            'direction'        => 1, #1 ºı 0 º”
-            'score'            => 0, #ª˝∑÷
-            'orgScore'         => -1, #‘≠ ºª˝∑÷
-            'bno'              => 0, #∂©µ•∫≈
+            'direction'        => 1, #1 Âáè 0 Âä†
+            'score'            => 0, #ÁßØÂàÜ
+            'orgScore'         => -1, #ÂéüÂßãÁßØÂàÜ
+            'bno'              => 0, #ËÆ¢ÂçïÂè∑
             'remark'           => '', #
         );
         if(is_array($params)) $options = array_merge($options, $params);
@@ -281,9 +281,9 @@ class Helper_Member extends Helper_Abstract {
         }
         
 		Helper_Dao::insertItem(array(
-            'addItem'       =>  $arr, # ˝æ›¡–
-            'dbName'        =>  'Db_Andyou',    # ˝æ›ø‚√˚
-            'tblName'       =>  'log_scorechange',    #±Ì√˚
+            'addItem'       =>  $arr, #Êï∞ÊçÆÂàó
+            'dbName'        =>  'Db_Andyou',    #Êï∞ÊçÆÂ∫ìÂêç
+            'tblName'       =>  'log_scorechange',    #Ë°®Âêç
 		));
         
         return true;
@@ -292,15 +292,15 @@ class Helper_Member extends Helper_Abstract {
     
 
     /**
-     *  º«¬ºª·‘±ªÒµ√ª·‘±ø®”‡∂Ó¿˙ ∑
+     *  ËÆ∞ÂΩï‰ºöÂëòËé∑Âæó‰ºöÂëòÂç°‰ΩôÈ¢ùÂéÜÂè≤
      */
     public static function addCardLog($params){
         $options = array(
             'memberId'         => false, #ID
-            'direction'        => 1, #1 ºı 0 º”
-            'card'             => 0, #ª˝∑÷
-            'orgCard'         => -1, #‘≠ ºª˝∑÷
-            'bno'              => 0, #∂©µ•∫≈
+            'direction'        => 1, #1 Âáè 0 Âä†
+            'card'             => 0, #ÁßØÂàÜ
+            'orgCard'         => -1, #ÂéüÂßãÁßØÂàÜ
+            'bno'              => 0, #ËÆ¢ÂçïÂè∑
             'remark'           => '', #
         );
         if(is_array($params)) $options = array_merge($options, $params);
@@ -319,9 +319,9 @@ class Helper_Member extends Helper_Abstract {
         }
         
 		Helper_Dao::insertItem(array(
-            'addItem'       =>  $arr, # ˝æ›¡–
-            'dbName'        =>  'Db_AndyouYun',    # ˝æ›ø‚√˚
-            'tblName'       =>  'member_login',    #±Ì√˚
+            'addItem'       =>  $arr, #Êï∞ÊçÆÂàó
+            'dbName'        =>  'Db_AndyouYun',    #Êï∞ÊçÆÂ∫ìÂêç
+            'tblName'       =>  'log_cardchange',    #Ë°®Âêç
 		));
         
         
@@ -329,13 +329,13 @@ class Helper_Member extends Helper_Abstract {
     }
     
     /**
-     *  º«¬ºª·‘±ªÒµ√ª·‘±ø®”‡∂Ó¿˙ ∑
+     *  ËÆ∞ÂΩï‰ºöÂëòËé∑Âæó‰ºöÂëòÂç°‰ΩôÈ¢ùÂéÜÂè≤
      */
     public static function getOtherPros($params){
         $options = array(
             'id'              => false, #ID
             'phone'           => false, 
-            'cardno'          => false, #ø®∫≈
+            'cardno'          => false, #Âç°Âè∑
         );
         if(is_array($params)) $options = array_merge($options, $params);
         extract($options);
